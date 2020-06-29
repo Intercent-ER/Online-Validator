@@ -3,16 +3,22 @@ package com.onlinevalidator.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.onlinevalidator.model.Entity;
+import com.onlinevalidator.utils.EntityService;
 import com.onlinevalidator.utils.FormatCheckerInterface;
+import com.sun.jdi.Value;
 
 @Controller
 public class ResultController {
@@ -23,17 +29,27 @@ public class ResultController {
 	String finalResult = "";
 	@Autowired
 	FormatCheckerInterface formatChecker;
+	@Autowired
+	EntityService entityService;
 	boolean format;
 	
 	@RequestMapping("/")
-	public String fileUploader() {
+	public ModelAndView fileUploader() {
 		
-		return "index";
+		ModelAndView modelAndView = new ModelAndView("index") ;
+        //List<Entity> userForms = getAllValidatori();
+        //modelAndView.addObject("validatori", getAllValidatori());  
+        return modelAndView;
 		
+	}
+	
+	@ModelAttribute("validatori")
+	public List<Entity> getAllValidatori(){
+		return entityService.getAllEntity();
 	}
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file) {
+	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam(value="id") int id) {
 		
 		format = formatChecker.checkFormat(file.getContentType());
 
@@ -43,25 +59,15 @@ public class ResultController {
 				byte[] bytes = file.getBytes();
 				fileContent = new String(bytes);
 				System.out.println(file.getContentType());
-
-				/*
-				String rootPath = System.getProperty("catalina.home");
-				File dir = new File(rootPath + File.separator + "tmpFiles");
-				if (!dir.exists()) {
-					dir.mkdirs();
+				Entity entity = entityService.getEntity(id);
+				String name;
+				if(entity == null) {
+					throw new Exception("Valore non valido");
+				}else {
+					 name = entity.getName();
 				}
-				
-				File serverFile = new File(dir.getAbsolutePath() + File.separator + fileName);
-				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-				stream.write(bytes);
-				stream.close();
-				*/
 
-				//System.out.println("Dir path" + dir.getAbsolutePath());
-				//System.out.println("Server File Location=" + serverFile.getAbsolutePath());
-				
-
-				return "Il file " + fileName + " è stato caricato, il contenuto è: " + fileContent;
+				return "Il file " + fileName + " è stato caricato, il contenuto è: " + fileContent + ", mentre l'entità è: " + name + " con id: " + id;
 			} catch (Exception e) {
 				return "Il file " + fileName + " non è stato caricato: " + e.getMessage();
 			}
