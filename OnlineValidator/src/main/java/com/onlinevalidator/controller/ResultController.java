@@ -60,6 +60,7 @@ public class ResultController {
 				System.out.println(file.getContentType());
 				ValidatorEntity entity = entityService.getEntity(id);
 				String name;
+				//Prova
 				if(entity == null) {
 					throw new Exception("Valore non valido");
 				}else {
