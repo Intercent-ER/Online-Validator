@@ -16,7 +16,7 @@ public class EntityService implements EntityServiceInterface{
 	@Override
 	public List<Entity> getAllEntity() {
 		if(entityList == null) {
-			entityList = new ArrayList<>();
+			entityList = new ArrayList<Entity>();
 			entity = new Entity(1, "Ordine");
 			entityList.add(entity);
 			entity = new Entity(2, "DDT");

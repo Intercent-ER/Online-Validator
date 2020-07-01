@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.onlinevalidator.model.Entity;
 import com.onlinevalidator.utils.EntityService;
 import com.onlinevalidator.utils.FormatCheckerInterface;
-import com.sun.jdi.Value;
 
 @Controller
 public class ResultController {

@@ -9,3 +9,13 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
+/OnlineValidator/.classpath
+/OnlineValidator/.project
+/OnlineValidator/.settings/.jsdtscope
+/OnlineValidator/.settings/org.eclipse.jdt.core.prefs
+/OnlineValidator/.settings/org.eclipse.m2e.core.prefs
+/OnlineValidator/.settings/org.eclipse.wst.common.component
+/OnlineValidator/.settings/org.eclipse.wst.common.project.facet.core.xml
+/OnlineValidator/.settings/org.eclipse.wst.jsdt.ui.superType.container
+/OnlineValidator/.settings/org.eclipse.wst.jsdt.ui.superType.name
+/OnlineValidator/.settings/org.eclipse.wst.validation.prefs
