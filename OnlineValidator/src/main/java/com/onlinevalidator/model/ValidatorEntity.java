@@ -1,11 +1,11 @@
 package com.onlinevalidator.model;
 
-public class Entity {
+public class ValidatorEntity {
 	
 	private int id;
 	private String name;
 	
-	public Entity(int id, String name) {
+	public ValidatorEntity(int id, String name) {
 		super();
 		this.id = id;
 		this.name = name;

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.onlinevalidator.model.Entity;
-import com.onlinevalidator.utils.EntityService;
+import com.onlinevalidator.model.ValidatorEntity;
+import com.onlinevalidator.utils.ValidatorService;
 import com.onlinevalidator.utils.FormatCheckerInterface;
 
 @Controller
@@ -29,7 +29,7 @@ public class ResultController {
 	@Autowired
 	FormatCheckerInterface formatChecker;
 	@Autowired
-	EntityService entityService;
+	ValidatorService entityService;
 	boolean format;
 	
 	@RequestMapping("/")
@@ -43,7 +43,7 @@ public class ResultController {
 	}
 	
 	@ModelAttribute("validatori")
-	public List<Entity> getAllValidatori(){
+	public List<ValidatorEntity> getAllValidatori(){
 		return entityService.getAllEntity();
 	}
 
@@ -58,7 +58,7 @@ public class ResultController {
 				byte[] bytes = file.getBytes();
 				fileContent = new String(bytes);
 				System.out.println(file.getContentType());
-				Entity entity = entityService.getEntity(id);
+				ValidatorEntity entity = entityService.getEntity(id);
 				String name;
 				if(entity == null) {
 					throw new Exception("Valore non valido");
