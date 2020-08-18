@@ -2,7 +2,8 @@ package com.onlinevalidator.model;
 
 public class FileType {
 	
-	boolean type;
+	private boolean type;
+	private String FileType = "text/plain";
 
 	public boolean isType() {
 		return type;
@@ -12,6 +13,14 @@ public class FileType {
 		this.type = type;
 	}
 
+	public String getFileType() {
+		return FileType;
+	}
+
+	public void setFileType(String fileType) {
+		FileType = fileType;
+	}
+	
 	
 	
 	

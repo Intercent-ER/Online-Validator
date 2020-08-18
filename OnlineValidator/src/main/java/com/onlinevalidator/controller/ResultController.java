@@ -21,7 +21,7 @@ import com.onlinevalidator.utils.FormatCheckerInterface;
 
 @Controller
 public class ResultController {
-	
+
 	String fileName;
 	String fileContent;
 	public static final String MIME_TEXT_PLAIN = "text/plain";
@@ -31,25 +31,27 @@ public class ResultController {
 	@Autowired
 	ValidatorService entityService;
 	boolean format;
-	
+	int prova = 1;
+
 	@RequestMapping("/")
 	public ModelAndView fileUploader() {
-		
-		ModelAndView modelAndView = new ModelAndView("index") ;
-        //List<Entity> userForms = getAllValidatori();
-        //modelAndView.addObject("validatori", getAllValidatori());  
-        return modelAndView;
-		
+
+		ModelAndView modelAndView = new ModelAndView("index");
+		// List<Entity> userForms = getAllValidatori();
+		// modelAndView.addObject("validatori", getAllValidatori());
+		return modelAndView;
+
 	}
-	
+
 	@ModelAttribute("validatori")
-	public List<ValidatorEntity> getAllValidatori(){
+	public List<ValidatorEntity> getAllValidatori() {
 		return entityService.getAllEntity();
 	}
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam(value="id") int id) {
-		
+	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file,
+			@RequestParam(value = "id") int id) {
+
 		format = formatChecker.checkFormat(file.getContentType());
 
 		if (!file.isEmpty() && format) {
@@ -60,32 +62,37 @@ public class ResultController {
 				System.out.println(file.getContentType());
 				ValidatorEntity entity = entityService.getEntity(id);
 				String name;
-				//Prova
-				if(entity == null) {
+				if (entity == null) {
 					throw new Exception("Valore non valido");
-				}else {
-					 name = entity.getName();
+				} else {
+					name = entity.getName();
 				}
 
-				return "Il file " + fileName + " è stato caricato, il contenuto è: " + fileContent + ", mentre l'entità è: " + name + " con id: " + id;
+				return "Il file " + fileName + " è stato caricato, il contenuto è: " + fileContent + ", e il peso: "
+						+ file.getSize() + ", mentre l'entità è: " + name + " con id: " + id;
 			} catch (Exception e) {
-				return "Il file " + fileName + " non è stato caricato: " + e.getMessage();
+				if (file.getSize() > 500000) {
+					return "Il file supera la dimensione massima di 0,5 Mb, il tuof file pesa: " + file.getSize();
+				} else {
+					return "Il file " + fileName + " non è stato caricato: " + e.getMessage();
+				}
+
 			}
 		} else {
+			if (file.getSize() > 500000) {
+				finalResult += "Il file supera la dimensione massima di 0,5 Mb, il tuof file pesa: " + file.getSize();
+			} else {
+				if (!format) {
+					finalResult += "Il formato del file non è corretto, deve essere txt";
+					System.out.println(file.getContentType());
+				}
+				if (file.isEmpty()) {
+					finalResult += "Il file non può essere vuoto";
+				}
+			}
 
-			if(!format) {
-				finalResult += "Il formato del file non è corretto, deve essere txt";
-				System.out.println(file.getContentType());
-			}
-			if(file.isEmpty()){
-				finalResult += "Il file non può essere vuoto";
-			}
 			return finalResult;
 		}
 	}
-	
-	
 
 }
-
-
