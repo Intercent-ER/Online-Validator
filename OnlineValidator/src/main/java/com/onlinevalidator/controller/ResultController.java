@@ -3,6 +3,7 @@ package com.onlinevalidator.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class ResultController {
 	}
 
 	@ModelAttribute("validatori")
-	public List<ValidatorEntity> getAllValidatori() {
+	public List<ValidatorEntity> getAllValidatori() throws SQLException {
 		return entityService.getAllEntity();
 	}
 
