@@ -38,7 +38,7 @@
 						<div class="file-submit-container d-flex flex-row">
 							<select class="entity-select" type="select" id="name" name="id">
 								<c:forEach items="${validatori}" var="val">
-									<option type="int" value="${val.id}" id="${val.id}">${val.name}</option>
+									<option type="int" value="${val.id}">${val.name}</option>
 								</c:forEach>
 							</select> <input class="submit-data" type="submit" value="Valida" />
 						</div>

@@ -3,6 +3,7 @@ package com.onlinevalidator.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.onlinevalidator.model.ValidatorEntity;
 import com.onlinevalidator.utils.ValidatorService;
+import com.onlinevalidator.utils.DatabaseService;
 import com.onlinevalidator.utils.FormatCheckerInterface;
 
 @Controller
@@ -31,6 +33,8 @@ public class ResultController {
 	FormatCheckerInterface formatChecker;
 	@Autowired
 	ValidatorService entityService;
+	@Autowired
+	private DatabaseService databaseService;
 	boolean format;
 	int prova = 1;
 
@@ -50,8 +54,7 @@ public class ResultController {
 	}
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file,
-			@RequestParam(value = "id") int id) {
+	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam(value = "id") int id) {
 
 		format = formatChecker.checkFormat(file.getContentType());
 
@@ -62,15 +65,19 @@ public class ResultController {
 				fileContent = new String(bytes);
 				System.out.println(file.getContentType());
 				ValidatorEntity entity = entityService.getEntity(id);
+				System.out.println();
 				String name;
 				if (entity == null) {
 					throw new Exception("Valore non valido");
 				} else {
 					name = entity.getName();
 				}
+				
+				ResultSet resultSet = databaseService.resultSet("SELECT * FROM validatore WHERE id = '" + entity.getIdValidatore() + "'");
+				resultSet.first();
 
 				return "Il file " + fileName + " è stato caricato, il contenuto è: " + fileContent + ", e il peso: "
-						+ file.getSize() + ", mentre l'entità è: " + name + " con id: " + id;
+						+ file.getSize() + ", mentre l'entità è: " + name + " con id: " + id + " e il suo validatore è: " + resultSet.getString(2) + " con id: " + resultSet.getInt(1);
 			} catch (Exception e) {
 				if (file.getSize() > 500000) {
 					return "Il file supera la dimensione massima di 0,5 Mb, il tuof file pesa: " + file.getSize();

@@ -1,5 +1,6 @@
 package com.onlinevalidator.utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
@@ -12,6 +13,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import com.onlinevalidator.model.ValidatorEntity;
 
 @Service
@@ -19,11 +22,15 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 	private ValidatorEntity entity;
 	private List<ValidatorEntity> entityList;
+	@Autowired
+	private DataSource dataSource;
+	@Autowired
+	private DatabaseService databaseService;
 
 	@Override
 	public List<ValidatorEntity> getAllEntity() throws SQLException {
 		
-		boolean useDB = false;
+		boolean useDB = true;
 		entityList = new ArrayList<ValidatorEntity>();
 		
 		if(!useDB) {
@@ -38,22 +45,8 @@ public class ValidatorService implements ValidatorServiceInterface {
 			}
 			
 		}else {
-
-		Connection myConn = null;
-		Statement myStmt = null;
-		ResultSet myRs = null;
-
-		InputStream input = null;
-		FileOutputStream output = null;
-
-		try {
-			myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/OnlineValidator", "root", "toor123");
-			myStmt = myConn.createStatement();
-			String sql = "SELECT * FROM tipodocumento";
-			myRs = myStmt.executeQuery(sql);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+			
+		ResultSet myRs = databaseService.resultSet("SELECT * FROM tipodocumento");
 
 		int size = 0;
 		if (myRs != null) {
@@ -67,18 +60,18 @@ public class ValidatorService implements ValidatorServiceInterface {
 			}
 
 		}
+		
+		System.out.println(size);
 
 		
-		if (entityList == null) {
 			for (int i = 0; i < size; i++) {
+				System.out.println("Va: " + i);
 				entity = new ValidatorEntity(myRs.getInt(1), myRs.getString(2), myRs.getInt(3));
 				entityList.add(entity);
+				myRs.next();
 			}
 		}
-			/*
-			
-			*/
-		}
+		
 
 		return entityList;
 
