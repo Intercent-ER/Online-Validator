@@ -1,6 +1,7 @@
 package com.onlinevalidator.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
@@ -16,17 +17,16 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.onlinevalidator.model.ValidatorEntity;
+import com.onlinevalidator.repository.ValidatorRepositoryInterface;
 
 @Service
 public class ValidatorService implements ValidatorServiceInterface {
 
-	private ValidatorEntity entity;
-	private List<ValidatorEntity> entityList;
 	@Autowired
-	private DataSource dataSource;
-	@Autowired
-	private DatabaseService databaseService;
+	@Qualifier("validatorListRepository")
+	private ValidatorRepositoryInterface repository;
 
+	/*
 	@Override
 	public List<ValidatorEntity> getAllEntity() throws SQLException {
 		
@@ -76,18 +76,30 @@ public class ValidatorService implements ValidatorServiceInterface {
 		return entityList;
 
 	}
-
+	*/
+	
 	
 	@Override
 	public ValidatorEntity getEntity(int id) {
+		/*
 		for (ValidatorEntity entity : entityList) {
 			if (entity.getId() == id) {
 				return entity;
 			}
 		}
+		*/
+		
 
-		return null;
+		return repository.findOne(id);
 
+	}
+	
+
+	@Override
+	public List<ValidatorEntity> getAllEntity() throws SQLException {
+
+		
+		return repository.findAll();
 	}
 	
 	/*
