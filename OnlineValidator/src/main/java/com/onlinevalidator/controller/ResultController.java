@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.onlinevalidator.model.ValidatorEntity;
+import com.onlinevalidator.model.ValidatorEntity2;
+import com.onlinevalidator.repository.ValidatorJpaRepository;
 import com.onlinevalidator.utils.ValidatorService;
 import com.onlinevalidator.utils.DatabaseService;
 import com.onlinevalidator.utils.FormatCheckerInterface;
@@ -35,6 +38,8 @@ public class ResultController {
 	ValidatorService entityService;
 	@Autowired
 	private DatabaseService databaseService;
+	@Autowired
+	private ValidatorJpaRepository validatorJpaRepository;
 	boolean format;
 	int prova = 1;
 
@@ -49,8 +54,8 @@ public class ResultController {
 	}
 
 	@ModelAttribute("validatori")
-	public List<ValidatorEntity> getAllValidatori() throws SQLException {
-		return entityService.getAllEntity();
+	public List<ValidatorEntity2> getAllValidatori() throws SQLException {
+		return validatorJpaRepository.listAll();
 	}
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
