@@ -9,14 +9,14 @@
 	<name>OnlineValidator Maven Webapp</name>
 	<url>http://www.onlinevalidator.com</url>
 	<properties>
-		<spring.version>5.2.7.RELEASE</spring.version>
+		<spring.version>3.2.9.RELEASE</spring.version>
 		<servlet.version>1.2</servlet.version>
 		<fileupload.version>1.3.3</fileupload.version>
 		<io.version>2.4</io.version>
 		<mysql.connector.version>8.0.21</mysql.connector.version>
 		<java.version>1.8</java.version>
-		<hibernate.version>5.2.17.Final</hibernate.version>
-		<hibernate.validator>5.4.1.Final</hibernate.validator>
+		<hibernate.version>4.3.5.Final</hibernate.version>
+		<hibernate.validator>4.3.1.Final</hibernate.validator>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -45,6 +45,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
@@ -66,9 +67,9 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>2.1.5.RELEASE</version>
+			<version>1.6.0.RELEASE</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -105,6 +106,11 @@
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
 			<version>2.4.0-b180830.0359</version>
+		</dependency>
+		<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.12.1.GA</version>
 		</dependency>
 	</dependencies>
 	<build>

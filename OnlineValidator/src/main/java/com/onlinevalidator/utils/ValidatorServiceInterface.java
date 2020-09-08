@@ -5,13 +5,17 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.onlinevalidator.model.Tipodocumento;
 import com.onlinevalidator.model.ValidatorEntity;
+import com.onlinevalidator.model.Validatore;
 
 @Service
 public interface ValidatorServiceInterface{
 	
-	public List<ValidatorEntity> getAllEntity() throws SQLException;
+	public List<Validatore> getAllEntity() throws SQLException;
 	
-	public ValidatorEntity getEntity(int id);
+	public Validatore getEntity(Long id);
+	
+	public Validatore getValidatoreByTipoDocumento(Long idTipoDocumento);
 
 }

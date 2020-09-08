@@ -1,8 +1,13 @@
 package com.onlinevalidator.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import com.onlinevalidator.model.ValidatorEntity2;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ValidatorJpaRepositoryInterface extends CrudRepository<ValidatorEntity2, Long>{
-	//public interface ValidatorJpaRepositoryInterface extends CrudRepository<ValidatorEntity2, Integer>
+import com.onlinevalidator.model.Validatore;
+
+@Repository
+public interface ValidatorJpaRepositoryInterface extends JpaRepository<Validatore, Long>{
+	
+	
+	
 }

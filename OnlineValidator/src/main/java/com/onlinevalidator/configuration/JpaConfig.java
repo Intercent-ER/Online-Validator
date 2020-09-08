@@ -1,7 +1,5 @@
 package com.onlinevalidator.configuration;
 
-/*
-
 import javax.persistence.EntityManagerFactory;
 
 import org.springframework.context.annotation.Bean;
@@ -31,4 +29,3 @@ public class JpaConfig {
         return transactionManager;
     } 
 }
-*/
