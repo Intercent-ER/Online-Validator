@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.onlinevalidator.model.Tipodocumento;
 import com.onlinevalidator.model.Validatore;
 import com.onlinevalidator.utils.FormatCheckerInterface;
 import com.onlinevalidator.utils.ValidatorService;
@@ -27,7 +28,7 @@ public class ResultController {
 	@Autowired
 	FormatCheckerInterface formatChecker;
 	@Autowired
-	ValidatorService entityService;
+	ValidatorService validatorService;
 	boolean format;
 	int prova = 1;
 
@@ -42,12 +43,12 @@ public class ResultController {
 	}
 
 	@ModelAttribute("validatori")
-	public List<Validatore> getAllValidatori() throws SQLException {
-		return entityService.getAllEntity();
+	public List<Tipodocumento> getAllValidatori() throws SQLException {
+		return validatorService.getAllEntity();
 	}
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam(value = "id") Long idTipoDocumento) {
+	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam(value = "id") int idTipoDocumento) {
 
 		format = formatChecker.checkFormat(file.getContentType());
 
@@ -57,7 +58,7 @@ public class ResultController {
 				byte[] bytes = file.getBytes();
 				fileContent = new String(bytes);
 				System.out.println(file.getContentType());
-				Validatore entity = entityService.getValidatoreByTipoDocumento(idTipoDocumento);
+				Validatore entity = validatorService.getValidatoreByTipoDocumento(idTipoDocumento);
 				System.out.println();
 
 				return "Il file " + fileName + " è stato caricato, il contenuto è: " + fileContent + ", e il peso: "

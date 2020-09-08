@@ -21,21 +21,21 @@ public class ValidatorService implements ValidatorServiceInterface {
 	private TipoDocumentoJpaRepositoryInterface tipoDocumentoRepository;
 	
 	@Override
-	public Validatore getEntity(Long id) {
+	public Tipodocumento getEntity(int id) {
 		
 		return repository.findOne(id);
 
 	}
 	
 	@Override
-	public List<Validatore> getAllEntity() throws SQLException {
+	public List<Tipodocumento> getAllEntity() throws SQLException {
 
 		return repository.findAll();
 		
 	}
 
 	@Override
-	public Validatore getValidatoreByTipoDocumento(Long idTipoDocumento) {
+	public Validatore getValidatoreByTipoDocumento(int idTipoDocumento) {
 		return tipoDocumentoRepository.findOne(idTipoDocumento).getValidatore();
 	}
 
