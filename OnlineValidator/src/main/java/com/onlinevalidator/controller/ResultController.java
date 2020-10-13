@@ -3,9 +3,11 @@ package com.onlinevalidator.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +33,7 @@ public class ResultController {
 	ValidatorService validatorService;
 	boolean format;
 	int prova = 1;
+	private static Logger logger = Logger.getLogger(ResultController.class);
 
 	@RequestMapping("/")
 	public ModelAndView fileUploader() {
@@ -57,9 +60,7 @@ public class ResultController {
 				fileName = file.getOriginalFilename();
 				byte[] bytes = file.getBytes();
 				fileContent = new String(bytes);
-				System.out.println(file.getContentType());
 				Validatore entity = validatorService.getValidatoreByTipoDocumento(idTipoDocumento);
-				System.out.println();
 
 				return "Il file " + fileName + " è stato caricato, il contenuto è: " + fileContent + ", e il peso: "
 						+ file.getSize() + ", mentre il suo validatore è: " + entity.getName() + " con id: " + entity.getId();
@@ -77,7 +78,8 @@ public class ResultController {
 			} else {
 				if (!format) {
 					finalResult += "Il formato del file non è corretto, deve essere txt";
-					System.out.println(file.getContentType());
+					//System.out.println(file.getContentType());
+					logger.info(file.getContentType());
 				}
 				if (file.isEmpty()) {
 					finalResult += "Il file non può essere vuoto";
