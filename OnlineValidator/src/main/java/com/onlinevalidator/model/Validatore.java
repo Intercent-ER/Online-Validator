@@ -20,8 +20,8 @@ public class Validatore implements Serializable {
 	@Lob
 	private byte[] file;
 
-	@Column(name = "name")
-	private String name;
+	@Column(name = "nome")
+	private String nome;
 
 	@Column(name = "tipo_file")
 	@Enumerated(EnumType.STRING)
@@ -52,11 +52,11 @@ public class Validatore implements Serializable {
 	}
 
 	public String getName() {
-		return this.name;
+		return this.nome;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String nome) {
+		this.nome = nome;
 	}
 
 	public TipoFileEnum getTipoFileEnum() {

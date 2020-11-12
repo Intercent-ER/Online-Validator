@@ -4,9 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.onlinevalidator.model.Tipodocumento;
+import com.onlinevalidator.model.Validatore;
 
 @Repository
-public interface ValidatorJpaRepositoryInterface extends JpaRepository<Tipodocumento, Integer>{
+public interface ValidatorJpaRepositoryInterface extends JpaRepository<Validatore, Integer>{
 	
 	
 	

@@ -15,6 +15,8 @@ public interface ValidatorServiceInterface{
 	
 	public Tipodocumento getEntity(int id);
 	
-	public Validatore getValidatoreByTipoDocumento(int idTipoDocumento);
+	public List<Validatore> getValidatori(Tipodocumento tipoDocumento);
+	
+	//public Validatore getValidatoreByTipoDocumento(int idTipoDocumento);
 
 }

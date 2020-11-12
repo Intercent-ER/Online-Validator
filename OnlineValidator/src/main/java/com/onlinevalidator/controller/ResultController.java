@@ -45,13 +45,13 @@ public class ResultController {
 
 	}
 
-	@ModelAttribute("validatori")
-	public List<Tipodocumento> getAllValidatori() throws SQLException {
+	@ModelAttribute("tipoDocumento")
+	public List<Tipodocumento> getAllTipoDocumento() throws SQLException {
 		return validatorService.getAllEntity();
 	}
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam(value = "id") int idTipoDocumento) {
+	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam(value = "id") Tipodocumento tipoDocumento) {
 
 		format = formatChecker.checkFormat(file.getContentType());
 
@@ -60,10 +60,10 @@ public class ResultController {
 				fileName = file.getOriginalFilename();
 				byte[] bytes = file.getBytes();
 				fileContent = new String(bytes);
-				Validatore entity = validatorService.getValidatoreByTipoDocumento(idTipoDocumento);
+				Validatore validore1 = validatorService.getValidatori(tipoDocumento).get(0);
 
 				return "Il file " + fileName + " è stato caricato, il contenuto è: " + fileContent + ", e il peso: "
-						+ file.getSize() + ", mentre il suo validatore è: " + entity.getName() + " con id: " + entity.getId();
+						+ file.getSize() + ", mentre il suo validatore è: " + validore1.getName() + " con id: " + validore1.getId();
 			} catch (Exception e) {
 				if (file.getSize() > 500000) {
 					return "Il file supera la dimensione massima di 0,5 Mb, il tuof file pesa: " + file.getSize();

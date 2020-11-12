@@ -14,29 +14,36 @@ import com.onlinevalidator.repository.ValidatorJpaRepositoryInterface;
 
 @Service
 public class ValidatorService implements ValidatorServiceInterface {
-
-	@Resource
-	private ValidatorJpaRepositoryInterface repository;
+	
 	@Resource
 	private TipoDocumentoJpaRepositoryInterface tipoDocumentoRepository;
+	@Resource
+	private ValidatorJpaRepositoryInterface validatorRepository;
 	
 	@Override
 	public Tipodocumento getEntity(int id) {
 		
-		return repository.findOne(id);
+		return tipoDocumentoRepository.findOne(id);
 
 	}
 	
 	@Override
 	public List<Tipodocumento> getAllEntity() throws SQLException {
 
-		return repository.findAll();
+		return tipoDocumentoRepository.findAll();
 		
 	}
 
+	/*
 	@Override
 	public Validatore getValidatoreByTipoDocumento(int idTipoDocumento) {
-		return tipoDocumentoRepository.findOne(idTipoDocumento).getValidatore();
+		return validatorRepository.findOne(idTipoDocumento).getValidatore();
+	}
+	*/
+	
+	@Override
+	public List<Validatore> getValidatori(Tipodocumento tipodocumento) {
+		return tipodocumento.getValidatori();
 	}
 
 }

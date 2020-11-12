@@ -17,8 +17,8 @@ public class Tipodocumento implements Serializable {
 	@Id
 	private int id;
 
-	@Column(name = "name")
-	private String name;
+	@Column(name = "nome")
+	private String nome;
 
 	//bi-directional many-to-one association to Validatore
 	@OneToMany(mappedBy = "tipodocumento", fetch = FetchType.EAGER)
@@ -36,11 +36,11 @@ public class Tipodocumento implements Serializable {
 	}
 
 	public String getName() {
-		return this.name;
+		return this.nome;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String nome) {
+		this.nome = nome;
 	}
 
 	public List<Validatore> getValidatori() {
