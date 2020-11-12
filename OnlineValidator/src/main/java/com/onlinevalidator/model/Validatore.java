@@ -1,8 +1,7 @@
 package com.onlinevalidator.model;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
 
 /**
@@ -21,11 +20,17 @@ public class Validatore implements Serializable {
 	@Lob
 	private byte[] file;
 
+	@Column(name = "name")
 	private String name;
 
+	@Column(name = "tipo_file")
+	@Enumerated(EnumType.STRING)
+	private TipoFileEnum tipoFileEnum;
+
 	//bi-directional many-to-one association to Tipodocumento
-	@OneToMany(mappedBy="validatore")
-	private List<Tipodocumento> tipodocumentos;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "fk_id_tipodocumento")
+	private Tipodocumento tipodocumento;
 
 	public Validatore() {
 	}
@@ -54,26 +59,11 @@ public class Validatore implements Serializable {
 		this.name = name;
 	}
 
-	public List<Tipodocumento> getTipodocumentos() {
-		return this.tipodocumentos;
+	public TipoFileEnum getTipoFileEnum() {
+		return tipoFileEnum;
 	}
 
-	public void setTipodocumentos(List<Tipodocumento> tipodocumentos) {
-		this.tipodocumentos = tipodocumentos;
+	public void setTipoFileEnum(TipoFileEnum tipoFileEnum) {
+		this.tipoFileEnum = tipoFileEnum;
 	}
-
-	public Tipodocumento addTipodocumento(Tipodocumento tipodocumento) {
-		getTipodocumentos().add(tipodocumento);
-		tipodocumento.setValidatore(this);
-
-		return tipodocumento;
-	}
-
-	public Tipodocumento removeTipodocumento(Tipodocumento tipodocumento) {
-		getTipodocumentos().remove(tipodocumento);
-		tipodocumento.setValidatore(null);
-
-		return tipodocumento;
-	}
-
 }

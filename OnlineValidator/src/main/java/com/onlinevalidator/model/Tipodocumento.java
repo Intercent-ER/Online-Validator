@@ -1,27 +1,28 @@
 package com.onlinevalidator.model;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 
 /**
  * The persistent class for the tipodocumento database table.
- * 
+ *
  */
 @Entity
-@NamedQuery(name="Tipodocumento.findAll", query="SELECT t FROM Tipodocumento t")
+@NamedQuery(name = "Tipodocumento.findAll", query = "SELECT t FROM Tipodocumento t")
 public class Tipodocumento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private int id;
 
+	@Column(name = "name")
 	private String name;
 
 	//bi-directional many-to-one association to Validatore
-	@ManyToOne
-	@JoinColumn(name="id_validatore")
-	private Validatore validatore;
+	@OneToMany(mappedBy = "tipodocumento", fetch = FetchType.EAGER)
+	private List<Validatore> validatori;
 
 	public Tipodocumento() {
 	}
@@ -42,12 +43,11 @@ public class Tipodocumento implements Serializable {
 		this.name = name;
 	}
 
-	public Validatore getValidatore() {
-		return this.validatore;
+	public List<Validatore> getValidatori() {
+		return validatori;
 	}
 
-	public void setValidatore(Validatore validatore) {
-		this.validatore = validatore;
+	public void setValidatori(List<Validatore> validatori) {
+		this.validatori = validatori;
 	}
-
 }
