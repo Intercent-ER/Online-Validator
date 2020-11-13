@@ -23,7 +23,7 @@ public class Validatore implements Serializable {
 	@Column(name = "nome")
 	private String nome;
 
-	@Column(name = "tipo_file")
+	@Column(name = "tipologia")
 	@Enumerated(EnumType.STRING)
 	private TipoFileEnum tipoFileEnum;
 

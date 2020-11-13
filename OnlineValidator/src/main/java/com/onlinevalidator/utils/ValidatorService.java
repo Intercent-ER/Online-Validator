@@ -34,16 +34,12 @@ public class ValidatorService implements ValidatorServiceInterface {
 		
 	}
 
-	/*
-	@Override
-	public Validatore getValidatoreByTipoDocumento(int idTipoDocumento) {
-		return validatorRepository.findOne(idTipoDocumento).getValidatore();
-	}
-	*/
 	
 	@Override
-	public List<Validatore> getValidatori(Tipodocumento tipodocumento) {
-		return tipodocumento.getValidatori();
+	public Tipodocumento getValidatoreByTipoDocumento(int idTipoDocumento) {
+		return tipoDocumentoRepository.findOne(idTipoDocumento);
 	}
-
+	
+	
+	
 }

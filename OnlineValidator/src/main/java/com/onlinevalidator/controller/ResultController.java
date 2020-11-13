@@ -51,7 +51,7 @@ public class ResultController {
 	}
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam(value = "id") Tipodocumento tipoDocumento) {
+	public @ResponseBody String uploadFileHandler(@RequestParam("file") MultipartFile file, @RequestParam(value = "id")int id) {
 
 		format = formatChecker.checkFormat(file.getContentType());
 
@@ -60,8 +60,9 @@ public class ResultController {
 				fileName = file.getOriginalFilename();
 				byte[] bytes = file.getBytes();
 				fileContent = new String(bytes);
-				Validatore validore1 = validatorService.getValidatori(tipoDocumento).get(0);
-
+				Tipodocumento tipodocumento = validatorService.getValidatoreByTipoDocumento(id);
+				Validatore validore1= tipodocumento.getValidatori().get(0);
+				
 				return "Il file " + fileName + " è stato caricato, il contenuto è: " + fileContent + ", e il peso: "
 						+ file.getSize() + ", mentre il suo validatore è: " + validore1.getName() + " con id: " + validore1.getId();
 			} catch (Exception e) {
