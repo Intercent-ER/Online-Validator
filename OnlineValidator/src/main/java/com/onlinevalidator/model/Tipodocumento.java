@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-
 /**
  * The persistent class for the tipodocumento database table.
  *
@@ -20,7 +19,7 @@ public class Tipodocumento implements Serializable {
 	@Column(name = "nome")
 	private String nome;
 
-	//bi-directional many-to-one association to Validatore
+	// bi-directional many-to-one association to Validatore
 	@OneToMany(mappedBy = "tipodocumento", fetch = FetchType.EAGER)
 	private List<Validatore> validatori;
 
@@ -46,6 +45,7 @@ public class Tipodocumento implements Serializable {
 	public List<Validatore> getValidatori() {
 		return validatori;
 	}
+
 
 	public void setValidatori(List<Validatore> validatori) {
 		this.validatori = validatori;

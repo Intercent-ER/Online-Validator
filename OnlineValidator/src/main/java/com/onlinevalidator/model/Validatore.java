@@ -62,6 +62,7 @@ public class Validatore implements Serializable {
 	public TipoFileEnum getTipoFileEnum() {
 		return tipoFileEnum;
 	}
+	
 
 	public void setTipoFileEnum(TipoFileEnum tipoFileEnum) {
 		this.tipoFileEnum = tipoFileEnum;
