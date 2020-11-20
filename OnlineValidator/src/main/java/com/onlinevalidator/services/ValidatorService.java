@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,7 +44,6 @@ public class ValidatorService implements ValidatorServiceInterface {
 	public List<Tipodocumento> getAllEntity() throws SQLException {
 
 		return tipoDocumentoRepository.findAll();
-
 	}
 
 	@Override
@@ -53,27 +51,37 @@ public class ValidatorService implements ValidatorServiceInterface {
 		return tipoDocumentoRepository.findOne(idTipoDocumento);
 	}
 
+//	public Validatore filtraValidatore(Tipodocumento tipodocumento, TipoFileEnum tipoFileEnum) {
+//
+//		if (tipodocumento == null) {
+//
+//			logger.error("Attenzione, invocazione del metodo sbagliata");
+//
+//			throw new IllegalStateException("Errore 1");
+//		}
+//		if (tipoFileEnum == null) {
+//
+//			throw new IllegalStateException("Errore 2");
+//		}
+//		List<Validatore> validatoriSuTipodocumento = tipodocumento.getValidatori();
+//		for (Validatore validatoreCorrente : validatoriSuTipodocumento) {
+//			if (tipoFileEnum.equals(validatoreCorrente.getTipoFileEnum())) {
+//
+//				return validatoreCorrente;
+//			}
+//		}
+//		logger.error("Validatore non trovato");
+//		return null;
+//	}
+
 	public Validatore filtraValidatore(Tipodocumento tipodocumento, TipoFileEnum tipoFileEnum) {
-
-		if (tipodocumento == null) {
-			// inserire logger
-			logger.error("Attenzione, invocazione del metodo sbagliata");
-
-			throw new IllegalStateException("Errore 1");
-		}
-		if (tipoFileEnum == null) {
-
-			throw new IllegalStateException("Errore 2");
-		}
-		List<Validatore> validatoriSuTipodocumento = tipodocumento.getValidatori();
-		for (Validatore validatoreCorrente : validatoriSuTipodocumento) {
-			if (tipoFileEnum.equals(validatoreCorrente.getTipoFileEnum())) {
-
-				return validatoreCorrente;
-			}
-		}
-		logger.error("Validatore non trovato");
-		return null;
+		return tipodocumento.getValidatori()
+				.stream()
+				.filter(
+						validatore -> validatore.getTipoFileEnum() != null && validatore.getTipoFileEnum().equals(tipoFileEnum)
+						)
+				.findFirst()
+				.orElse(null);
 	}
 
 	public @ResponseBody String uploadFileHandler(MultipartFile file, int id) {
@@ -101,23 +109,22 @@ public class ValidatorService implements ValidatorServiceInterface {
 						+ validatoreSCHEMATRON.getTipoFileEnum() + " è: " + validatoreSCHEMATRON.getName() + " con id: "
 						+ validatoreXSD.getId() + "ed è di tipo" + validatoreSCHEMATRON.getTipoFileEnum();
 
-			} catch (Exception e) {return "Il file " + fileName + " non è stato caricato: " + e.getMessage();}
-			
-			
-		} else {
-			
-				if (!format) {
-					finalResult += "Il formato del file non è corretto, deve essere txt";
-					// System.out.println(file.getContentType());
-					logger.info(file.getContentType());
-				}
-				if (file.isEmpty()) {
-					finalResult += "Il file non può essere vuoto";
-				}
+			} catch (Exception e) {
+				return "Il file " + fileName + " non è stato caricato: " + e.getMessage();
 			}
 
-			return finalResult;
+		} else {
+
+			if (!format) {
+				finalResult += "Il formato del file non è corretto, deve essere txt";
+
+				logger.info(file.getContentType());
+			}
+			if (file.isEmpty()) {
+				finalResult += "Il file non può essere vuoto";
+			}
 		}
+
+		return finalResult;
 	}
-
-
+}

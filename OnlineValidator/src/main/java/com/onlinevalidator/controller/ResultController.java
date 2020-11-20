@@ -23,14 +23,10 @@ import com.onlinevalidator.utils.FormatCheckerInterface;
 @Controller
 public class ResultController {
 
-	String fileName;
-	String fileContent;
-	public static final String MIME_TEXT_PLAIN = "text/plain";
-	String finalResult = "";
-	@Autowired
+	
+    @Autowired
 	ValidatorService validatorService;
-	boolean format;
-	int prova = 1;
+
 
 	@RequestMapping("/")
 	public ModelAndView fileUploader() {
@@ -46,7 +42,6 @@ public class ResultController {
 
 	}
 
-	// Funzione da costruire per avere il risultato in un altra views
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	public @ResponseBody ModelAndView Validazione(@RequestParam("file") MultipartFile file,
 			@RequestParam(value = "id") int id) {
