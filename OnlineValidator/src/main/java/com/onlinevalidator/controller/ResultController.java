@@ -1,24 +1,18 @@
 package com.onlinevalidator.controller;
 
-import java.sql.SQLException;
-import java.util.List;
-
+import com.onlinevalidator.model.Tipodocumento;
+import com.onlinevalidator.model.Validatore;
+import com.onlinevalidator.service.FormatCheckerInterface;
+import com.onlinevalidator.service.impl.ValidatorService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.onlinevalidator.model.Tipodocumento;
-import com.onlinevalidator.model.Validatore;
-import com.onlinevalidator.utils.FormatCheckerInterface;
-import com.onlinevalidator.utils.ValidatorService;
+import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 public class ResultController {

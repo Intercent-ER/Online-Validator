@@ -1,14 +1,18 @@
-package com.onlinevalidator.utils;
+package com.onlinevalidator.service.impl;
 
+import com.onlinevalidator.model.TipoFileEnum;
 import com.onlinevalidator.model.Tipodocumento;
 import com.onlinevalidator.model.Validatore;
 import com.onlinevalidator.pojo.ValidationAssert;
 import com.onlinevalidator.pojo.ValidationReport;
 import com.onlinevalidator.repository.TipoDocumentoJpaRepositoryInterface;
 import com.onlinevalidator.repository.ValidatorJpaRepositoryInterface;
+import com.onlinevalidator.service.LocalServiceUriResolverInterface;
+import com.onlinevalidator.service.ValidatorServiceInterface;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
@@ -44,41 +48,101 @@ public class ValidatorService implements ValidatorServiceInterface {
 	// Mappa che contiene i validatori gestiti in cache (chiave: Validatore.id; valore: Schema)
 	private Map<Integer, Schema> cacheValidatori;
 
-	@Resource
+	@Autowired
 	private ValidatorJpaRepositoryInterface repository;
 
 	@Resource
 	private TipoDocumentoJpaRepositoryInterface tipoDocumentoRepository;
 
+	@Resource
+	private ValidatorJpaRepositoryInterface validatorRepository;
+
+	@Autowired
+	private LocalServiceUriResolverInterface uriResolver;
+
 	@Override
 	public Tipodocumento getEntity(int id) {
 
-		return repository.findOne(id);
+		return tipoDocumentoRepository.findOne(id);
 
 	}
 
 	@Override
 	public List<Tipodocumento> getAllEntity() throws SQLException {
 
-		return repository.findAll();
+		return tipoDocumentoRepository.findAll();
 
 	}
 
 	@Override
-	public Validatore getValidatoreByTipoDocumento(int idTipoDocumento) {
-		return tipoDocumentoRepository.findOne(idTipoDocumento).getValidatore();
+	public Tipodocumento getTipodocumentoById(int idTipoDocumento) {
+		return tipoDocumentoRepository.findOne(idTipoDocumento);
 	}
+
+	public Validatore filtraValidatore(Tipodocumento tipodocumento, TipoFileEnum tipoFileEnum) {
+
+		// 1. controllo e verifico i parametri di ingresso
+		if (tipodocumento == null) {
+			logger.error("Attenzione, invocazione del metodo sbagliata");
+			throw new IllegalStateException("Errore 1");
+		}
+
+		if (tipoFileEnum == null) {
+			// errore 2
+			throw new IllegalStateException("Errore 2");
+		}
+
+		List<Validatore> validatoriSuTipodocumento = tipodocumento.getValidatori();
+
+		for (Validatore validatoreCorrente : validatoriSuTipodocumento) {
+
+			if (tipoFileEnum.equals(validatoreCorrente.getTipoFileEnum())) {
+				// 2. scrivo la logica che mi serve
+				// 3. (opzionale) restituisco il risultato
+
+				// validatore trovato
+				return validatoreCorrente;
+			}
+
+		}
+
+		logger.error("Validatore non trovato");
+		return null;
+
+	}
+
+	public Validatore getXSDValidator(Tipodocumento docdavalidare) {
+
+		Validatore val1 = docdavalidare.getValidatori().get(0);
+		TipoFileEnum TIPO = val1.getTipoFileEnum();
+		if (TIPO == TipoFileEnum.XSD) {
+			return val1;
+		} else {
+			return docdavalidare.getValidatori().get(1);
+		}
+	}
+
+	public Validatore getSCHEMATRONValidator(Tipodocumento docdavalidare) {
+		Validatore val1 = docdavalidare.getValidatori().get(0);
+		TipoFileEnum TIPO = val1.getTipoFileEnum();
+		if (TIPO == TipoFileEnum.SCHEMATRON) {
+			return val1;
+		} else {
+			return docdavalidare.getValidatori().get(1);
+		}
+	}
+
 
 	@Override
 	public ValidationReport effettuaValidazione(byte[] documento, Tipodocumento tipodocumento) {
 
-		Validatore validatore = getValidatoreByTipoDocumento(tipodocumento.getId());
+		Validatore validatoreXsd = getXSDValidator(tipodocumento);
 		try {
 
 			// Esecuzione validazione XSD
 			validazioneXsd(
 					documento,
-					getSchema(validatore)
+					getSchema(validatoreXsd)
 			);
 		} catch (SAXException | ParserConfigurationException | IOException e) {
 			logger.error("Si è verificato un errore in sede di valdiazione XSD: {}", e.getMessage(), e);
@@ -89,9 +153,17 @@ public class ValidatorService implements ValidatorServiceInterface {
 			return report;
 		}
 
+		Validatore validatoreSchematron = getSCHEMATRONValidator(tipodocumento);
+
 		return null;
 	}
 
+	/**
+	 * Effettua la validzione XSD di un dato documento.
+	 *
+	 * @param documentoXml è l'xml di riferimento
+	 * @param schema       è lo schema XSD di riferimento
+	 */
 	private void validazioneXsd(byte[] documentoXml, Schema schema)
 			throws SAXException, ParserConfigurationException, IOException {
 
@@ -245,7 +317,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 	}
 
 	private void buildTransformer(Transformer transformer) {
-		transformer.setURIResolver(resolver);
+		transformer.setURIResolver(uriResolver);
 		transformer.setParameter("xclUnitOfMeasureCode", getUrlForCatalog("UnitOfMeasureCode", "2.1"));
 		transformer.setParameter("xclPaymentMeansCode", getUrlForCatalog("PaymentMeansCode", "2.1"));
 		transformer.setParameter("xclFormatoAttachment", getUrlForCatalog("FormatoAttachment", "2.1"));
@@ -260,3 +332,5 @@ public class ValidatorService implements ValidatorServiceInterface {
 	}
 
 }
+
+

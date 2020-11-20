@@ -1,4 +1,4 @@
-package com.onlinevalidator.utils;
+package com.onlinevalidator.service;
 
 import org.springframework.stereotype.Service;
 

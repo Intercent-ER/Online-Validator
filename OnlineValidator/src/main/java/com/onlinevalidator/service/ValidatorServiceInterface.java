@@ -1,4 +1,4 @@
-package com.onlinevalidator.utils;
+package com.onlinevalidator.service;
 
 import com.onlinevalidator.model.Tipodocumento;
 import com.onlinevalidator.model.Validatore;
@@ -19,7 +19,13 @@ public interface ValidatorServiceInterface {
 
 	Tipodocumento getEntity(int id);
 
-	Validatore getValidatoreByTipoDocumento(int idTipoDocumento);
+	Tipodocumento getValidatoreByTipoDocumento(int idTipoDocumento);
+
+	Tipodocumento getTipodocumentoById(int idTipoDocumento);
+
+	Validatore getXSDValidator(Tipodocumento docdavalidare);
+
+	Validatore getSCHEMATRONValidator(Tipodocumento docdavalidare);
 
 	/**
 	 * Dato uno specifico documento, se ne effettua la validazione, incapsulando il risultato all'interno di un'istanza
