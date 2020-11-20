@@ -1,13 +1,11 @@
 package com.onlinevalidator.repository;
 
+import com.onlinevalidator.model.Validatore;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.onlinevalidator.model.Tipodocumento;
-
 @Repository
-public interface ValidatorJpaRepositoryInterface extends JpaRepository<Tipodocumento, Integer>{
-	
-	
-	
+public interface ValidatorJpaRepositoryInterface extends JpaRepository<Validatore, Integer> {
+
+
 }

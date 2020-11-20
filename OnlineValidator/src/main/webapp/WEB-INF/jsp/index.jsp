@@ -33,15 +33,15 @@
 							<span class="uploaded-file-name">Nome file caricato</span> <label
 								class="label-file-selector">Carica file <input
 								class="file-selector" type="file" name="file"
-								accept=".txt, text/plain" />
-							</label>
+								accept=".txt, text/plain"/>
+						</label>
 						</div>
 						<div class="file-submit-container d-flex flex-row">
 							<select class="entity-select" type="select" name="id">
-								<c:forEach items="${validatori}" var="val">
+								<c:forEach items="${tipoDocumento}" var="val">
 									<option type="int" value="${val.id}">${val.name}</option>
 								</c:forEach>
-							</select><input class="submit-data" type="submit" value="Valida" />
+							</select><input class="submit-data" type="submit" value="Valida"/>
 						</div>
 					</div>
 				</form>
