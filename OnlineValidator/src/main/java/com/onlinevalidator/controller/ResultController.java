@@ -54,15 +54,17 @@ public class ResultController {
 				fileName = file.getOriginalFilename();
 				byte[] bytes = file.getBytes();
 				fileContent = new String(bytes);
-				Validatore entity = validatorService.getValidatoreByTipoDocumento(idTipoDocumento);
 
-				return "Il file " + fileName + " è stato caricato, il contenuto è: " + fileContent + ", e il peso: "
-						+ file.getSize() + ", mentre il suo validatore è: " + entity.getName() + " con id: " + entity.getId();
+				// TODO sistemare (forse non serve a fronte del refactoring di L&G)
+				Validatore entity = validatorService.getValidatoreByTipoDocumento(0).getValidatori().get(0);
+
+				return "Il file " + fileName + " Ã¨ stato caricato il contenuto Ã¨: " + fileContent + ", e il peso: "
+						+ file.getSize() + ", mentre il suo validatore Ã¨: " + entity.getName() + " con id: " + entity.getId();
 			} catch (Exception e) {
 				if (file.getSize() > 500000) {
 					return "Il file supera la dimensione massima di 0,5 Mb, il tuof file pesa: " + file.getSize();
 				} else {
-					return "Il file " + fileName + " non è stato caricato: " + e.getMessage();
+					return "Il file " + fileName + " non Ã¨ stato caricato: " + e.getMessage();
 				}
 
 			}
@@ -71,12 +73,12 @@ public class ResultController {
 				finalResult += "Il file supera la dimensione massima di 0,5 Mb, il tuof file pesa: " + file.getSize();
 			} else {
 				if (!format) {
-					finalResult += "Il formato del file non è corretto, deve essere txt";
+					finalResult += "Il formato del file non Ã¨ corretto, deve essere txt";
 					//System.out.println(file.getContentType());
 					logger.info(file.getContentType());
 				}
 				if (file.isEmpty()) {
-					finalResult += "Il file non può essere vuoto";
+					finalResult += "Il file non puÃ² essere vuoto";
 				}
 			}
 

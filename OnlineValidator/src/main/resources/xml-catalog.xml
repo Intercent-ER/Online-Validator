@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+
+
+    <uri name="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+         uri="./common-xsd/UBL-CommonAggregateComponents-2.1.xsd"/>
+    <uri name="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+         uri="./common-xsd/UBL-CommonBasicComponents-2.1.xsd"/>
+    <uri name="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDataTypes-2"
+         uri="./common-xsd/UBL-QualifiedDataTypes-2.1.xsd"/>
+    <uri name="urn:oasis:names:specification:ubl:schema:xsd:UnqualifiedDataTypes-2"
+         uri="./common-xsd/UBL-UnqualifiedDataTypes-2.1.xsd"/>
+    <uri name="urn:un:unece:uncefact:data:specification:CoreComponentTypeSchemaModule:2"
+         uri="./common-xsd/CCTS_CCT_SchemaModule-2.1.xsd"/>
+    <uri name="urn:oasis:names:specification:ubl:schema:xsd:CommonSignatureComponents-2"
+         uri="./common-xsd/UBL-CommonSignatureComponents-2.1.xsd"/>
+    <uri name="urn:oasis:names:specification:ubl:schema:xsd:SignatureAggregateComponents-2"
+         uri="./common-xsd/UBL-SignatureAggregateComponents-2.1.xsd"/>
+    <uri name="urn:oasis:names:specification:ubl:schema:xsd:SignatureBasicComponents-2"
+         uri="./common-xsd/UBL-SignatureBasicComponents-2.1.xsd"/>
+    <uri name="http://uri.etsi.org/01903/v1.3.2#" uri="./common-xsd/UBL-XAdESv132-2.1.xsd"/>
+    <uri name="http://uri.etsi.org/01903/v1.4.1#" uri="./common-xsd/UBL-XAdESv141-2.1.xsd"/>
+
+    <!--  Stesso XSD ma utilizzato da SDI e da UBL, si poteva anche usare un unico file referenziando lo schema tramite uri name, ovvero namespace che è = http://www.w3.org/2000/09/xmldsig# -->
+    <system systemId="http://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd"
+            uri="./common-xsd/xmldsig-core-schema.xsd"/>
+    <system systemId="UBL-xmldsig-core-schema-2.1.xsd" uri="./common-xsd/UBL-xmldsig-core-schema-2.1.xsd"/>
+
+
+    <!-- Non è possibile utilizzare l'uri name perchè i due xsd, benchè differenti, hanno lo stesso namespace. Il primo, infatti, ha un'include verso l'altro -->
+    <system systemId="../common/UBL-CommonExtensionComponents-2.1.xsd"
+            uri="./common-xsd/UBL-CommonExtensionComponents-2.1.xsd"/>
+    <system systemId="UBL-ExtensionContentDataType-2.1.xsd" uri="./common-xsd/UBL-ExtensionContentDataType-2.1.xsd"/>
+
+
+</catalog>

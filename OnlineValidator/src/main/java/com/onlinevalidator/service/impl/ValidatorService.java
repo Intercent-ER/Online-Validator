@@ -1,5 +1,7 @@
 package com.onlinevalidator.service.impl;
 
+import com.onlinevalidator.generatedsources.xsd.FailedAssert;
+import com.onlinevalidator.generatedsources.xsd.SchematronOutput;
 import com.onlinevalidator.model.TipoFileEnum;
 import com.onlinevalidator.model.Tipodocumento;
 import com.onlinevalidator.model.Validatore;
@@ -37,7 +39,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
 import java.util.*;
 
 @Service
@@ -68,7 +69,12 @@ public class ValidatorService implements ValidatorServiceInterface {
 	}
 
 	@Override
-	public List<Tipodocumento> getAllEntity() throws SQLException {
+	public Tipodocumento getValidatoreByTipoDocumento(int idTipoDocumento) {
+		return null;
+	}
+
+	@Override
+	public List<Tipodocumento> getAllEntity() {
 
 		return tipoDocumentoRepository.findAll();
 
@@ -269,14 +275,9 @@ public class ValidatorService implements ValidatorServiceInterface {
 	public Collection<ValidationAssert> validaDocumentoSchematron(String documentoXml, Templates xslt) {
 		Vector<ValidationAssert> vectorResult = new Vector<>();
 
-		// refactor TipoValidazioneDocumento tvd = new
-		// TipoValidazioneDocumento(codTipoDocumento, codVersione, codFormato,
-		// "SCHEMATRON");
-
 		try {
 			Transformer transformer = xslt.newTransformer();
 			buildTransformer(transformer);
-			transformerBuilder.build(transformer, uriResolver);
 			StringWriter stringWriter = new StringWriter();
 			StreamResult streamResult = new StreamResult(stringWriter);
 
@@ -299,8 +300,8 @@ public class ValidatorService implements ValidatorServiceInterface {
 				Object type = it.next();
 				if (type instanceof FailedAssert) {
 					FailedAssert f = (FailedAssert) type;
-					ValidazioneSchematronResult vsr = new ValidazioneSchematronResult(f.getTest(), f.getLocation(), f.getText(), f.getFlag());
-					vectorResult.add(vsr);
+					/*ValidazioneSchematronResult vsr = new ValidazioneSchematronResult(f.getTest(), f.getLocation(), f.getText(), f.getFlag());
+					vectorResult.add(vsr);*/
 				}
 
 			}
@@ -318,6 +319,19 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 	private void buildTransformer(Transformer transformer) {
 		transformer.setURIResolver(uriResolver);
+		addAllParameters(transformer);
+
+	}
+
+	private void addAllParameters(Transformer transformer) {
+		List<Object> listaDeiCataloghiCompleta = new ArrayList<>(1); // TODO: sostituire con query "findAllCataloghi"
+		listaDeiCataloghiCompleta.add(new Object());
+		for (Object catalogo : listaDeiCataloghiCompleta) {
+			transformer.setParameter("nome XCL del catalogo", "URL di riferimento del catalogo (campo in DB)");
+		}
+		/*
+		Esempio:
+
 		transformer.setParameter("xclUnitOfMeasureCode", getUrlForCatalog("UnitOfMeasureCode", "2.1"));
 		transformer.setParameter("xclPaymentMeansCode", getUrlForCatalog("PaymentMeansCode", "2.1"));
 		transformer.setParameter("xclFormatoAttachment", getUrlForCatalog("FormatoAttachment", "2.1"));
@@ -329,6 +343,8 @@ public class ValidatorService implements ValidatorServiceInterface {
 		transformer.setParameter("xclTipoParcella", getUrlForCatalog("TipoParcella", "2.1"));
 		transformer.setParameter("xclOrderTypeCode", getUrlForCatalog("OrderTypeCode", "2.1"));
 		transformer.setParameter("xclHandlingCode", getUrlForCatalog("HandlingCode", "2.1"));
+
+		 */
 	}
 
 }
