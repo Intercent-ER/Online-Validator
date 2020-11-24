@@ -6,6 +6,7 @@
     version="2.1">
      
     <persistence-unit name="onlinevalidatordb">
+    	<class>model.Catalog</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/dbvalidator2" />
             <property name="javax.persistence.jdbc.user" value="root" />
