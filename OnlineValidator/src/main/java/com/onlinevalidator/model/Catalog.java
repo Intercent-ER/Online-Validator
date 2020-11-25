@@ -1,8 +1,10 @@
 package com.onlinevalidator.model;
 
 
-import java.io.Serializable;
+import com.onlinevalidator.model.enumerator.NomeCatalogEnum;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 /**
@@ -22,9 +24,13 @@ public class Catalog implements Serializable {
 	@Lob
 	private byte[] filecatalog;
 
-	private String nome;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "nome")
+	private NomeCatalogEnum nome;
 
 	private String versione;
+
+	private String url;
 
 	public Catalog() {
 	}
@@ -53,11 +59,11 @@ public class Catalog implements Serializable {
 		this.filecatalog = filecatalog;
 	}
 
-	public String getNome() {
+	public NomeCatalogEnum getNome() {
 		return this.nome;
 	}
 
-	public void setNome(String nome) {
+	public void setNome(NomeCatalogEnum nome) {
 		this.nome = nome;
 	}
 
@@ -69,4 +75,11 @@ public class Catalog implements Serializable {
 		this.versione = versione;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 }

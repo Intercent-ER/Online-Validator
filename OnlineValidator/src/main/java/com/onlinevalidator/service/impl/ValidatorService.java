@@ -2,13 +2,14 @@ package com.onlinevalidator.service.impl;
 
 import com.onlinevalidator.generatedsources.xsd.FailedAssert;
 import com.onlinevalidator.generatedsources.xsd.SchematronOutput;
-import com.onlinevalidator.model.TipoFileEnum;
+import com.onlinevalidator.model.Catalog;
 import com.onlinevalidator.model.Tipodocumento;
 import com.onlinevalidator.model.Validatore;
+import com.onlinevalidator.model.enumerator.TipoFileEnum;
 import com.onlinevalidator.pojo.ValidationAssert;
 import com.onlinevalidator.pojo.ValidationReport;
+import com.onlinevalidator.repository.CatalogJpaRepository;
 import com.onlinevalidator.repository.TipoDocumentoJpaRepositoryInterface;
-import com.onlinevalidator.repository.ValidatorJpaRepositoryInterface;
 import com.onlinevalidator.service.LocalServiceUriResolverInterface;
 import com.onlinevalidator.service.ValidatorServiceInterface;
 import org.apache.commons.io.IOUtils;
@@ -49,14 +50,11 @@ public class ValidatorService implements ValidatorServiceInterface {
 	// Mappa che contiene i validatori gestiti in cache (chiave: Validatore.id; valore: Schema)
 	private Map<Integer, Schema> cacheValidatori;
 
-	@Autowired
-	private ValidatorJpaRepositoryInterface repository;
-
 	@Resource
 	private TipoDocumentoJpaRepositoryInterface tipoDocumentoRepository;
 
-	@Resource
-	private ValidatorJpaRepositoryInterface validatorRepository;
+	@Autowired
+	private CatalogJpaRepository catalogJpaRepository;
 
 	@Autowired
 	private LocalServiceUriResolverInterface uriResolver;
@@ -144,7 +142,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 	@Override
 	public ValidationReport effettuaValidazione(byte[] documento, Tipodocumento tipodocumento) {
 
-		Validatore validatoreXsd = getXSDValidator(tipodocumento);
+		Validatore validatoreXsd = filtraValidatore(tipodocumento, TipoFileEnum.XSD);
 		try {
 
 			// Esecuzione validazione XSD
@@ -161,7 +159,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 			return report;
 		}
 
-		Validatore validatoreSchematron = getSCHEMATRONValidator(tipodocumento);
+		Validatore validatoreSchematron = filtraValidatore(tipodocumento, TipoFileEnum.SCHEMATRON);
 
 		return null;
 	}
@@ -326,10 +324,9 @@ public class ValidatorService implements ValidatorServiceInterface {
 	}
 
 	private void addAllParameters(Transformer transformer) {
-		List<Object> listaDeiCataloghiCompleta = new ArrayList<>(1); // TODO: sostituire con query "findAllCataloghi"
-		listaDeiCataloghiCompleta.add(new Object());
-		for (Object catalogo : listaDeiCataloghiCompleta) {
-			transformer.setParameter("nome XCL del catalogo", "URL di riferimento del catalogo (campo in DB)");
+		List<Catalog> listaDeiCataloghiCompleta = catalogJpaRepository.findAll();
+		for (Catalog catalogo : listaDeiCataloghiCompleta) {
+			transformer.setParameter(catalogo.getNome().name(), catalogo.getUrl());
 		}
 		/*
 		Esempio:

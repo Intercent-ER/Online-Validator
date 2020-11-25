@@ -1,5 +1,7 @@
 package com.onlinevalidator.service.impl;
 
+import com.onlinevalidator.model.Catalog;
+import com.onlinevalidator.repository.CatalogJpaRepository;
 import com.onlinevalidator.service.LocalServiceUriResolverInterface;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -22,14 +23,14 @@ import java.util.Map;
 @Service
 public class LocalServiceURIResolverImpl implements LocalServiceUriResolverInterface {
 
-	private Map<String, Object> catalogMap = new HashMap<>(); // TODO inserire mappa String, Catalogo (entity)
+	private Map<String, Catalog> catalogMap = new HashMap<>();
 	private Date refreshDate = new Date();
 
 	// @Autowired
-	Object catalogRepository; // TODO inserire repository dei cataloghi
+	private CatalogJpaRepository catalogRepository;
 
 	public static Map<String, String> splitQuery(String query) throws UnsupportedEncodingException {
-		Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+		Map<String, String> query_pairs = new LinkedHashMap<>();
 		String[] firstSplit = query.split("\\?");
 		String[] pairs = firstSplit[1].split("&");
 		for (String pair : pairs) {
@@ -44,10 +45,9 @@ public class LocalServiceURIResolverImpl implements LocalServiceUriResolverInter
 		try {
 			checkForRefresh();
 			Map<String, String> parameters = splitQuery(href);
-			Object catalog = getCatalog(parameters); // TODO: sostituire il tipo dato "Object" con l'effettivo Model che mappa il catalogo
+			Catalog catalog = getCatalog(parameters);
 			InputStream is = new ByteArrayInputStream(
-					// catalog.getBlFile().getBytes(StandardCharsets.UTF_8.name())
-					new String("questo è il file del catalogo").getBytes(StandardCharsets.UTF_8.name())
+					catalog.getFilecatalog()
 			);
 			return new StreamSource(is);
 		} catch (UnsupportedEncodingException e) {
@@ -55,16 +55,13 @@ public class LocalServiceURIResolverImpl implements LocalServiceUriResolverInter
 		}
 	}
 
-	// TODO: sostituire il tipo dato "Object" con l'effettivo Model che mappa il catalogo
-	private Object getCatalog(Map<String, String> parameters) {
+	private Catalog getCatalog(Map<String, String> parameters) {
 		String nomeCatalog = parameters.get("nomeCatalog");
 		String versione = parameters.get("versione");
 		String index = nomeCatalog + "_" + versione;
-		Object catalog = catalogMap.get(index); // TODO: sostituire il tipo dato "Object" con l'effettivo Model che mappa il catalogo
+		Catalog catalog = catalogMap.get(index);
 		if (catalog == null) {
-			// TODO: sostituire il "new Object()" con la query di recupero del catalogo Model che mappa il catalogo (esempio sotto)
-			catalog = new Object();
-			// catalogRepository.getOneBy(nomeCatalog, versione);
+			catalog = catalogRepository.getOneBy(nomeCatalog, versione);
 			catalogMap.put(index, catalog);
 		}
 		return catalog;

@@ -1,5 +1,7 @@
 package com.onlinevalidator.model;
 
+import com.onlinevalidator.model.enumerator.TipoFileEnum;
+
 import javax.persistence.*;
 import java.io.Serializable;
 

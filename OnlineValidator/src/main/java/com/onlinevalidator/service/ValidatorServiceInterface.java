@@ -1,8 +1,8 @@
 package com.onlinevalidator.service;
 
-import com.onlinevalidator.model.TipoFileEnum;
 import com.onlinevalidator.model.Tipodocumento;
 import com.onlinevalidator.model.Validatore;
+import com.onlinevalidator.model.enumerator.TipoFileEnum;
 import com.onlinevalidator.pojo.ValidationReport;
 import org.springframework.stereotype.Service;
 

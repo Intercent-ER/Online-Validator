@@ -1,4 +1,4 @@
-package com.onlinevalidator.model;
+package com.onlinevalidator.model.enumerator;
 
 /**
  * @author Manuel Gozzi
