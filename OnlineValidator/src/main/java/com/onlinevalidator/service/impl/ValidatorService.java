@@ -85,37 +85,39 @@ public class ValidatorService implements ValidatorServiceInterface {
 		return tipoDocumentoRepository.findOne(idTipoDocumento);
 	}
 
+	@Override
 	public Validatore filtraValidatore(Tipodocumento tipodocumento, TipoFileEnum tipoFileEnum) {
 
-		// 1. controllo e verifico i parametri di ingresso
 		if (tipodocumento == null) {
+
 			logger.error("Attenzione, invocazione del metodo sbagliata");
+
 			throw new IllegalStateException("Errore 1");
 		}
-
 		if (tipoFileEnum == null) {
-			// errore 2
+
 			throw new IllegalStateException("Errore 2");
 		}
-
 		List<Validatore> validatoriSuTipodocumento = tipodocumento.getValidatori();
-
 		for (Validatore validatoreCorrente : validatoriSuTipodocumento) {
-
 			if (tipoFileEnum.equals(validatoreCorrente.getTipoFileEnum())) {
-				// 2. scrivo la logica che mi serve
-				// 3. (opzionale) restituisco il risultato
 
-				// validatore trovato
 				return validatoreCorrente;
 			}
-
 		}
-
 		logger.error("Validatore non trovato");
 		return null;
-
 	}
+
+	//	public Validatore filtraValidatore(Tipodocumento tipodocumento, TipoFileEnum tipoFileEnum) {
+//		return tipodocumento.getValidatori()
+//				.stream()
+//				.filter(
+//						validatore -> validatore.getTipoFileEnum() != null && validatore.getTipoFileEnum().equals(tipoFileEnum)
+//						)
+//				.findFirst()
+//				.orElse(null);
+//	}
 
 	public Validatore getXSDValidator(Tipodocumento docdavalidare) {
 

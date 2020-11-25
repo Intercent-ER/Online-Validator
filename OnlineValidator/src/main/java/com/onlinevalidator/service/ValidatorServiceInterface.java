@@ -1,5 +1,6 @@
 package com.onlinevalidator.service;
 
+import com.onlinevalidator.model.TipoFileEnum;
 import com.onlinevalidator.model.Tipodocumento;
 import com.onlinevalidator.model.Validatore;
 import com.onlinevalidator.pojo.ValidationReport;
@@ -23,9 +24,7 @@ public interface ValidatorServiceInterface {
 
 	Tipodocumento getTipodocumentoById(int idTipoDocumento);
 
-	Validatore getXSDValidator(Tipodocumento docdavalidare);
-
-	Validatore getSCHEMATRONValidator(Tipodocumento docdavalidare);
+	Validatore filtraValidatore(Tipodocumento tipodocumento, TipoFileEnum tipoFileEnum);
 
 	/**
 	 * Dato uno specifico documento, se ne effettua la validazione, incapsulando il risultato all'interno di un'istanza
