@@ -49,38 +49,38 @@ public class ValidatorService implements ValidatorServiceInterface {
 		return tipoDocumentoRepository.findOne(idTipoDocumento);
 	}
 
-//	public Validatore filtraValidatore(Tipodocumento tipodocumento, TipoFileEnum tipoFileEnum) {
-//
-//		if (tipodocumento == null) {
-//
-//			logger.error("Attenzione, invocazione del metodo sbagliata");
-//
-//			throw new IllegalStateException("Errore 1");
-//		}
-//		if (tipoFileEnum == null) {
-//
-//			throw new IllegalStateException("Errore 2");
-//		}
-//		List<Validatore> validatoriSuTipodocumento = tipodocumento.getValidatori();
-//		for (Validatore validatoreCorrente : validatoriSuTipodocumento) {
-//			if (tipoFileEnum.equals(validatoreCorrente.getTipoFileEnum())) {
-//
-//				return validatoreCorrente;
-//			}
-//		}
-//		logger.error("Validatore non trovato");
-//		return null;
-//	}
-
 	public Validatore filtraValidatore(Tipodocumento tipodocumento, TipoFileEnum tipoFileEnum) {
-		return tipodocumento.getValidatori()
-				.stream()
-				.filter(
-						validatore -> validatore.getTipoFileEnum() != null && validatore.getTipoFileEnum().equals(tipoFileEnum)
-				)
-				.findFirst()
-				.orElse(null);
+
+		if (tipodocumento == null) {
+
+			logger.error("Attenzione, invocazione del metodo sbagliata");
+
+			throw new IllegalStateException("Errore 1");
+		}
+		if (tipoFileEnum == null) {
+
+			throw new IllegalStateException("Errore 2");
+		}
+		List<Validatore> validatoriSuTipodocumento = tipodocumento.getValidatori();
+		for (Validatore validatoreCorrente : validatoriSuTipodocumento) {
+			if (tipoFileEnum.equals(validatoreCorrente.getTipoFileEnum())) {
+
+				return validatoreCorrente;
+			}
+		}
+		logger.error("Validatore non trovato");
+		return null;
 	}
+
+//	public Validatore filtraValidatore(Tipodocumento tipodocumento, TipoFileEnum tipoFileEnum) {
+//		return tipodocumento.getValidatori()
+//				.stream()
+//				.filter(
+//						validatore -> validatore.getTipoFileEnum() != null && validatore.getTipoFileEnum().equals(tipoFileEnum)
+//						)
+//				.findFirst()
+//				.orElse(null);
+//	}
 
 	public @ResponseBody
 	String uploadFileHandler(MultipartFile file, int id) {
