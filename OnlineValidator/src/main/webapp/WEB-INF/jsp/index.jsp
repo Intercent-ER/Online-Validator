@@ -28,7 +28,7 @@
 				<form method="POST" action="/OnlineValidator/uploadFile"
 					enctype="multipart/form-data">
 					<div class="d-flex flex-column">
-						<h3 style="display: none">Il file è troppo pesante</h3>
+						<h3 style="display: none">Il file ï¿½ troppo pesante</h3>
 						<div class="file-upload-container d-flex flex-row">
 							<span class="uploaded-file-name">Nome file caricato</span> <label
 								class="label-file-selector">Carica file <input
