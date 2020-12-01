@@ -1,30 +1,61 @@
 @charset "ISO-8859-1";
-body{
+
+body {
 	font-family: 'Titillium Web', serif;
 }
 
-header{
-	width: 100%;
-	height: 50px;
-	padding: 10px 10px 10px 10px;
-	background-color: #0059B3;
-	justify-content: space-between;
+header {
+	height: 75px;
+	background-color: white;
+	border-bottom: 1px solid #0059B3;
+	justify-content: start;
 }
 
-.agid-logo-style{
-	width: 230px;
-	height: 30px;
+.row {
+	padding: 5px 0 5px 0;
+	margin: 0;
+	height: auto;
 }
 
-.file-upload-container, .file-submit-container{
-	width: 350px;
+header>div {
+	display: flex;
+	align-items: center;
 }
 
-.file-upload-container{
-	margin-top: 100px;
+.logo-container {
+	justify-content: center;
 }
 
-.uploaded-file-name{
+.agid-logo-style {
+	width: auto;
+	height: auto;
+	max-width: 200px;
+}
+
+.title-container {
+	justify-content: center;
+}
+
+.title {
+	color: #0059B3;
+	font-size: 40px;
+	font-weight: bold;
+}
+
+.validation-column {
+	display: flex;
+}
+
+.subtitle {
+	flex: 1;
+	margin-bottom: 5px;
+}
+
+.validation-container {
+	margin-top: 150px;
+}
+
+.uploaded-file-name {
 	margin: 0;
 	display: inline-flex;
 	text-align: left;
@@ -37,10 +68,10 @@ header{
 	padding: 5px 10px 5px 10px;
 }
 
-.label-file-selector{
+.label-file-selector {
 	display: flex;
-    align-items: center;
-    justify-content: center;
+	align-items: center;
+	justify-content: center;
 	margin: 0;
 	width: 35%;
 	height: 40px;
@@ -52,36 +83,38 @@ header{
 	vertical-align: middle;
 }
 
-.label-file-selector:hover{
+.label-file-selector:hover {
 	background-color: white;
 	color: #0059B3;
 	border: 1px solid #0059B3;
 }
 
-.file-selector{
-	position: absolute;
-	z-index: -1;
-	visibility: hidden;
+.file-selector {
+	flex: 1;
 }
 
-.file-submit-container{
+.file-type-container {
 	margin-top: 20px;
 }
 
-.entity-select{
+.entity-select {
 	margin: 0;
-	width: 65%;
+	width: 100%;
 	height: 40px;
+	flex: 1;
 	border: 1px solid black;
-	border-right: none;
 	padding: 5px 10px 5px 10px;
 	outline: none;
+	border: 1px solid black;
 }
 
-.submit-data{
+.file-submit-container {
+	margin-top: 20px;
+}
+
+.submit-data {
 	margin: 0;
-	opacity: 0.8;
-	width: 35%;
+	width: 100%;
 	height: 40px;
 	cursor: pointer;
 	background-color: #0059B3;
@@ -90,3 +123,82 @@ header{
 	border: none;
 	outline: none;
 }
+
+.submit-data:hover {
+	background: white;
+	color: #0059B3;
+	border: 1px solid #0059B3
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	margin-bottom: -150px;
+	height: auto;
+	background-color: #003366;
+}
+
+.div-logo-container {
+	height: auto;
+	
+	border-bottom: 1px solid white;
+}
+
+.agid-logo-style-2{
+	width: auto;
+	height: auto;
+	max-width: 200px;
+	margin: 24px 0 24px 0;
+}
+
+.span-peppol-logo{
+	color: white;
+}
+
+ul {
+	margin: 0px;
+	padding: 24px 0 0 15px;
+	list-style-type: none;
+}
+
+li {
+	color: white;
+}
+
+li>a {
+	color: white;
+	text-decoration: underline;
+}
+
+li>a:hover {
+	color: gray;
+}
+
+.footer-bottom-container {
+	margin-top: 24px;
+	padding: 30px;
+	background-color: #001a33;
+	padding: 30px;
+}
+
+.footer-bottom-container > span {
+	color: white;
+	font-size: 15px;
+}
+
+@media screen and (max-width: 768px) {
+	.logo-container {
+		display: none;
+	}
+	
+	.title-container{
+		margin-left: 16.666667%;
+	}
+}
+
+@media screen and (max-width: 576px) {
+	.title-container{
+		margin-left: 0;
+	}
+}
+
