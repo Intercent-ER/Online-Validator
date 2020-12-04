@@ -149,7 +149,7 @@ footer {
 	border-bottom: 1px solid white;
 }
 
-.div-logo-container > div > img{
+.div-logo-container  img{
 	width: auto;
 	height: auto;
 	max-width: 200px;
@@ -158,6 +158,9 @@ footer {
 
 .div-logo-container > div {
 	margin: 24px 0 24px 0;
+}
+.peppol-logo-wrapper {
+    width: 75%;
 }
 
 .span-peppol-logo{
@@ -214,5 +217,16 @@ li>a:hover {
 	footer{
 		bottom: -400px;
 	}
+	.nuovaclasse2{
+	
+	}
+
+	
+	.nuovaclasse {
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+}
+	
+	
 }
 

@@ -61,17 +61,20 @@
 		<div class="container">
 
 			<div class="row div-logo-container">
-
-				<div class="col-md-4 col-sm-6 d-flex flex-column align-items-center">
+                 
+				<div class="col-md-4 col-sm-6 d-flex justify-content-start nuovaclasse">
+				<div class="d-flex flex-column align-items-center peppol-logo-wrapper" >
 					<img
 						src="<c:url value="/resources/images/peppol-logo-blue.svg"/>">
 					<span class="span-peppol-logo">Peppol Authority Italia</span>
 				</div>
+				</div>
+				
 				<div class="col-md-4 col-sm-6 d-flex justify-content-center">
 					<img
 						src="<c:url value="/resources/images/agid-logo-white.svg"/>">
 				</div>
-				<div class="col-md-4 col-sm-6 d-flex justify-content-center">
+				<div class="col-md-4 col-sm-6 d-flex justify-content-end nuovaclasse">
 					<img
 						src="<c:url value="/resources/images/intercenter-logo.png"/>">
 				</div>
