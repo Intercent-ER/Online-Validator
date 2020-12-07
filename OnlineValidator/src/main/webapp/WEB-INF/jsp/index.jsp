@@ -20,12 +20,12 @@
 	<header>
 		<div class="container row justify-content-start align-items-center header-column-container">
 			<div
-				class="col-lg-4 col-md-3 col-sm-2 col-xs-0 d-flex flex-column align-items-center header-peppol-logo">
+				class="col-lg-4 col-md-3 d-flex flex-column align-items-center header-peppol-logo">
 				<img class="peppol-logo-style"
 					src="<c:url value="/resources/images/peppol-logo-blue.svg"/>">
 				<span>Peppol Authority Italia</span>
 			</div>
-			<div class="col-lg-4 col-md-6 col-sm-8 col-xs-12 d-flex justify-content-center">
+			<div class="col-lg-4 offset-lg-0 col-md-6 offset-md-0 col-sm-8 offset-sm-2 col-xs-12 d-flex justify-content-center">
 				<span class="title">Valida file</span>
 			</div>
 		</div>
@@ -62,7 +62,7 @@
 
 			<div class="row div-logo-container">
                  
-				<div class="col-md-4 col-sm-6 d-flex justify-content-start nuovaclasse">
+				<div class="col-md-4 col-sm-6 d-flex justify-content-start">
 				<div class="d-flex flex-column align-items-center peppol-logo-wrapper" >
 					<img
 						src="<c:url value="/resources/images/peppol-logo-blue.svg"/>">
@@ -74,7 +74,7 @@
 					<img
 						src="<c:url value="/resources/images/agid-logo-white.svg"/>">
 				</div>
-				<div class="col-md-4 col-sm-6 d-flex justify-content-end nuovaclasse">
+				<div class="col-md-4 col-sm-6 d-flex justify-content-end">
 					<img
 						src="<c:url value="/resources/images/intercenter-logo.png"/>">
 				</div>
