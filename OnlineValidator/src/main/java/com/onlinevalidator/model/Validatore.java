@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * The persistent class for the validatore database table.
- *
  */
 @Entity
 @NamedQuery(name = "Validatore.findAll", query = "SELECT v FROM Validatore v")
@@ -23,7 +22,7 @@ public class Validatore implements Serializable {
 	@Column(name = "nome")
 	private String nome;
 
-	@Column(name = "tipologia")
+	@Column(name = "tipo_file")
 	@Enumerated(EnumType.STRING)
 	private TipoFileEnum tipoFileEnum;
 

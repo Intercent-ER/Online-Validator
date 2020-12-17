@@ -1,34 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
         http://www.springframework.org/schema/beans     
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/mvc 
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/context 
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/data/jpa
+		http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <mvc:annotation-driven />
-	<context:component-scan
-		base-package="com.onlinevalidator" />
-	<mvc:default-servlet-handler />
 
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/jsp/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
-	
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="500000" />
-	</bean>
+    <mvc:annotation-driven/>
+    <context:component-scan
+            base-package="com.onlinevalidator"/>
+    <mvc:default-servlet-handler/>
 
-	<mvc:resources mapping="/resources/**" location="/resources/" />
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass"
+                  value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="500000"/>
+    </bean>
+
+    <bean id="jndiDataSource"
+          class="org.springframework.jndi.JndiObjectFactoryBean">
+        <!-- CONFIGURARE la risorsa JNDI nel context.xml di TOMCAT : <Resource
+            name="jdbc/notierDB" auth="Container" type="javax.sql.DataSource" maxActive="100"
+            maxIdle="30" maxWait="10000" username="xxxxxx" password="xxxxxxxxx" driverClassName="oracle.jdbc.driver.OracleDriver"
+            url="jdbc:oracle:thin:@vm121srv:1521:DBSVIL11"/> -->
+        <property name="jndiName"
+                  value="java:comp/env/jdbc/validatoreDB"/>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory"
+                  ref="entityManagerFactory"/>
+    </bean>
+
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="jndiDataSource"/>
+        <property name="jpaVendorAdapter" ref="jpaAdapter"/>
+
+        <property name="packagesToScan"
+                  value="com.onlinevalidator.model"/>
+        <property name="loadTimeWeaver">
+            <bean
+                    class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+        </property>
+    </bean>
+
+    <bean id="jpaAdapter"
+          class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="databasePlatform"
+                  value="org.hibernate.dialect.Oracle10gDialect"/>
+        <property name="generateDdl" value="false"/>
+        <property name="showSql" value="true"/>
+    </bean>
+
+    <jpa:repositories
+            base-package="com.onlinevalidator.repository"/>
+    <tx:annotation-driven
+            transaction-manager="transactionManager"/>
+
+    <mvc:resources mapping="/resources/**"
+                   location="/resources/"/>
 
 </beans>
