@@ -1,5 +1,7 @@
 package com.onlinevalidator.model;
 
+import com.onlinevalidator.model.enumerator.TipoFileEnum;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -16,8 +18,8 @@ public class Validatore implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-//	@Lob
-//	private byte[] file;
+	@Lob
+	private byte[] file;
 
 	@Column(name = "nome")
 	private String nome;
@@ -42,13 +44,13 @@ public class Validatore implements Serializable {
 		this.id = id;
 	}
 
-//	public byte[] getFile() {
-//		return this.file;
-//	}
-//
-//	public void setFile(byte[] file) {
-//		this.file = file;
-//	}
+	public byte[] getFile() {
+		return this.file;
+	}
+
+	public void setFile(byte[] file) {
+		this.file = file;
+	}
 
 	public String getName() {
 		return this.nome;

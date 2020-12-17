@@ -32,8 +32,6 @@ public class ValidationReport {
 	 * Data una regola di validazione e una descrizione dell'errore di validazione riscontrato, la si aggiunge
 	 * alla lista di asserzioni fallite.
 	 *
-	 * @param codiceRegola      è il codice della regola di riferimento (e.g. [INT-R029])
-	 * @param descrizioneErrore è il dettaglio descrittivo dell'errore
 	 */
 	public void aggiungiDettaglio(ValidationAssert validationAssert) {
 		if (erroriDiValidazione == null) {
