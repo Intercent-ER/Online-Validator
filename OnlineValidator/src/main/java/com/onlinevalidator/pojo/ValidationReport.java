@@ -1,5 +1,7 @@
 package com.onlinevalidator.pojo;
 
+import org.springframework.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +20,8 @@ public class ValidationReport {
 	 */
 	private List<ValidationAssert> erroriDiValidazione;
 
+	private String descrizioneErroreXsd;
+
 	/**
 	 * Metodo che restituisce <code>true</code> nel caso in cui il risultato di validazione contenga errori,
 	 * <code>false</code> altrimenti.
@@ -25,7 +29,7 @@ public class ValidationReport {
 	 * @return <code>true</code> nel caso in cui l'esito della validazione non sia positivo
 	 */
 	public boolean contieneErrori() {
-		return erroriDiValidazione != null && !erroriDiValidazione.isEmpty();
+		return (erroriDiValidazione != null && !erroriDiValidazione.isEmpty()) || !StringUtils.isEmpty(descrizioneErroreXsd);
 	}
 
 	/**
@@ -40,6 +44,10 @@ public class ValidationReport {
 		erroriDiValidazione.add(
 				validationAssert
 		);
+	}
+
+	public void aggiungiDettaglio(String descrizioneErroreXsd) {
+		this.descrizioneErroreXsd = descrizioneErroreXsd;
 	}
 
 	/**
