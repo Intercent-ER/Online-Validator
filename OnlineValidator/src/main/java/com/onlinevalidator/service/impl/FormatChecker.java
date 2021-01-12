@@ -1,6 +1,6 @@
 package com.onlinevalidator.service.impl;
 
-import com.onlinevalidator.model.FileType;
+import com.onlinevalidator.pojo.FileType;
 import com.onlinevalidator.service.FormatCheckerInterface;
 import org.springframework.stereotype.Service;
 

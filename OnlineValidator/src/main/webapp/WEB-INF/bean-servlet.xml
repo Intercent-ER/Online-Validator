@@ -17,7 +17,6 @@
 		http://www.springframework.org/schema/tx
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-
     <mvc:annotation-driven/>
     <context:component-scan
             base-package="com.onlinevalidator"/>
@@ -38,10 +37,12 @@
 
     <bean id="jndiDataSource"
           class="org.springframework.jndi.JndiObjectFactoryBean">
-        <!-- CONFIGURARE la risorsa JNDI nel context.xml di TOMCAT : <Resource
-            name="jdbc/notierDB" auth="Container" type="javax.sql.DataSource" maxActive="100"
-            maxIdle="30" maxWait="10000" username="xxxxxx" password="xxxxxxxxx" driverClassName="oracle.jdbc.driver.OracleDriver"
-            url="jdbc:oracle:thin:@vm121srv:1521:DBSVIL11"/> -->
+        <!-- CONFIGURARE la risorsa JNDI nel context.xml di TOMCAT :
+            <Resource name="jdbc/validatoreDB" auth="Container" type="javax.sql.DataSource" maxActive="100"
+              maxIdle="30" maxWait="10000" username="ONLINE_VALIDATOR" password="P9mExO_ayZWunOYnBCDk"
+              driverClassName="oracle.jdbc.driver.OracleDriver"
+              url="jdbc:oracle:thin:@vm121lnx:1521:DBTEST19"/>
+            -->
         <property name="jndiName"
                   value="java:comp/env/jdbc/validatoreDB"/>
     </bean>
@@ -56,7 +57,6 @@
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="jndiDataSource"/>
         <property name="jpaVendorAdapter" ref="jpaAdapter"/>
-
         <property name="packagesToScan"
                   value="com.onlinevalidator.model"/>
         <property name="loadTimeWeaver">

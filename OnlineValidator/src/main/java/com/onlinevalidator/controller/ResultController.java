@@ -1,6 +1,6 @@
 package com.onlinevalidator.controller;
 
-import com.onlinevalidator.model.Tipodocumento;
+import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.service.impl.ValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,7 @@ public class ResultController {
 	}
 
 	@ModelAttribute("tipoDocumento")
-	public List<Tipodocumento> getAllTipoDocumento() throws SQLException {
+	public List<OvTipoDocumento> getAllTipoDocumento() throws SQLException {
 		return validatorService.getAllEntity();
 
 	}

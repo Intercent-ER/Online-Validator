@@ -1,7 +1,7 @@
 package com.onlinevalidator.service;
 
-import com.onlinevalidator.model.Tipodocumento;
-import com.onlinevalidator.model.Validatore;
+import com.onlinevalidator.model.OvTipoDocumento;
+import com.onlinevalidator.model.OvValidatore;
 import com.onlinevalidator.model.enumerator.TipoFileEnum;
 import com.onlinevalidator.pojo.ValidationReport;
 import org.springframework.stereotype.Service;
@@ -16,15 +16,15 @@ public interface ValidatorServiceInterface {
 	String OWASP_FEATURES_TO_DISALLOW_XXE_PAR = "http://xml.org/sax/features/external-parameter-entities";
 	String OWASP_FEATURES_TO_DISALLOW_DOCTYPE = "http://apache.org/xml/features/disallow-doctype-decl";
 
-	List<Tipodocumento> getAllEntity() throws SQLException;
+	List<OvTipoDocumento> getAllEntity() throws SQLException;
 
-	Tipodocumento getEntity(int id);
+	OvTipoDocumento getEntity(int id);
 
-	Tipodocumento getValidatoreByTipoDocumento(int idTipoDocumento);
+	OvTipoDocumento getValidatoreByTipoDocumento(int idTipoDocumento);
 
-	Tipodocumento getTipodocumentoById(int idTipoDocumento);
+	OvTipoDocumento getTipodocumentoById(int idTipoDocumento);
 
-	Validatore filtraValidatore(Tipodocumento tipodocumento, TipoFileEnum tipoFileEnum);
+	OvValidatore filtraValidatore(OvTipoDocumento tipodocumento, TipoFileEnum tipoFileEnum);
 
 	/**
 	 * Dato uno specifico documento, se ne effettua la validazione, incapsulando il risultato all'interno di un'istanza
@@ -35,6 +35,6 @@ public interface ValidatorServiceInterface {
 	 * @return il risultato di validazione
 	 * @author Manuel Gozzi
 	 */
-	ValidationReport effettuaValidazione(byte[] documento, Tipodocumento tipodocumento);
+	ValidationReport effettuaValidazione(byte[] documento, OvTipoDocumento tipodocumento);
 
 }

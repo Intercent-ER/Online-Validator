@@ -1,8 +1,9 @@
 package com.onlinevalidator.service.impl;
 
-import com.onlinevalidator.model.Catalog;
+import com.onlinevalidator.model.OvCatalog;
 import com.onlinevalidator.repository.CatalogJpaRepository;
 import com.onlinevalidator.service.LocalServiceUriResolverInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.xml.transform.Source;
@@ -23,10 +24,10 @@ import java.util.Map;
 @Service
 public class LocalServiceURIResolverImpl implements LocalServiceUriResolverInterface {
 
-	private Map<String, Catalog> catalogMap = new HashMap<>();
+	private Map<String, OvCatalog> catalogMap = new HashMap<>();
 	private Date refreshDate = new Date();
 
-	// @Autowired
+	@Autowired
 	private CatalogJpaRepository catalogRepository;
 
 	public static Map<String, String> splitQuery(String query) throws UnsupportedEncodingException {
@@ -45,9 +46,9 @@ public class LocalServiceURIResolverImpl implements LocalServiceUriResolverInter
 		try {
 			checkForRefresh();
 			Map<String, String> parameters = splitQuery(href);
-			Catalog catalog = getCatalog(parameters);
+			OvCatalog catalog = getCatalog(parameters);
 			InputStream is = new ByteArrayInputStream(
-					catalog.getFilecatalog()
+					catalog.getBlFileCatalog()
 			);
 			return new StreamSource(is);
 		} catch (UnsupportedEncodingException e) {
@@ -55,11 +56,11 @@ public class LocalServiceURIResolverImpl implements LocalServiceUriResolverInter
 		}
 	}
 
-	private Catalog getCatalog(Map<String, String> parameters) {
+	private OvCatalog getCatalog(Map<String, String> parameters) {
 		String nomeCatalog = parameters.get("nomeCatalog");
 		String versione = parameters.get("versione");
 		String index = nomeCatalog + "_" + versione;
-		Catalog catalog = catalogMap.get(index);
+		OvCatalog catalog = catalogMap.get(index);
 		if (catalog == null) {
 			catalog = catalogRepository.getOneBy(nomeCatalog, versione);
 			catalogMap.put(index, catalog);

@@ -3,20 +3,27 @@
           "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 
 <log4j:configuration
-	xmlns:log4j="http://jakarta.apache.org/log4j/">
+		xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<appender name="FileAppender"
-		class="org.apache.log4j.FileAppender">
-		<param name="File" value="log4j/app.log" />
+			  class="org.apache.log4j.FileAppender">
+		<param name="File" value="log4j/app.log"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern"
-				value="%-7p %d [%t] %c %x - %m%n" />
+				   value="%-7p %d [%t] %c %x - %m%n"/>
 		</layout>
 	</appender>
 
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%-5relative %-5level %logger{35} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
 	<logger name="com.onlinevalidator.controller">
-		<level value="info" />
-		<appender-ref ref="FileAppender" />
+		<level value="info"/>
+		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="FileAppender"/>
 	</logger>
 
 </log4j:configuration>

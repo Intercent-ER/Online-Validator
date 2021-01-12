@@ -2,9 +2,9 @@ package com.onlinevalidator.service.impl;
 
 import com.onlinevalidator.generatedsources.xsd.FailedAssert;
 import com.onlinevalidator.generatedsources.xsd.SchematronOutput;
-import com.onlinevalidator.model.Catalog;
-import com.onlinevalidator.model.Tipodocumento;
-import com.onlinevalidator.model.Validatore;
+import com.onlinevalidator.model.OvCatalog;
+import com.onlinevalidator.model.OvTipoDocumento;
+import com.onlinevalidator.model.OvValidatore;
 import com.onlinevalidator.model.enumerator.TipoFileEnum;
 import com.onlinevalidator.pojo.ValidationAssert;
 import com.onlinevalidator.pojo.ValidationReport;
@@ -69,27 +69,27 @@ public class ValidatorService implements ValidatorServiceInterface {
 	private LocalServiceUriResolverInterface uriResolver;
 
 	@Override
-	public Tipodocumento getEntity(int id) {
+	public OvTipoDocumento getEntity(int id) {
 		return tipoDocumentoRepository.findOne(id);
 	}
 
 	@Override
-	public Tipodocumento getValidatoreByTipoDocumento(int idTipoDocumento) {
+	public OvTipoDocumento getValidatoreByTipoDocumento(int idTipoDocumento) {
 		return null;
 	}
 
 	@Override
-	public List<Tipodocumento> getAllEntity() {
+	public List<OvTipoDocumento> getAllEntity() {
 		return tipoDocumentoRepository.findAll();
 	}
 
 	@Override
-	public Tipodocumento getTipodocumentoById(int idTipoDocumento) {
+	public OvTipoDocumento getTipodocumentoById(int idTipoDocumento) {
 		return tipoDocumentoRepository.findOne(idTipoDocumento);
 	}
 
 	@Override
-	public Validatore filtraValidatore(Tipodocumento tipodocumento, TipoFileEnum tipoFileEnum) {
+	public OvValidatore filtraValidatore(OvTipoDocumento tipodocumento, TipoFileEnum tipoFileEnum) {
 
 		if (tipodocumento == null) {
 
@@ -101,9 +101,9 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 			throw new IllegalStateException("Errore 2");
 		}
-		List<Validatore> validatoriSuTipodocumento = tipodocumento.getValidatori();
-		for (Validatore validatoreCorrente : validatoriSuTipodocumento) {
-			if (tipoFileEnum.equals(validatoreCorrente.getTipoFileEnum())) {
+		List<OvValidatore> validatoriSuTipodocumento = tipodocumento.getValidatori();
+		for (OvValidatore validatoreCorrente : validatoriSuTipodocumento) {
+			if (tipoFileEnum.equals(validatoreCorrente.getCdTipoFile())) {
 
 				return validatoreCorrente;
 			}
@@ -113,14 +113,14 @@ public class ValidatorService implements ValidatorServiceInterface {
 	}
 
 	@Override
-	public ValidationReport effettuaValidazione(byte[] documento, Tipodocumento tipodocumento) {
+	public ValidationReport effettuaValidazione(byte[] documento, OvTipoDocumento tipodocumento) {
 
 		ValidationReport validationReport = new ValidationReport();
 
 		try {
 
 			// Esecuzione validazione XSD
-			Validatore validatoreXsd = filtraValidatore(tipodocumento, TipoFileEnum.XSD);
+			OvValidatore validatoreXsd = filtraValidatore(tipodocumento, TipoFileEnum.XSD);
 			validazioneXsd(
 					documento,
 					getSchemaXsd(validatoreXsd)
@@ -138,7 +138,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 		try {
 
 			// Esecuzione validazione schematron
-			Validatore validatoreSchematron = filtraValidatore(tipodocumento, TipoFileEnum.SCHEMATRON);
+			OvValidatore validatoreSchematron = filtraValidatore(tipodocumento, TipoFileEnum.SCHEMATRON);
 			Collection<ValidationAssert> validationAsserts = validazioneSemantica(
 					new String(documento, StandardCharsets.UTF_8),
 					getSchematron(validatoreSchematron)
@@ -203,10 +203,10 @@ public class ValidatorService implements ValidatorServiceInterface {
 	 * @return lo Schema XSD di riferimento
 	 * @throws SAXException nel caso in cui si verifichino problemi di compilazione dell'XSD
 	 */
-	private Schema getSchemaXsd(Validatore validatoreXsd) throws SAXException {
+	private Schema getSchemaXsd(OvValidatore validatoreXsd) throws SAXException {
 
 		// Provo di recuperare l'xsd dalla cache
-		Schema schemaXsd = cacheXsd.get(validatoreXsd.getId());
+		Schema schemaXsd = cacheXsd.get(validatoreXsd.getIdValidatore());
 
 		if (schemaXsd == null) {
 
@@ -223,7 +223,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 	 * @return lo schema XSD
 	 * @throws SAXException nel caso in cui qualcosa vada storto durante il recupero
 	 */
-	private Schema createAndCacheSchema(Validatore validatoreXsd) throws SAXException {
+	private Schema createAndCacheSchema(OvValidatore validatoreXsd) throws SAXException {
 
 		// Se non ho l'xsd nella cache, lo istanzio e lo inserisco in cache
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -240,9 +240,9 @@ public class ValidatorService implements ValidatorServiceInterface {
 		String catalogPath = urlRisorsa.toExternalForm();
 		schemaFactory.setResourceResolver(new com.sun.org.apache.xerces.internal.util.XMLCatalogResolver(new String[]{catalogPath}));
 
-		logger.info("Caricamento Schema [Validatore={}]", validatoreXsd.getId());
+		logger.info("Caricamento Schema [Validatore={}]", validatoreXsd.getIdValidatore());
 		String blobXsd = new String(
-				validatoreXsd.getFile()
+				validatoreXsd.getBlFile()
 		);
 
 		Schema schemaXsd = schemaFactory.newSchema(
@@ -251,8 +251,8 @@ public class ValidatorService implements ValidatorServiceInterface {
 				)
 		);
 
-		cacheXsd.put(validatoreXsd.getId(), schemaXsd);
-		logger.info("Schema [Validatore={}] caricato in cache", validatoreXsd.getId());
+		cacheXsd.put(validatoreXsd.getIdValidatore(), schemaXsd);
+		logger.info("Schema [Validatore={}] caricato in cache", validatoreXsd.getIdValidatore());
 		return schemaXsd;
 	}
 
@@ -344,9 +344,9 @@ public class ValidatorService implements ValidatorServiceInterface {
 	 * @return il valiatore schematron
 	 * @throws TransformerConfigurationException se qualcosa va storto durante il recupero
 	 */
-	private Templates getSchematron(Validatore validatore) throws TransformerConfigurationException {
+	private Templates getSchematron(OvValidatore validatore) throws TransformerConfigurationException {
 
-		Templates schematronTemplates = cacheSchematron.get(validatore.getId());
+		Templates schematronTemplates = cacheSchematron.get(validatore.getIdValidatore());
 
 		if (schematronTemplates == null) {
 			schematronTemplates = createAndCacheSchematronTemplate(validatore);
@@ -356,9 +356,9 @@ public class ValidatorService implements ValidatorServiceInterface {
 	}
 
 
-	private Templates createAndCacheSchematronTemplate(Validatore validatore) throws TransformerConfigurationException {
+	private Templates createAndCacheSchematronTemplate(OvValidatore validatore) throws TransformerConfigurationException {
 		Templates schematronTemplates;
-		String blobSchematron = new String(validatore.getFile());
+		String blobSchematron = new String(validatore.getBlFile());
 
 		StreamSource schematronSource = new StreamSource(new StringReader(blobSchematron));
 		TransformerFactory schematronFactory = TransformerFactory.newInstance();
@@ -367,7 +367,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 		schematronFactory.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
 
 		schematronTemplates = schematronFactory.newTemplates(schematronSource);
-		cacheSchematron.put(validatore.getId(), schematronTemplates);
+		cacheSchematron.put(validatore.getIdValidatore(), schematronTemplates);
 		return schematronTemplates;
 	}
 
@@ -377,13 +377,11 @@ public class ValidatorService implements ValidatorServiceInterface {
 	}
 
 	private void addAllParameters(Transformer transformer) {
-		List<Catalog> listaDeiCataloghiCompleta = catalogJpaRepository.findAll();
-		for (Catalog catalogo : listaDeiCataloghiCompleta) {
-			transformer.setParameter(catalogo.getNome().name(), catalogo.getUrl());
+		List<OvCatalog> listaDeiCataloghiCompleta = catalogJpaRepository.findAll();
+		for (OvCatalog catalogo : listaDeiCataloghiCompleta) {
+			transformer.setParameter(catalogo.getNmNome().name(), catalogo.getCdUrl());
 		}
 		// TODO completare questa parte
-		/*
-		Esempio:
 
 		transformer.setParameter("xclUnitOfMeasureCode", getUrlForCatalog("UnitOfMeasureCode", "2.1"));
 		transformer.setParameter("xclPaymentMeansCode", getUrlForCatalog("PaymentMeansCode", "2.1"));
@@ -396,8 +394,16 @@ public class ValidatorService implements ValidatorServiceInterface {
 		transformer.setParameter("xclTipoParcella", getUrlForCatalog("TipoParcella", "2.1"));
 		transformer.setParameter("xclOrderTypeCode", getUrlForCatalog("OrderTypeCode", "2.1"));
 		transformer.setParameter("xclHandlingCode", getUrlForCatalog("HandlingCode", "2.1"));
+	}
 
-		 */
+	private String getContextPath() {
+		// TODO scrivere un metodo che consenta di recuperare l'URL di esposizione del contesto, di modo da poter recuperare i cataloghi
+		//return configNotierService.getConfigNotierValue(CdiConfigNotierEnum.CONTEXT_PATH);
+		return null;
+	}
+
+	private String getUrlForCatalog(String nomeCatalog, String versione) {
+		return getContextPath() + "/" + CATALOG_BASE_URL + "?nomeCatalog=" + nomeCatalog + "&versione=" + versione;
 	}
 
 }

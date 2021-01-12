@@ -46,8 +46,8 @@
 				<span class="subtitle">Tipo di file</span> <select
 					class="entity-select" type="select" name="id">
 				<c:forEach items="${tipoDocumento}" var="val">
-					<option type="int" value="${val.id}">${val.name}</option>
-				</c:forEach>
+                    <option type="int" value="${val.idTipoDocumento}">${val.name}</option>
+                </c:forEach>
 			</select>
 			</div>
 			<div class="d-flex container file-submit-container">

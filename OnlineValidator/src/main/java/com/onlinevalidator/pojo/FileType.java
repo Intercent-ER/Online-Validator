@@ -1,4 +1,4 @@
-package com.onlinevalidator.model;
+package com.onlinevalidator.pojo;
 
 public class FileType {
 	
@@ -21,9 +21,4 @@ public class FileType {
 		FileType = fileType;
 	}
 	
-	
-	
-	
-	
-
 }
