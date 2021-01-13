@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration SYSTEM 
-          "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+<configuration scan="true"
+			   scanPeriod="30 seconds">
 
-<log4j:configuration
-		xmlns:log4j="http://jakarta.apache.org/log4j/">
-
-	<appender name="FileAppender"
-			  class="org.apache.log4j.FileAppender">
-		<param name="File" value="log4j/app.log"/>
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				   value="%-7p %d [%t] %c %x - %m%n"/>
-		</layout>
-	</appender>
-
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+	<!-- Appender :: console -->
+	<appender name="STDOUT"
+			  class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%-5relative %-5level %logger{35} - %msg%n</pattern>
+			<pattern>%date [%thread] %-5level %logger{36} - %msg%n</pattern>
 		</encoder>
 	</appender>
 
-	<logger name="com.onlinevalidator.controller">
-		<level value="info"/>
-		<appender-ref ref="STDOUT"/>
-		<appender-ref ref="FileAppender"/>
-	</logger>
+	<!-- Appender :: file -->
+	<appender name="FILE_APPENDER"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${catalina.base}/logs/online-validator.log</File>
+		<encoder>
+			<pattern>%date [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+		<rollingPolicy
+				class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.base}/logs/online-validator.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+	</appender>
 
-</log4j:configuration>
+	<!-- Root :: level INFO, configurati appender su console e su file -->
+	<root level="info">
+		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="FILE_APPENDER"/>
+	</root>
+</configuration>
