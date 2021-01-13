@@ -15,8 +15,6 @@ import com.onlinevalidator.service.ConfigurazioneServiceInterface;
 import com.onlinevalidator.service.LocalServiceUriResolverInterface;
 import com.onlinevalidator.service.ValidatorServiceInterface;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xml.sax.ErrorHandler;
@@ -46,7 +44,6 @@ import java.util.*;
 @Service
 public class ValidatorService implements ValidatorServiceInterface {
 
-	private static final Logger logger = LoggerFactory.getLogger(ValidatorService.class);
 	private static final String XML_CATALOG_XML = "xml-catalog.xml";
 	private static final String CATALOG_BASE_URL = "catalog.html";
 
@@ -99,7 +96,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 		if (tipodocumento == null) {
 
-			logger.error("Attenzione, invocazione del metodo sbagliata");
+			logError("Attenzione, invocazione del metodo sbagliata");
 
 			throw new IllegalStateException("Errore 1");
 		}
@@ -114,7 +111,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 				return validatoreCorrente;
 			}
 		}
-		logger.error("Validatore non trovato");
+		logError("Validatore non trovato");
 		return null;
 	}
 
@@ -134,7 +131,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 		} catch (SAXException | ParserConfigurationException | IOException e) {
 
 			// Logging dell'errore e restituzione del report contenente solo l'errore XSD
-			logger.error("Si è verificato un errore in sede di validazione XSD: {}", e.getMessage(), e);
+			logError("Si è verificato un errore in sede di validazione XSD: {}", e.getMessage(), e);
 			validationReport.aggiungiDettaglio(
 					e.getMessage()
 			);
@@ -155,7 +152,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 		} catch (Exception e) {
 
 			// Logging dell'errore
-			logger.error("Si è verificato un errore durante la validazione semantica: {}", e.getMessage(), e);
+			logError("Si è verificato un errore durante la validazione semantica: {}", e.getMessage(), e);
 		}
 
 		return validationReport;
@@ -170,10 +167,10 @@ public class ValidatorService implements ValidatorServiceInterface {
 	private void validazioneXsd(byte[] documentoXml, Schema schema)
 			throws SAXException, ParserConfigurationException, IOException {
 
-		logger.info("Avvio validazione XSD del documento");
+		logInfo("Avvio validazione XSD del documento");
 		DocumentBuilderFactory lFactory = DocumentBuilderFactory.newInstance();
 
-		logger.info("Configurazione delle impostazioni del validatore XSD");
+		logInfo("Configurazione delle impostazioni del validatore XSD");
 		/*
 		 * Disallow delle features XXE per impedire un possibile attacco con XML
 		 * Injection.
@@ -191,7 +188,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 		setDefaultErrorHandler(dBuilder);
 
 		// Applico la validazione XSD al documento
-		logger.info("Validazione in corso...");
+		logInfo("Validazione in corso...");
 		dBuilder.parse(
 				IOUtils.toInputStream(
 						new String(
@@ -236,7 +233,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 		URL urlRisorsa = getClass().getClassLoader().getResource(XML_CATALOG_XML);
 		if (urlRisorsa == null) {
-			logger.error(
+			logError(
 					"Attenzione, si è verificato un errore durante il recupero del catalogo, verificare che il file {} sia presente dentro al progetto",
 					XML_CATALOG_XML
 			);
@@ -246,7 +243,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 		String catalogPath = urlRisorsa.toExternalForm();
 		schemaFactory.setResourceResolver(new com.sun.org.apache.xerces.internal.util.XMLCatalogResolver(new String[]{catalogPath}));
 
-		logger.info("Caricamento Schema [Validatore={}]", validatoreXsd.getIdValidatore());
+		logInfo("Caricamento Schema [Validatore={}]", validatoreXsd.getIdValidatore());
 		String blobXsd = new String(
 				validatoreXsd.getBlFile()
 		);
@@ -258,7 +255,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 		);
 
 		cacheXsd.put(validatoreXsd.getIdValidatore(), schemaXsd);
-		logger.info("Schema [Validatore={}] caricato in cache", validatoreXsd.getIdValidatore());
+		logInfo("Schema [Validatore={}] caricato in cache", validatoreXsd.getIdValidatore());
 		return schemaXsd;
 	}
 
@@ -272,18 +269,18 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 			@Override
 			public void warning(SAXParseException ex) {
-				logger.warn("Validazione XSD superata con il seguente warning: {}", ex.getMessage(), ex);
+				logWarn("Validazione XSD superata con il seguente warning: {}", ex.getMessage(), ex);
 			}
 
 			@Override
 			public void fatalError(SAXParseException ex) throws SAXException {
-				logger.error("Validazionee XSD del documento fallita: {}", ex.getMessage(), ex);
+				logError("Validazionee XSD del documento fallita: {}", ex.getMessage(), ex);
 				throw ex;
 			}
 
 			@Override
 			public void error(SAXParseException ex) throws SAXException {
-				logger.error("Validazionee XSD del documento fallita: {}", ex.getMessage(), ex);
+				logError("Validazionee XSD del documento fallita: {}", ex.getMessage(), ex);
 				throw ex;
 			}
 		});
@@ -299,7 +296,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 	public Collection<ValidationAssert> validazioneSemantica(String documentoXml, Templates xslt) {
 		Vector<ValidationAssert> vectorResult = new Vector<>();
 
-		logger.info("Eseguo validazione schematron");
+		logInfo("Eseguo validazione schematron");
 
 		try {
 			Transformer transformer = xslt.newTransformer();
@@ -327,7 +324,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 					vectorResult.add(
 							new ValidationAssert(f.getTest(), f.getLocation(), f.getText(), f.getFlag())
 					);
-					logger.info(
+					logInfo(
 							"Errore di validazione semantica: [test=\"{}\", posizione={}, descrizione=\"{}\", livello={}]",
 							f.getTest(), f.getLocation(), f.getText(), f.getFlag()
 					);
@@ -336,7 +333,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 			}
 
 		} catch (TransformerException | JAXBException e) {
-			logger.error("ERRORE VALIDAZIONE SCHEMATRON!", e);
+			logError("ERRORE VALIDAZIONE SCHEMATRON!", e);
 			throw new IllegalStateException("ERRORE VALIDAZIONE SCHEMATRON DOCUMENTO:", e);
 		}
 

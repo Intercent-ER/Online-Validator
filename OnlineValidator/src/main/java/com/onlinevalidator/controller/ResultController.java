@@ -3,6 +3,7 @@ package com.onlinevalidator.controller;
 import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.pojo.ValidationReport;
 import com.onlinevalidator.service.impl.ValidatorService;
+import com.onlinevalidator.util.CostantiWeb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +17,8 @@ import java.util.List;
 @Controller
 public class ResultController {
 
-
 	@Autowired
-	ValidatorService validatorService;
-
+	private ValidatorService validatorService;
 
 	@RequestMapping("/")
 	public ModelAndView fileUploader() {
@@ -43,13 +42,10 @@ public class ResultController {
 		try {
 
 			ValidationReport risultatoValidazione = validatorService.effettuaValidazione(file.getBytes(), validatorService.getTipodocumentoById(id));
-			risultatoValidazione.contieneErrori();
-			//TODO contiene errori � booleana , serve conferma i validazione o meno
-			paginaRisultato.addObject("assertDiValidazione", validationReport.getErroriDiValidazione());
-
+			paginaRisultato.addObject("contieneErroriFatali", Boolean.toString(risultatoValidazione.contieneErrori()));
+			paginaRisultato.addObject(CostantiWeb.RESULT_CONTROLLER_ASSERT_VALIDAZIONE, risultatoValidazione.getErroriDiValidazione());
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 //		paginaRisultato.addObject("message", file.getBytes());
