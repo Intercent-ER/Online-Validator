@@ -39,11 +39,11 @@ public class OvConfigurazione {
 		this.idConfigurazione = idConfigurazione;
 	}
 
-	public String getCdChiaveConfigurazione() {
+	public ChiaveConfigurazioneEnum getCdChiaveConfigurazione() {
 		return cdChiaveConfigurazione;
 	}
 
-	public void setCdChiaveConfigurazione(String cdChiaveConfigurazione) {
+	public void setCdChiaveConfigurazione(ChiaveConfigurazioneEnum cdChiaveConfigurazione) {
 		this.cdChiaveConfigurazione = cdChiaveConfigurazione;
 	}
 
