@@ -5,7 +5,7 @@ import com.onlinevalidator.service.FormatCheckerInterface;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FormatChecker implements FormatCheckerInterface {
+public class FormatCheckerService implements FormatCheckerInterface {
 
 	//public static final String MIME_TEXT_PLAIN = "text/plain";
 

@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CatalogJpaRepository extends JpaRepository<OvCatalog, Integer> {
+public interface OvCatalogJpaRepository extends JpaRepository<OvCatalog, Integer> {
 
 	@Query("select cat from OvCatalog cat where cat.nmNome = :nomeCatalog and cat.cdVersione = :versione")
 	OvCatalog getOneBy(@Param("nomeCatalog") String nomeCatalog, @Param("versione") String versione);

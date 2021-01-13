@@ -5,11 +5,13 @@ import com.onlinevalidator.generatedsources.xsd.SchematronOutput;
 import com.onlinevalidator.model.OvCatalog;
 import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.model.OvValidatore;
+import com.onlinevalidator.model.enumerator.ChiaveConfigurazioneEnum;
 import com.onlinevalidator.model.enumerator.TipoFileEnum;
 import com.onlinevalidator.pojo.ValidationAssert;
 import com.onlinevalidator.pojo.ValidationReport;
-import com.onlinevalidator.repository.CatalogJpaRepository;
-import com.onlinevalidator.repository.TipoDocumentoJpaRepositoryInterface;
+import com.onlinevalidator.repository.OvCatalogJpaRepository;
+import com.onlinevalidator.repository.OvTipoDocumentoJpaRepository;
+import com.onlinevalidator.service.ConfigurazioneServiceInterface;
 import com.onlinevalidator.service.LocalServiceUriResolverInterface;
 import com.onlinevalidator.service.ValidatorServiceInterface;
 import org.apache.commons.io.IOUtils;
@@ -46,6 +48,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 	private static final Logger logger = LoggerFactory.getLogger(ValidatorService.class);
 	private static final String XML_CATALOG_XML = "xml-catalog.xml";
+	private static final String CATALOG_BASE_URL = "catalog.html";
 
 	// Mappa che contiene i validatori XSD gestiti in cache (chiave: Validatore.id; valore: Schema)
 	private Map<Integer, Schema> cacheXsd;
@@ -60,13 +63,16 @@ public class ValidatorService implements ValidatorServiceInterface {
 	}
 
 	@Autowired
-	private TipoDocumentoJpaRepositoryInterface tipoDocumentoRepository;
+	private OvTipoDocumentoJpaRepository tipoDocumentoRepository;
 
 	@Autowired
-	private CatalogJpaRepository catalogJpaRepository;
+	private OvCatalogJpaRepository catalogJpaRepository;
 
 	@Autowired
 	private LocalServiceUriResolverInterface uriResolver;
+
+	@Autowired
+	private ConfigurazioneServiceInterface configurazioneService;
 
 	@Override
 	public OvTipoDocumento getEntity(int id) {
@@ -381,8 +387,6 @@ public class ValidatorService implements ValidatorServiceInterface {
 		for (OvCatalog catalogo : listaDeiCataloghiCompleta) {
 			transformer.setParameter(catalogo.getNmNome().name(), catalogo.getCdUrl());
 		}
-		// TODO completare questa parte
-
 		transformer.setParameter("xclUnitOfMeasureCode", getUrlForCatalog("UnitOfMeasureCode", "2.1"));
 		transformer.setParameter("xclPaymentMeansCode", getUrlForCatalog("PaymentMeansCode", "2.1"));
 		transformer.setParameter("xclFormatoAttachment", getUrlForCatalog("FormatoAttachment", "2.1"));
@@ -397,9 +401,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 	}
 
 	private String getContextPath() {
-		// TODO scrivere un metodo che consenta di recuperare l'URL di esposizione del contesto, di modo da poter recuperare i cataloghi
-		//return configNotierService.getConfigNotierValue(CdiConfigNotierEnum.CONTEXT_PATH);
-		return null;
+		return configurazioneService.readValue(ChiaveConfigurazioneEnum.CONTEXT_PATH);
 	}
 
 	private String getUrlForCatalog(String nomeCatalog, String versione) {

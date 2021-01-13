@@ -1,7 +1,7 @@
 package com.onlinevalidator.service.impl;
 
 import com.onlinevalidator.model.OvCatalog;
-import com.onlinevalidator.repository.CatalogJpaRepository;
+import com.onlinevalidator.repository.OvCatalogJpaRepository;
 import com.onlinevalidator.service.LocalServiceUriResolverInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +22,13 @@ import java.util.Map;
  * @author Manuel Gozzi
  */
 @Service
-public class LocalServiceURIResolverImpl implements LocalServiceUriResolverInterface {
+public class LocalServiceURIResolverService implements LocalServiceUriResolverInterface {
 
 	private Map<String, OvCatalog> catalogMap = new HashMap<>();
 	private Date refreshDate = new Date();
 
 	@Autowired
-	private CatalogJpaRepository catalogRepository;
+	private OvCatalogJpaRepository catalogRepository;
 
 	public static Map<String, String> splitQuery(String query) throws UnsupportedEncodingException {
 		Map<String, String> query_pairs = new LinkedHashMap<>();

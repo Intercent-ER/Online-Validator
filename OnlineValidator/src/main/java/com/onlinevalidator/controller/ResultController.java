@@ -24,7 +24,6 @@ public class ResultController {
 
 		ModelAndView modelAndView = new ModelAndView("index");
 		return modelAndView;
-
 	}
 
 	@ModelAttribute("tipoDocumento")
@@ -39,7 +38,7 @@ public class ResultController {
 							 @RequestParam(value = "id") int id) {
 
 		ModelAndView paginaRisultato = new ModelAndView("result");
-		paginaRisultato.addObject("message", validatorService.uploadFileHandler(file, id));
+		// paginaRisultato.addObject("message", validatorService.uploadFileHandler(file, id));
 		return paginaRisultato;
 
 	}

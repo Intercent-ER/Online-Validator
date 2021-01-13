@@ -1,5 +1,7 @@
 package com.onlinevalidator.model;
 
+import com.onlinevalidator.model.enumerator.ChiaveConfigurazioneEnum;
+
 import javax.persistence.*;
 
 /**
@@ -17,7 +19,8 @@ public class OvConfigurazione {
 	private int idConfigurazione;
 
 	@Column(name = "CD_CHIAVE", length = 150, nullable = false, unique = true)
-	private String cdChiaveConfigurazione;
+	@Enumerated(EnumType.STRING)
+	private ChiaveConfigurazioneEnum cdChiaveConfigurazione;
 
 	@Column(name = "CD_VALORE", length = 2048)
 	private String cdValoreConfigurazione;
