@@ -72,22 +72,12 @@ public class ValidatorService implements ValidatorServiceInterface {
 	private ConfigurazioneServiceInterface configurazioneService;
 
 	@Override
-	public OvTipoDocumento getEntity(int id) {
-		return tipoDocumentoRepository.findOne(id);
-	}
-
-	@Override
-	public OvTipoDocumento getValidatoreByTipoDocumento(int idTipoDocumento) {
-		return null;
-	}
-
-	@Override
-	public List<OvTipoDocumento> getAllEntity() {
+	public List<OvTipoDocumento> filtraTuttiITipiDocumento() {
 		return tipoDocumentoRepository.findAll();
 	}
 
 	@Override
-	public OvTipoDocumento getTipodocumentoById(int idTipoDocumento) {
+	public OvTipoDocumento getOvTipoDocumentoById(int idTipoDocumento) {
 		return tipoDocumentoRepository.findOne(idTipoDocumento);
 	}
 

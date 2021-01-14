@@ -5,26 +5,37 @@ import com.onlinevalidator.model.OvValidatore;
 import com.onlinevalidator.model.enumerator.TipoFileEnum;
 import com.onlinevalidator.pojo.ValidationReport;
 import com.onlinevalidator.util.ApplicationLogger;
-import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 
-@Service
 public interface ValidatorServiceInterface extends ApplicationLogger {
 
 	String OWASP_FEATURES_TO_DISALLOW_XXE_ENT = "http://xml.org/sax/features/external-general-entities";
 	String OWASP_FEATURES_TO_DISALLOW_XXE_PAR = "http://xml.org/sax/features/external-parameter-entities";
 	String OWASP_FEATURES_TO_DISALLOW_DOCTYPE = "http://apache.org/xml/features/disallow-doctype-decl";
 
-	List<OvTipoDocumento> getAllEntity() throws SQLException;
+	/**
+	 * Recupera tutti i tipi documento.
+	 *
+	 * @return tutti i tipi documento presenti a sistema
+	 */
+	List<OvTipoDocumento> filtraTuttiITipiDocumento();
 
-	OvTipoDocumento getEntity(int id);
+	/**
+	 * Recupera un tipo documento partendo dal suo id.
+	 *
+	 * @param idTipoDocumento è l'identificativo del tipo documento da recuperare
+	 * @return l'istanza del tipo documento
+	 */
+	OvTipoDocumento getOvTipoDocumentoById(int idTipoDocumento);
 
-	OvTipoDocumento getValidatoreByTipoDocumento(int idTipoDocumento);
-
-	OvTipoDocumento getTipodocumentoById(int idTipoDocumento);
-
+	/**
+	 * Dato un tipo documento e un tipo di file, recupera il corrispondente validatore.
+	 *
+	 * @param tipodocumento è il tipo del documento
+	 * @param tipoFileEnum  è il tipo di file {@link TipoFileEnum}
+	 * @return il validatore corrispondente
+	 */
 	OvValidatore filtraValidatore(OvTipoDocumento tipodocumento, TipoFileEnum tipoFileEnum);
 
 	/**

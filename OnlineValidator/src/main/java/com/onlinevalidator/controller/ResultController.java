@@ -32,7 +32,7 @@ public class ResultController {
 
 	@ModelAttribute("tipoDocumento")
 	public List<OvTipoDocumento> getAllTipoDocumento() {
-		return validatorService.getAllEntity();
+		return validatorService.filtraTuttiITipiDocumento();
 	}
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
@@ -43,7 +43,7 @@ public class ResultController {
 		ModelAndView paginaRisultato = new ModelAndView("result");
 		try {
 
-			ValidationReport risultatoValidazione = validatorService.effettuaValidazione(file.getBytes(), validatorService.getTipodocumentoById(id));
+			ValidationReport risultatoValidazione = validatorService.effettuaValidazione(file.getBytes(), validatorService.getOvTipoDocumentoById(id));
 			paginaRisultato.addObject("contieneErroriFatali", Boolean.toString(risultatoValidazione.contieneErrori()));
 			paginaRisultato.addObject(CostantiWeb.RESULT_CONTROLLER_ASSERT_VALIDAZIONE, risultatoValidazione.getErroriDiValidazione());
 

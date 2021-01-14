@@ -3,7 +3,6 @@ package com.onlinevalidator.model;
 
 import com.onlinevalidator.model.enumerator.NomeCatalogEnum;
 
-import javax.management.remote.rmi._RMIConnection_Stub;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
@@ -38,9 +37,6 @@ public class OvCatalog implements Serializable {
 
 	@Column(name = "CD_VERSIONE", nullable = false, length = 50)
 	private String cdVersione;
-
-	@Column(name = "CD_URL", nullable = false, length = 512)
-	private String cdUrl;
 
 	public OvCatalog() {
 	}
@@ -94,11 +90,4 @@ public class OvCatalog implements Serializable {
 		this.cdVersione = versione;
 	}
 
-	public String getCdUrl() {
-		return cdUrl;
-	}
-
-	public void setCdUrl(String cdUrl) {
-		this.cdUrl = cdUrl;
-	}
 }
