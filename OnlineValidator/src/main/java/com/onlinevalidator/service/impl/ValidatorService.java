@@ -15,6 +15,7 @@ import com.onlinevalidator.service.ValidatorServiceInterface;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -32,6 +33,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -50,11 +52,26 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 	// Mappa che contiene i validatori SCH gestiti in cache (chiave: Validatore.id; valore: Templates)
 	private Map<Integer, Templates> cacheSchematron;
+	private URL urlRisorsa;
 
 	@PostConstruct
-	public void init() {
+	public void init() throws FileNotFoundException {
 		this.cacheXsd = new HashMap<>();
 		this.cacheSchematron = new HashMap<>();
+
+		this.urlRisorsa = getClass().getClassLoader().getResource(XML_CATALOG_XML);
+		if (urlRisorsa == null) {
+			logError(
+					"Attenzione, si è verificato un errore durante il recupero del catalogo, verificare che il file {} sia presente dentro al progetto",
+					XML_CATALOG_XML
+			);
+			throw new FileNotFoundException(
+					String.format(
+							"File %s non trovato all'interno del progetto",
+							XML_CATALOG_XML
+					)
+			);
+		}
 	}
 
 	@Autowired
@@ -108,11 +125,13 @@ public class ValidatorService implements ValidatorServiceInterface {
 		try {
 
 			// Esecuzione validazione XSD
+			logInfo("Avvio validazione XSD");
 			OvValidatore validatoreXsd = filtraValidatore(tipodocumento, TipoFileEnum.XSD);
 			validazioneXsd(
 					documento,
 					getSchemaXsd(validatoreXsd)
 			);
+			logInfo("Validazione XSD completata con successo");
 		} catch (SAXException | ParserConfigurationException | IOException e) {
 
 			// Logging dell'errore e restituzione del report contenente solo l'errore XSD
@@ -126,6 +145,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 		try {
 
 			// Esecuzione validazione schematron
+			logInfo("Avvio validazione XSLT");
 			OvValidatore validatoreSchematron = filtraValidatore(tipodocumento, TipoFileEnum.SCHEMATRON);
 			Collection<ValidationAssert> validationAsserts = validazioneSemantica(
 					new String(documento, StandardCharsets.UTF_8),
@@ -134,6 +154,12 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 			// Aggiungo ogni eventuale errore di validazione
 			validationAsserts.forEach(validationReport::aggiungiDettaglio);
+			logInfo(
+					"Validazione XSLT completata {} errori",
+					CollectionUtils.isEmpty(validationAsserts) ?
+							"senza"
+							: "con"
+			);
 		} catch (Exception e) {
 
 			// Logging dell'errore
@@ -195,7 +221,6 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 		// Provo di recuperare l'xsd dalla cache
 		Schema schemaXsd = cacheXsd.get(validatoreXsd.getIdValidatore());
-
 		if (schemaXsd == null) {
 
 			return createAndCacheSchema(validatoreXsd);
@@ -215,31 +240,25 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 		// Se non ho l'xsd nella cache, lo istanzio e lo inserisco in cache
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
-		URL urlRisorsa = getClass().getClassLoader().getResource(XML_CATALOG_XML);
-		if (urlRisorsa == null) {
-			logError(
-					"Attenzione, si è verificato un errore durante il recupero del catalogo, verificare che il file {} sia presente dentro al progetto",
-					XML_CATALOG_XML
-			);
-			throw new SAXException();
-		}
-
-		String catalogPath = urlRisorsa.toExternalForm();
-		schemaFactory.setResourceResolver(new com.sun.org.apache.xerces.internal.util.XMLCatalogResolver(new String[]{catalogPath}));
-
-		logInfo("Caricamento Schema [Validatore={}]", validatoreXsd.getIdValidatore());
-		String blobXsd = new String(
-				validatoreXsd.getBlFile()
-		);
-
-		Schema schemaXsd = schemaFactory.newSchema(
-				new StreamSource(
-						new StringReader(blobXsd)
+		schemaFactory.setResourceResolver(
+				new com.sun.org.apache.xerces.internal.util.XMLCatalogResolver(
+						new String[]{urlRisorsa.toExternalForm()}
 				)
 		);
 
+		logInfo("Caricamento schema [Validatore={}]", validatoreXsd.getIdValidatore());
+		Schema schemaXsd = schemaFactory.newSchema(
+				new StreamSource(
+						new StringReader(
+								new String(
+										validatoreXsd.getBlFile(),
+										StandardCharsets.UTF_8
+								)
+						)
+				)
+		);
 		cacheXsd.put(validatoreXsd.getIdValidatore(), schemaXsd);
+
 		logInfo("Schema [Validatore={}] caricato in cache", validatoreXsd.getIdValidatore());
 		return schemaXsd;
 	}
@@ -259,13 +278,13 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 			@Override
 			public void fatalError(SAXParseException ex) throws SAXException {
-				logError("Validazionee XSD del documento fallita: {}", ex.getMessage(), ex);
+				logError("Validazione XSD del documento fallita: {}", ex.getMessage(), ex);
 				throw ex;
 			}
 
 			@Override
 			public void error(SAXParseException ex) throws SAXException {
-				logError("Validazionee XSD del documento fallita: {}", ex.getMessage(), ex);
+				logError("Validazione XSD del documento fallita: {}", ex.getMessage(), ex);
 				throw ex;
 			}
 		});
@@ -343,24 +362,24 @@ public class ValidatorService implements ValidatorServiceInterface {
 		return schematronTemplates;
 	}
 
-
 	private Templates createAndCacheSchematronTemplate(OvValidatore validatore) throws TransformerConfigurationException {
 		String blobSchematron = new String(validatore.getBlFile());
 
 		StreamSource schematronSource = new StreamSource(new StringReader(blobSchematron));
-		TransformerFactory schematronFactory = TransformerFactory.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
+		TransformerFactory schematronFactory = TransformerFactory.newInstance(ValidatorServiceInterface.NET_SF_SAXON_TRANSFORMER_FACTORY_IMPL, null);
 
 		Templates schematronTemplates = schematronFactory.newTemplates(schematronSource);
 		cacheSchematron.put(validatore.getIdValidatore(), schematronTemplates);
 		return schematronTemplates;
 	}
 
+	/**
+	 * Completa la configurazione del transformer XSL.
+	 *
+	 * @param transformer è il transformer che deve essere configurato
+	 */
 	private void buildTransformer(Transformer transformer) {
 		transformer.setURIResolver(uriResolver);
-		addAllParameters(transformer);
-	}
-
-	private void addAllParameters(Transformer transformer) {
 		transformer.setParameter("xclUnitOfMeasureCode", getUrlForCatalog("UnitOfMeasureCode", "2.1"));
 		transformer.setParameter("xclPaymentMeansCode", getUrlForCatalog("PaymentMeansCode", "2.1"));
 		transformer.setParameter("xclFormatoAttachment", getUrlForCatalog("FormatoAttachment", "2.1"));
@@ -374,12 +393,16 @@ public class ValidatorService implements ValidatorServiceInterface {
 		transformer.setParameter("xclHandlingCode", getUrlForCatalog("HandlingCode", "2.1"));
 	}
 
-	private String getContextPath() {
-		return configurazioneService.readValue(ChiaveConfigurazioneEnum.CONTEXT_PATH);
-	}
-
+	/**
+	 * Recupera l'URL dove è reso disponibile il catalogo specifico.
+	 *
+	 * @param nomeCatalog è il riferimento del catalogo
+	 * @param versione    è la versione del catalogo
+	 * @return l'URL del catalogo
+	 */
 	private String getUrlForCatalog(String nomeCatalog, String versione) {
-		return getContextPath() + "/" + CATALOG_BASE_URL + "?nomeCatalog=" + nomeCatalog + "&versione=" + versione;
+		String contextPath = configurazioneService.readValue(ChiaveConfigurazioneEnum.CONTEXT_PATH);
+		return contextPath + "/" + CATALOG_BASE_URL + "?nomeCatalog=" + nomeCatalog + "&versione=" + versione;
 	}
 
 }

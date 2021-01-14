@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -25,9 +24,7 @@ public class ResultController {
 
 	@RequestMapping("/")
 	public ModelAndView fileUploader() {
-
-		ModelAndView modelAndView = new ModelAndView("index");
-		return modelAndView;
+		return new ModelAndView("index");
 	}
 
 	@ModelAttribute("tipoDocumento")
@@ -37,25 +34,43 @@ public class ResultController {
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	public @ResponseBody
-	ModelAndView Validazione(@RequestParam("file") MultipartFile file,
+	ModelAndView validazione(@RequestParam("file") MultipartFile file,
 							 @RequestParam(value = "id") int id) {
 
 		ModelAndView paginaRisultato = new ModelAndView("result");
 		try {
 
+			// Eseguo la validazione
+			logger.info("Ricevuta richiesta di validazione per tipo documento {}", id);
 			ValidationReport risultatoValidazione = validatorService.effettuaValidazione(file.getBytes(), validatorService.getOvTipoDocumentoById(id));
+			if (risultatoValidazione == null) {
+				throw new NullPointerException("Nessun risultato di validazione consultabile");
+			}
 
-			paginaRisultato.addObject("contieneErroriFatali", Boolean.toString(risultatoValidazione.contieneErrori()));
-			paginaRisultato.addObject(CostantiWeb.RESULT_CONTROLLER_ASSERT_VALIDAZIONE, risultatoValidazione.getErroriDiValidazione());
-			paginaRisultato.addObject("erroreXsd", risultatoValidazione.getDescrizioneErroreXsd());
+			// Logging
+			logger.info(
+					"Risultato di validazione: {}",
+					!risultatoValidazione.contieneErrori()
+			);
 
-		} catch (IOException e) {
+			// Aggiunta dei risultati
+			paginaRisultato.addObject(
+					CostantiWeb.RESULT_CONTROLLER_ASSERT_VALIDAZIONE,
+					risultatoValidazione.getErroriDiValidazione()
+			);
+			paginaRisultato.addObject(
+					CostantiWeb.RESULT_CONTROLLER_ERRORE_XSD,
+					risultatoValidazione.getDescrizioneErroreXsd()
+			);
+
+		} catch (Exception e) {
+
+			// Logging dell'errore e gestione del messaggio
 			logger.error("Si è verificato un errore durante la validazione: {}", e.getMessage(), e);
 			paginaRisultato.addObject("errorMessage", e.getMessage());
 		}
 
 		return paginaRisultato;
-
 	}
 
 }

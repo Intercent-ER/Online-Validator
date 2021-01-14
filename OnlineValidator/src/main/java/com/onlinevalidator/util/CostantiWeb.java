@@ -5,7 +5,7 @@ package com.onlinevalidator.util;
  */
 public interface CostantiWeb {
 
-	String RESULT_CONTROLLER_ERRORI_FATALI = "contieneErroriFatali";
+	String RESULT_CONTROLLER_ERRORE_XSD = "erroreXsd";
 	String RESULT_CONTROLLER_ASSERT_VALIDAZIONE = "assertDiValidazione";
 
 }

@@ -10,9 +10,10 @@ import java.util.List;
 
 public interface ValidatorServiceInterface extends ApplicationLogger {
 
+	String NET_SF_SAXON_TRANSFORMER_FACTORY_IMPL = "net.sf.saxon.TransformerFactoryImpl";
+	String OWASP_FEATURES_TO_DISALLOW_DOCTYPE = "http://apache.org/xml/features/disallow-doctype-decl";
 	String OWASP_FEATURES_TO_DISALLOW_XXE_ENT = "http://xml.org/sax/features/external-general-entities";
 	String OWASP_FEATURES_TO_DISALLOW_XXE_PAR = "http://xml.org/sax/features/external-parameter-entities";
-	String OWASP_FEATURES_TO_DISALLOW_DOCTYPE = "http://apache.org/xml/features/disallow-doctype-decl";
 
 	/**
 	 * Recupera tutti i tipi documento.
