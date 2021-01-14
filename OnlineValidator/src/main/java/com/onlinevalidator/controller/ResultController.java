@@ -44,8 +44,10 @@ public class ResultController {
 		try {
 
 			ValidationReport risultatoValidazione = validatorService.effettuaValidazione(file.getBytes(), validatorService.getOvTipoDocumentoById(id));
+
 			paginaRisultato.addObject("contieneErroriFatali", Boolean.toString(risultatoValidazione.contieneErrori()));
 			paginaRisultato.addObject(CostantiWeb.RESULT_CONTROLLER_ASSERT_VALIDAZIONE, risultatoValidazione.getErroriDiValidazione());
+			paginaRisultato.addObject("erroreXsd", risultatoValidazione.getDescrizioneErroreXsd());
 
 		} catch (IOException e) {
 			logger.error("Si è verificato un errore durante la validazione: {}", e.getMessage(), e);

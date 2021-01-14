@@ -5,43 +5,48 @@
 <html>
 <head>
     <meta charset="ISO-8859-1">
-    <title>Upload result</title>
+    <title>Risultato validazione</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/index.css"/>">
 </head>
 <body>
 
-<c:if test="${!empty assertDiValidazione}">
+<c:if test="${ not empty erroreXsd }">
+    <h1>ERRORE XSD</h1>
+    <h2>${ erroreXsd }</h2>
+</c:if>
+
+<c:if test="${ not empty assertDiValidazione}">
 
     <table class="table">
-
-
-        <c:forEach items="${assertDiValidazione}" var="singoloAssert">
-
+        <c:forEach items="${ assertDiValidazione }" var="singoloAssert">
             <c:if test="singoloAssert.isWarning">
-                <c:var name="classeCss" value="classe-warning"/>
+                <c:set var="classeCss" value="classe-warning"/>
             </c:if>
             <c:if test="singoloAssert.isFatal">
-                <c:var name="classeCss" value="classe-fatal"/>
+                <c:set var="classeCss" value="classe-fatal"/>
             </c:if>
-
-            <tr>test:var.test</tr>
-            <tr>percorso:var.location</tr>
-            <tr class="classeCss">errore:var.testo</tr>
-
+            <tr>
+                <td>Test</td>
+                <td>${ singoloAssert.test }</td>
+            </tr>
+            <tr>
+                <td>Percorso</td>
+                <td>${ singoloAssert.location }</td>
+            </tr>
+            <tr>
+                <td>Errore</td>
+                <td class="${ classeCss }">${ singoloAssert.testo }</td>
+            </tr>
         </c:forEach>
     </table>
 </c:if>
+<c:if test="${ empty assertDiValidazione}">
+    <h1>Validazione completata con successo</h1>
+</c:if>
 
+<div>
+    <a href="../">Torna indietro</a>.
+</div>
 
-dentro al forEach, dopo la valutazione sopra, qualcosa del genere
-
-
-<tr>(celle...)
-    <td class="${classeCss}"></td>
-    (celle...)
-</tr>
-
-
-<h2>${message}</h2>
 </body>
 </html>

@@ -61,7 +61,7 @@ public class ValidationReportTest {
 		List<ValidationAssert> lista1 = validationReport.getErroriDiValidazione();
 		List<ValidationAssert> lista2 = validationReport.getErroriDiValidazione();
 
-		assertNotSame(lista1, lista2);
+		assertSame(lista1, lista2);
 
 	}
 }

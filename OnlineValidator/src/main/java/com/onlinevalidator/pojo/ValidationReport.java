@@ -66,9 +66,7 @@ public class ValidationReport {
 		if (erroriDiValidazione == null || erroriDiValidazione.isEmpty()) {
 			return Collections.emptyList();
 		}
-		List<ValidationAssert> assertDiValidazione = new ArrayList<>(erroriDiValidazione.size());
-		Collections.copy(erroriDiValidazione, assertDiValidazione);
-		return assertDiValidazione;
+		return erroriDiValidazione;
 	}
 
 	public String getDescrizioneErroreXsd() {

@@ -34,26 +34,26 @@
 <div class="container row validation-container">
 	<div
 			class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 d-flex flex-column justify-content-center">
-		<form method="POST" action="/OnlineValidator/uploadFile"
-			  enctype="multipart/form-data">
+		<form:form method="POST" action="uploadFile.html"
+				   enctype="multipart/form-data">
 
 			<div class="d-flex flex-column container file-container">
 				<span class="subtitle">File</span> <input type="file" name="file"
-														  accept=".txt, text/plain"/>
+														  accept=".xml, text/plain"/>
 			</div>
 
 			<div class="d-flex flex-column container file-type-container">
 				<span class="subtitle">Tipo di file</span> <select
 					class="entity-select" type="select" name="id">
 				<c:forEach items="${tipoDocumento}" var="val">
-                    <option type="int" value="${val.idTipoDocumento}">${val.name}</option>
-                </c:forEach>
+					<option type="int" value="${val.idTipoDocumento}">${val.name}</option>
+				</c:forEach>
 			</select>
 			</div>
 			<div class="d-flex container file-submit-container">
 				<input class="submit-data" type="submit" value="Valida"/>
 			</div>
-		</form>
+		</form:form>
 	</div>
 </div>
 

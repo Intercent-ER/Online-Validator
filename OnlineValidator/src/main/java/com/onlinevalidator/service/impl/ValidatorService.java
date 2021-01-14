@@ -2,14 +2,12 @@ package com.onlinevalidator.service.impl;
 
 import com.onlinevalidator.generatedsources.xsd.FailedAssert;
 import com.onlinevalidator.generatedsources.xsd.SchematronOutput;
-import com.onlinevalidator.model.OvCatalog;
 import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.model.OvValidatore;
 import com.onlinevalidator.model.enumerator.ChiaveConfigurazioneEnum;
 import com.onlinevalidator.model.enumerator.TipoFileEnum;
 import com.onlinevalidator.pojo.ValidationAssert;
 import com.onlinevalidator.pojo.ValidationReport;
-import com.onlinevalidator.repository.OvCatalogJpaRepository;
 import com.onlinevalidator.repository.OvTipoDocumentoJpaRepository;
 import com.onlinevalidator.service.ConfigurazioneServiceInterface;
 import com.onlinevalidator.service.LocalServiceUriResolverInterface;
@@ -61,9 +59,6 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 	@Autowired
 	private OvTipoDocumentoJpaRepository tipoDocumentoRepository;
-
-	@Autowired
-	private OvCatalogJpaRepository catalogJpaRepository;
 
 	@Autowired
 	private LocalServiceUriResolverInterface uriResolver;
@@ -350,16 +345,12 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 
 	private Templates createAndCacheSchematronTemplate(OvValidatore validatore) throws TransformerConfigurationException {
-		Templates schematronTemplates;
 		String blobSchematron = new String(validatore.getBlFile());
 
 		StreamSource schematronSource = new StreamSource(new StringReader(blobSchematron));
-		TransformerFactory schematronFactory = TransformerFactory.newInstance();
-		// Sopprima il warning relativo alla vesione dell'XSTL
-		// processor
-		schematronFactory.setAttribute("http://saxon.sf.net/feature/version-warning", Boolean.FALSE);
+		TransformerFactory schematronFactory = TransformerFactory.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
 
-		schematronTemplates = schematronFactory.newTemplates(schematronSource);
+		Templates schematronTemplates = schematronFactory.newTemplates(schematronSource);
 		cacheSchematron.put(validatore.getIdValidatore(), schematronTemplates);
 		return schematronTemplates;
 	}
@@ -370,10 +361,6 @@ public class ValidatorService implements ValidatorServiceInterface {
 	}
 
 	private void addAllParameters(Transformer transformer) {
-		List<OvCatalog> listaDeiCataloghiCompleta = catalogJpaRepository.findAll();
-		for (OvCatalog catalogo : listaDeiCataloghiCompleta) {
-			transformer.setParameter(catalogo.getNmNome().name(), catalogo.getCdUrl());
-		}
 		transformer.setParameter("xclUnitOfMeasureCode", getUrlForCatalog("UnitOfMeasureCode", "2.1"));
 		transformer.setParameter("xclPaymentMeansCode", getUrlForCatalog("PaymentMeansCode", "2.1"));
 		transformer.setParameter("xclFormatoAttachment", getUrlForCatalog("FormatoAttachment", "2.1"));
