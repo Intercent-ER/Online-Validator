@@ -20,9 +20,9 @@ public class ValidationAssert {
 		this.location = location;
 		this.testo = testo;
 		if (flag != null) {
-			if (flag.equalsIgnoreCase("fatal")) {
+			if ("fatal".equalsIgnoreCase(flag)) {
 				fatal = true;
-			} else if (flag.equalsIgnoreCase("warning")) {
+			} else if ("warning".equalsIgnoreCase(flag)) {
 				warning = true;
 			}
 		}

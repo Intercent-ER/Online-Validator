@@ -14,7 +14,9 @@ public class ConfigurationNotFoundException extends RuntimeException {
 		return new ConfigurationNotFoundException(
 				String.format(
 						"Non è stato possibile recuperare il valore della configurazione %s",
-						chiaveConfigurazioneEnum.name()
+						chiaveConfigurazioneEnum != null ?
+								chiaveConfigurazioneEnum.name()
+								: "null"
 				)
 		);
 	}

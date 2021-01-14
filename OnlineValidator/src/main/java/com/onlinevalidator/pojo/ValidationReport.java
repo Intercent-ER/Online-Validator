@@ -28,9 +28,7 @@ public class ValidationReport {
 	 */
 	public boolean contieneErrori() {
 
-
 		if (erroriDiValidazione != null && !erroriDiValidazione.isEmpty()) {
-
 
 			for (ValidationAssert validationAssert : erroriDiValidazione) {
 
@@ -38,12 +36,8 @@ public class ValidationReport {
 					return true;
 				}
 			}
-
-
 		}
 		return false;
-
-
 	}
 
 	/**
@@ -75,6 +69,10 @@ public class ValidationReport {
 		List<ValidationAssert> assertDiValidazione = new ArrayList<>(erroriDiValidazione.size());
 		Collections.copy(erroriDiValidazione, assertDiValidazione);
 		return assertDiValidazione;
+	}
+
+	public String getDescrizioneErroreXsd() {
+		return descrizioneErroreXsd;
 	}
 
 }
