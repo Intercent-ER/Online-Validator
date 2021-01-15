@@ -338,7 +338,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 	public Collection<ValidationAssert> validazioneSemantica(String documentoXml, Templates xslt) {
 		Vector<ValidationAssert> vectorResult = new Vector<>();
 
-		logInfo("Eseguo validazione schematron");
+		logDebug("Eseguo validazione schematron");
 
 		try {
 			Transformer transformer = xslt.newTransformer();
