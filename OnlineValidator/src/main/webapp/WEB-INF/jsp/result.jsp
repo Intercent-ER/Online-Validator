@@ -6,19 +6,22 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>Risultato validazione</title>
-    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/index.css"/>">
+    <%@include file="common/css.jsp" %>
+    <%@include file="common/script.jsp" %>
 </head>
 <body>
 
+<%@ include file="common/header.jsp" %>
+
 <c:if test="${ not empty erroreXsd }">
-    <h1>ERRORE XSD</h1>
-    <h2>${ erroreXsd }</h2>
+<h1>ERRORE XSD</h1>
+<h2>${ erroreXsd }</h2>
 </c:if>
 
 <c:if test="${ not empty assertDiValidazione}">
 
-    <table class="table">
-        <c:forEach items="${ assertDiValidazione }" var="singoloAssert">
+<table class="table">
+    <c:forEach items="${ assertDiValidazione }" var="singoloAssert">
             <c:if test="singoloAssert.isWarning">
                 <c:set var="classeCss" value="classe-warning"/>
             </c:if>
@@ -38,15 +41,14 @@
                 <td class="${ classeCss }">${ singoloAssert.testo }</td>
             </tr>
         </c:forEach>
-    </table>
+</table>
 </c:if>
 <c:if test="${ empty assertDiValidazione}">
-    <h1>Validazione completata con successo</h1>
+<h1>Validazione completata con successo</h1>
 </c:if>
 
 <div>
     <a href="../">Torna indietro</a>.
 </div>
 
-</body>
-</html>
+<%@ include file="common/footer.jsp" %>
