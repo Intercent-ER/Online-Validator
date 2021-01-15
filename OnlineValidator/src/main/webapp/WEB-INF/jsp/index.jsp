@@ -16,8 +16,7 @@
 <%@ include file="common/header.jsp" %>
 
 <div class="container row validation-container">
-	<div
-			class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 d-flex flex-column justify-content-center">
+	<div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 d-flex flex-column justify-content-center">
 		<form:form method="POST" action="uploadFile.html"
 				   enctype="multipart/form-data">
 

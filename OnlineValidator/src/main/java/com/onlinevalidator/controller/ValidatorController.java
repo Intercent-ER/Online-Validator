@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -73,14 +72,17 @@ public class ValidatorController {
 		return paginaRisultato;
 	}
 
-	@RequestMapping(value = "/dadecidere", method = RequestMethod.GET)
+	@RequestMapping(value = "/esportaRisultato", method = RequestMethod.GET)
 	public void stampaXml(HttpServletResponse response, @RequestParam("reportValidazione") ValidationReport report) {
 		String xmlConvertito = convertiInXml(report);
 		try {
-			FileUtil.outputFile(response, new ByteArrayInputStream(xmlConvertito.getBytes(StandardCharsets.UTF_8)),
-					"esito-validazione.xml");
-		} catch (IOException e) {
-			e.printStackTrace();
+			FileUtil.outputFile(
+					response,
+					new ByteArrayInputStream(xmlConvertito.getBytes(StandardCharsets.UTF_8)),
+					"esito-validazione.xml"
+			);
+		} catch (Exception e) {
+			logger.error("Si è verificato un errore durante l'esportazione: {}", e.getMessage(), e);
 		}
 	}
 
