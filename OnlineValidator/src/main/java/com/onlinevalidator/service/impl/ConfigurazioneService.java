@@ -25,7 +25,7 @@ public class ConfigurazioneService implements ConfigurazioneServiceInterface {
 
 	@PostConstruct
 	public void init() {
-		logInfo("Inizializzazione cache...");
+		logInfo("Inizializzazione cache configurazione");
 		this.cache = new HashMap<>();
 	}
 
