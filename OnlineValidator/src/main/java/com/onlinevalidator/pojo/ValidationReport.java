@@ -73,4 +73,7 @@ public class ValidationReport {
 		return descrizioneErroreXsd;
 	}
 
+	public void setDescrizioneErroreXsd(String descrizioneErroreXsd) {
+		this.descrizioneErroreXsd = descrizioneErroreXsd;
+	}
 }

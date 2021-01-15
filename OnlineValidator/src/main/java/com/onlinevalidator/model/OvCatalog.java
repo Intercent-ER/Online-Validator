@@ -38,6 +38,9 @@ public class OvCatalog implements Serializable {
 	@Column(name = "CD_VERSIONE", nullable = false, length = 50)
 	private String cdVersione;
 
+	@Column(name = "CD_PARAMETRO_XSL", length = 100)
+	private String cdParametroXsl;
+
 	public OvCatalog() {
 	}
 
@@ -90,4 +93,11 @@ public class OvCatalog implements Serializable {
 		this.cdVersione = versione;
 	}
 
+	public String getCdParametroXsl() {
+		return cdParametroXsl;
+	}
+
+	public void setCdParametroXsl(String cdParametroXsl) {
+		this.cdParametroXsl = cdParametroXsl;
+	}
 }

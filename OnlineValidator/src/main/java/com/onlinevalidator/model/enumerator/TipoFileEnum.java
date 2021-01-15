@@ -5,6 +5,11 @@ package com.onlinevalidator.model.enumerator;
  */
 public enum TipoFileEnum {
 
-	XSD, SCHEMATRON
+	XSD, SCHEMATRON;
+
+	@Override
+	public String toString() {
+		return name();
+	}
 
 }

@@ -21,10 +21,12 @@ import static com.onlinevalidator.util.FileUtil.outputFile;
 @Controller
 public class CatalogController {
 
+	public static final String CATALOG_BASE_URL = "catalog";
+
 	@Autowired
 	private OvCatalogJpaRepository catalogJpaRepository;
 
-	@RequestMapping(value = "/catalog", method = RequestMethod.GET)
+	@RequestMapping(value = "/" + CATALOG_BASE_URL, method = RequestMethod.GET)
 	public void getCatalog(HttpServletResponse response, @RequestParam(value = "nomeCatalog") String nomeCatalog,
 						   @RequestParam(value = "versione") String versione) throws IOException {
 		OvCatalog catalog = catalogJpaRepository.getOneBy(nomeCatalog, versione);

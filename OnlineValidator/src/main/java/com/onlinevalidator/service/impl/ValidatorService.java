@@ -1,13 +1,16 @@
 package com.onlinevalidator.service.impl;
 
+import com.onlinevalidator.controller.CatalogController;
 import com.onlinevalidator.generatedsources.xsd.FailedAssert;
 import com.onlinevalidator.generatedsources.xsd.SchematronOutput;
+import com.onlinevalidator.model.OvCatalog;
 import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.model.OvValidatore;
 import com.onlinevalidator.model.enumerator.ChiaveConfigurazioneEnum;
 import com.onlinevalidator.model.enumerator.TipoFileEnum;
 import com.onlinevalidator.pojo.ValidationAssert;
 import com.onlinevalidator.pojo.ValidationReport;
+import com.onlinevalidator.repository.OvCatalogJpaRepository;
 import com.onlinevalidator.repository.OvTipoDocumentoJpaRepository;
 import com.onlinevalidator.service.ConfigurazioneServiceInterface;
 import com.onlinevalidator.service.LocalServiceUriResolverInterface;
@@ -16,6 +19,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -45,22 +49,40 @@ import java.util.*;
 public class ValidatorService implements ValidatorServiceInterface {
 
 	private static final String XML_CATALOG_XML = "xml-catalog.xml";
-	private static final String CATALOG_BASE_URL = "catalog.html";
+	private static final String CATALOG_BASE_URL = CatalogController.CATALOG_BASE_URL + ".html";
+	private static final boolean OWASP_FEATURES_TO_DISALLOW_XXE_PAR_VALUE = false;
+	private static final boolean OWASP_FEATURES_TO_DISALLOW_XXE_ENT_VALUE = false;
+	private static final boolean OWASP_FEATURES_TO_DISALLOW_DOCTYPE_VALUE = true;
+	private static final String LOGGING_KEY_VALUE = "{}={}";
 
 	// Mappa che contiene i validatori XSD gestiti in cache (chiave: Validatore.id; valore: Schema)
 	private Map<Integer, Schema> cacheXsd;
 
 	// Mappa che contiene i validatori SCH gestiti in cache (chiave: Validatore.id; valore: Templates)
 	private Map<Integer, Templates> cacheSchematron;
-	private URL urlRisorsa;
+
+	// Mappa dei parametri da impostare sugli XSLT
+	private Map<String, String> xsltParameters;
+
+	private URL urlFileXmlCatalog;
+
+	@Autowired
+	private OvCatalogJpaRepository catalogJpaRepository;
+	public static final boolean NAMESPACE_AWARE = true;
+	public static final boolean IGNORING_ELEMENT_CONTENT_WHITESPACE = true;
 
 	@PostConstruct
 	public void init() throws FileNotFoundException {
+
+		// Inizializzazione cache dei validatori
+		logInfo("Inizializzazione cache validatori {}", TipoFileEnum.XSD.name());
 		this.cacheXsd = new HashMap<>();
+		logInfo("Inizializzazione cache validatori {}", TipoFileEnum.SCHEMATRON.name());
 		this.cacheSchematron = new HashMap<>();
 
-		this.urlRisorsa = getClass().getClassLoader().getResource(XML_CATALOG_XML);
-		if (urlRisorsa == null) {
+		// Inizializzazione della risorsa XML-CATALOG
+		this.urlFileXmlCatalog = getClass().getClassLoader().getResource(XML_CATALOG_XML);
+		if (urlFileXmlCatalog == null) {
 			logError(
 					"Attenzione, si è verificato un errore durante il recupero del catalogo, verificare che il file {} sia presente dentro al progetto",
 					XML_CATALOG_XML
@@ -72,6 +94,9 @@ public class ValidatorService implements ValidatorServiceInterface {
 					)
 			);
 		}
+
+		// Recupera ed inizializza una tantum i parametri XSLT da utilizzare per i cataloghi
+		initXsltParameters();
 	}
 
 	@Autowired
@@ -98,21 +123,26 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 		if (tipodocumento == null) {
 
-			logError("Attenzione, invocazione del metodo sbagliata");
-
-			throw new IllegalStateException("Errore 1");
+			logError("Impossibile recuperare un tipo documento null");
+			throw new NullPointerException("Tipo documento null");
 		}
+
 		if (tipoFileEnum == null) {
 
-			throw new IllegalStateException("Errore 2");
+			logError("Impossibile recuperare un tipo file null");
+			throw new NullPointerException("Tipo file enum null");
 		}
+
+		logDebug("Recupero dei validatori associati al tipo documento {}", tipodocumento.getIdTipoDocumento());
 		List<OvValidatore> validatoriSuTipodocumento = tipodocumento.getValidatori();
 		for (OvValidatore validatoreCorrente : validatoriSuTipodocumento) {
-			if (tipoFileEnum.equals(validatoreCorrente.getCdTipoFile())) {
 
+			if (tipoFileEnum.equals(validatoreCorrente.getCdTipoFile())) {
+				logDebug("Ritrovato il validatore {}", validatoreCorrente.getIdValidatore());
 				return validatoreCorrente;
 			}
 		}
+
 		logError("Validatore non trovato");
 		return null;
 	}
@@ -136,7 +166,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 			// Logging dell'errore e restituzione del report contenente solo l'errore XSD
 			logError("Si è verificato un errore in sede di validazione XSD: {}", e.getMessage(), e);
-			validationReport.aggiungiDettaglio(
+			validationReport.setDescrizioneErroreXsd(
 					e.getMessage()
 			);
 			return validationReport;
@@ -179,27 +209,34 @@ public class ValidatorService implements ValidatorServiceInterface {
 			throws SAXException, ParserConfigurationException, IOException {
 
 		logInfo("Avvio validazione XSD del documento");
+		logDebug("Costruzione istanza {}", DocumentBuilderFactory.class.getName());
 		DocumentBuilderFactory lFactory = DocumentBuilderFactory.newInstance();
 
-		logInfo("Configurazione delle impostazioni del validatore XSD");
+		logDebug("Avvio configurazione delle impostazioni del validatore XSD");
+
 		/*
-		 * Disallow delle features XXE per impedire un possibile attacco con XML
+		 * Disabilitazione delle features XXE per impedire un possibile attacco con XML
 		 * Injection.
 		 */
-		lFactory.setFeature(OWASP_FEATURES_TO_DISALLOW_XXE_ENT, false);
-		lFactory.setFeature(OWASP_FEATURES_TO_DISALLOW_XXE_PAR, false);
-		lFactory.setFeature(OWASP_FEATURES_TO_DISALLOW_DOCTYPE, true);
+		lFactory.setFeature(OWASP_FEATURES_TO_DISALLOW_XXE_ENT, OWASP_FEATURES_TO_DISALLOW_XXE_ENT_VALUE);
+		logDebug(LOGGING_KEY_VALUE, OWASP_FEATURES_TO_DISALLOW_XXE_ENT, OWASP_FEATURES_TO_DISALLOW_XXE_ENT_VALUE);
+		lFactory.setFeature(OWASP_FEATURES_TO_DISALLOW_XXE_PAR, OWASP_FEATURES_TO_DISALLOW_XXE_PAR_VALUE);
+		logDebug(LOGGING_KEY_VALUE, OWASP_FEATURES_TO_DISALLOW_XXE_PAR, OWASP_FEATURES_TO_DISALLOW_XXE_PAR_VALUE);
+		lFactory.setFeature(OWASP_FEATURES_TO_DISALLOW_DOCTYPE, OWASP_FEATURES_TO_DISALLOW_DOCTYPE_VALUE);
+		logDebug(LOGGING_KEY_VALUE, OWASP_FEATURES_TO_DISALLOW_DOCTYPE, OWASP_FEATURES_TO_DISALLOW_DOCTYPE_VALUE);
 
 		// Configurazione per la validazione XSD
-		lFactory.setNamespaceAware(true);
-		lFactory.setIgnoringElementContentWhitespace(true);
+		lFactory.setNamespaceAware(NAMESPACE_AWARE);
+		logDebug(LOGGING_KEY_VALUE, "namespaceAware", NAMESPACE_AWARE);
+		lFactory.setIgnoringElementContentWhitespace(IGNORING_ELEMENT_CONTENT_WHITESPACE);
+		logDebug(LOGGING_KEY_VALUE, "ignoringElementContentWhitespace", IGNORING_ELEMENT_CONTENT_WHITESPACE);
 		lFactory.setSchema(schema);
 
 		DocumentBuilder dBuilder = lFactory.newDocumentBuilder();
 		setDefaultErrorHandler(dBuilder);
 
 		// Applico la validazione XSD al documento
-		logInfo("Validazione in corso...");
+		logDebug("Avvio della validazione xsd");
 		dBuilder.parse(
 				IOUtils.toInputStream(
 						new String(
@@ -208,6 +245,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 						)
 				)
 		);
+		logDebug("Validazione xsd conclusa");
 	}
 
 	/**
@@ -242,7 +280,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 		SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		schemaFactory.setResourceResolver(
 				new com.sun.org.apache.xerces.internal.util.XMLCatalogResolver(
-						new String[]{urlRisorsa.toExternalForm()}
+						new String[]{urlFileXmlCatalog.toExternalForm()}
 				)
 		);
 
@@ -337,7 +375,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 			}
 
 		} catch (TransformerException | JAXBException e) {
-			logError("ERRORE VALIDAZIONE SCHEMATRON!", e);
+			logError("Si è verificato un errore durante l'applicazione della validazione schematron: {}", e.getMessage(), e);
 			throw new IllegalStateException("ERRORE VALIDAZIONE SCHEMATRON DOCUMENTO:", e);
 		}
 
@@ -362,6 +400,13 @@ public class ValidatorService implements ValidatorServiceInterface {
 		return schematronTemplates;
 	}
 
+	/**
+	 * Inizializza e inserisce in cache un validatore schematron.
+	 *
+	 * @param validatore è l'oggetto responsabile della validazione
+	 * @return il template XSLT
+	 * @throws TransformerConfigurationException nel caso in cui qualcosa vada storto in fase di configurazione
+	 */
 	private Templates createAndCacheSchematronTemplate(OvValidatore validatore) throws TransformerConfigurationException {
 		String blobSchematron = new String(validatore.getBlFile());
 
@@ -379,18 +424,20 @@ public class ValidatorService implements ValidatorServiceInterface {
 	 * @param transformer è il transformer che deve essere configurato
 	 */
 	private void buildTransformer(Transformer transformer) {
+
+		// Imposto l'URI resolver
 		transformer.setURIResolver(uriResolver);
-		transformer.setParameter("xclUnitOfMeasureCode", getUrlForCatalog("UnitOfMeasureCode", "2.1"));
-		transformer.setParameter("xclPaymentMeansCode", getUrlForCatalog("PaymentMeansCode", "2.1"));
-		transformer.setParameter("xclFormatoAttachment", getUrlForCatalog("FormatoAttachment", "2.1"));
-		transformer.setParameter("xclCategoriaImposte", getUrlForCatalog("CategoriaImposte", "2.1"));
-		transformer.setParameter("xclTipoDocumento", getUrlForCatalog("TipoDocumento", "2.1"));
-		transformer.setParameter("xclVATSchemes", getUrlForCatalog("VATSchemes", "2.1"));
-		transformer.setParameter("xclProvinceItaliane", getUrlForCatalog("ProvinceItaliane", "1.0"));
-		transformer.setParameter("xclTipoFattura", getUrlForCatalog("TipoFattura", "2.1"));
-		transformer.setParameter("xclTipoParcella", getUrlForCatalog("TipoParcella", "2.1"));
-		transformer.setParameter("xclOrderTypeCode", getUrlForCatalog("OrderTypeCode", "2.1"));
-		transformer.setParameter("xclHandlingCode", getUrlForCatalog("HandlingCode", "2.1"));
+
+		// Configuro tutti i parametri XSLT previsti
+		Set<String> keySet = xsltParameters.keySet();
+		for (String key : keySet) {
+
+			// Recupero il parametro e lo configuro nel transformer
+			String xsltParam = xsltParameters.get(key);
+			logDebug("Imposto parametro XSLT [{}=\"{}\"]", key, xsltParam);
+			transformer.setParameter(key, xsltParameters.get(key));
+		}
+
 	}
 
 	/**
@@ -403,6 +450,46 @@ public class ValidatorService implements ValidatorServiceInterface {
 	private String getUrlForCatalog(String nomeCatalog, String versione) {
 		String contextPath = configurazioneService.readValue(ChiaveConfigurazioneEnum.CONTEXT_PATH);
 		return contextPath + "/" + CATALOG_BASE_URL + "?nomeCatalog=" + nomeCatalog + "&versione=" + versione;
+	}
+
+	/**
+	 * Inizializza la mappa di parametri XSLT da configurare sul Transformer.
+	 */
+	private void initXsltParameters() {
+
+		// Recupero tutti i cataloghi
+		List<OvCatalog> cataloghi = catalogJpaRepository.findAll();
+
+		// Mi assicuro che la lista dei cataloghi non sia vuota
+		if (CollectionUtils.isEmpty(cataloghi)) {
+
+			// Logging dell'errore
+			logError("Nessun catalogo presente all'interno del sistema, verificare la configurazione");
+			throw new IllegalStateException(
+					"OV_CATALOG table is empty"
+			);
+		}
+
+		// Verifico che tutti i cataloghi abbiano configurato il codice del parametro XSL
+		if (cataloghi.stream()
+				.map(OvCatalog::getCdParametroXsl)
+				.anyMatch(StringUtils::isEmpty)) {
+			logError("Attenzione, uno o più cataloghi non presentano la definizione del campo OV_CATALOG.CD_PARAMETRO_XSL, verificare la configurazione");
+			throw new IllegalStateException(
+					"OV_CATALOG table is inconsistent"
+			);
+		}
+
+		// Imposto i parametri XSLT
+		this.xsltParameters = new HashMap<>();
+		logInfo("Impostazione dei parametri XSLT");
+		cataloghi.forEach(ovCatalog -> this.xsltParameters.put(
+				ovCatalog.getCdParametroXsl(),
+				getUrlForCatalog(
+						ovCatalog.getNmNome().name(),
+						ovCatalog.getCdVersione()
+				)
+		));
 	}
 
 }
