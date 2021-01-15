@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/report" xmlns:tns="http://www.example.org/report" elementFormDefault="qualified">
+
+	<element name="report" type="tns:tp_report" />
+	
+	<complexType name="tp_report">
+		<sequence>
+			<element name="test" type="string" minOccurs="1" maxOccurs="unbounded"/>
+			<element name="percorso" type="string" minOccurs="1" maxOccurs="unbounded"/>
+			<element name="errore" type="string" minOccurs="1" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+</schema>
