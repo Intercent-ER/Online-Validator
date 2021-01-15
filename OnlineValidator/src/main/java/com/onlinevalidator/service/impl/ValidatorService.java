@@ -471,9 +471,14 @@ public class ValidatorService implements ValidatorServiceInterface {
 		}
 
 		// Verifico che tutti i cataloghi abbiano configurato il codice del parametro XSL
-		if (cataloghi.stream()
-				.map(OvCatalog::getCdParametroXsl)
-				.anyMatch(StringUtils::isEmpty)) {
+		boolean foundCatalogNoXsltCode = false;
+		for (OvCatalog ovCatalog : cataloghi) {
+			if (StringUtils.isEmpty(ovCatalog.getCdParametroXsl())) {
+				logWarn("Il catalogo {} (id={}) non definisce un parametro XSLT", ovCatalog.getNmNome(), ovCatalog.getIdCatalog());
+				foundCatalogNoXsltCode = true;
+			}
+		}
+		if (foundCatalogNoXsltCode) {
 			logError("Attenzione, uno o più cataloghi non presentano la definizione del campo OV_CATALOG.CD_PARAMETRO_XSL, verificare la configurazione");
 			throw new IllegalStateException(
 					"OV_CATALOG table is inconsistent"
