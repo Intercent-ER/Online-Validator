@@ -26,7 +26,7 @@ public class OvTipoDocumento implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private NomeTipoDocumentoEnum nmNome;
 
-	@OneToMany(mappedBy = "tipoDocumento", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "tipoDocumento", fetch = FetchType.EAGER)
 	private List<OvValidatore> validatori;
 
 	public OvTipoDocumento() {
