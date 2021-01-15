@@ -20,9 +20,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Controller
-public class ResultController {
+public class ValidatorController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ResultController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ValidatorController.class);
 
 	@Autowired
 	private ValidatorService validatorService;

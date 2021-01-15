@@ -3,7 +3,7 @@ package com.onlinevalidator.controller;
 import org.junit.Test;
 
 // TODO da scrivere
-public class ResultControllerTest {
+public class ValidatorControllerTest {
 
 	@Test
 	public void getAllTipoDocumento() {
