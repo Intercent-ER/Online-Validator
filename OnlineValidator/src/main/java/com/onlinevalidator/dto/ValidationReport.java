@@ -1,4 +1,4 @@
-package com.onlinevalidator.pojo;
+package com.onlinevalidator.dto;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,17 +27,7 @@ public class ValidationReport {
 	 * @return <code>true</code> nel caso in cui l'esito della validazione non sia positivo
 	 */
 	public boolean contieneErrori() {
-
-		if (erroriDiValidazione != null && !erroriDiValidazione.isEmpty()) {
-
-			for (ValidationAssert validationAssert : erroriDiValidazione) {
-
-				if (validationAssert.isFatal()) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return erroriDiValidazione != null && !erroriDiValidazione.isEmpty();
 	}
 
 	/**

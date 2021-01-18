@@ -1,5 +1,6 @@
 package com.onlinevalidator.pojo;
 
+import com.onlinevalidator.dto.ValidationAssert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

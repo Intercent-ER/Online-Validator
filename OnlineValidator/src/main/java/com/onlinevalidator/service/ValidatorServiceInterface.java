@@ -1,9 +1,9 @@
 package com.onlinevalidator.service;
 
+import com.onlinevalidator.dto.ValidationReport;
 import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.model.OvValidatore;
 import com.onlinevalidator.model.enumerator.TipoFileEnum;
-import com.onlinevalidator.pojo.ValidationReport;
 import com.onlinevalidator.util.ApplicationLogger;
 
 import java.util.List;

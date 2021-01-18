@@ -13,11 +13,16 @@
     <script type="text/javascript">
 
         function esportaXml() {
-
+            esporta('XML')
         }
 
         function esportaPdf() {
+            esporta('PDF')
+        }
 
+        function esporta(tipoRendering) {
+            document.getElementById('tipoRenderingId').value = tipoRendering;
+            document.getElementById('renderingFormId').submit()
         }
 
     </script>
@@ -76,5 +81,9 @@
         <a href="./">Torna indietro</a>.
     </div>
 </div>
+
+<form action="esportaRisultato.html" method="get" id="renderingFormId">
+    <input name="tipoRendering" type="hidden" id="tipoRenderingId"/>
+</form>
 
 <%@ include file="common/footer.jsp" %>

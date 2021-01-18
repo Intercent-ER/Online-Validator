@@ -1,4 +1,4 @@
-package com.onlinevalidator.pojo;
+package com.onlinevalidator.dto;
 
 /**
  * @author Manuel Gozzi

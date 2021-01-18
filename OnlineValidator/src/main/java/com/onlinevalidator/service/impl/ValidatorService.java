@@ -1,6 +1,8 @@
 package com.onlinevalidator.service.impl;
 
 import com.onlinevalidator.controller.CatalogController;
+import com.onlinevalidator.dto.ValidationAssert;
+import com.onlinevalidator.dto.ValidationReport;
 import com.onlinevalidator.generatedsources.xsd.FailedAssert;
 import com.onlinevalidator.generatedsources.xsd.SchematronOutput;
 import com.onlinevalidator.model.OvCatalog;
@@ -8,8 +10,6 @@ import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.model.OvValidatore;
 import com.onlinevalidator.model.enumerator.ChiaveConfigurazioneEnum;
 import com.onlinevalidator.model.enumerator.TipoFileEnum;
-import com.onlinevalidator.pojo.ValidationAssert;
-import com.onlinevalidator.pojo.ValidationReport;
 import com.onlinevalidator.repository.OvCatalogJpaRepository;
 import com.onlinevalidator.repository.OvTipoDocumentoJpaRepository;
 import com.onlinevalidator.service.ConfigurazioneServiceInterface;
