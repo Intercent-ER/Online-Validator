@@ -9,11 +9,14 @@ import com.onlinevalidator.dto.ValidationReport;
 import com.onlinevalidator.exception.rendering.PdfRenderingException;
 import com.onlinevalidator.exception.rendering.RenderingException;
 import com.onlinevalidator.exception.rendering.XmlRenderingException;
+import com.onlinevalidator.generatedsources.xsd.rendering.*;
 import com.onlinevalidator.pojo.TipoRenderingEnum;
 import com.onlinevalidator.service.RenderingServiceInterface;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -27,16 +30,35 @@ public class RenderingService implements RenderingServiceInterface {
 
 	private static final String TITILLIUM_WEB_FONT = "/fonts/TitilliumWeb-Regular.ttf";
 	private static final String TITILLIUM_WEB_FONT_BOLD = "/fonts/TitilliumWeb-Bold.ttf";
-	private BaseFont PDF_MAIN_FONT, PDF_MAIN_FONT_BOLD;
+	private BaseFont pdfMainFont, pdfMainFontBold;
+
+	private JAXBContext context;
 
 	@PostConstruct
 	public void init() {
+
 		try {
+
+			// Inizializzazione dei font PDF
 			logInfo("Inizializzazione font ");
-			PDF_MAIN_FONT = BaseFont.createFont(TITILLIUM_WEB_FONT, BaseFont.WINANSI, true);
-			PDF_MAIN_FONT_BOLD = BaseFont.createFont(TITILLIUM_WEB_FONT_BOLD, BaseFont.WINANSI, true);
+			this.pdfMainFont = BaseFont.createFont(TITILLIUM_WEB_FONT, BaseFont.WINANSI, true);
+			this.pdfMainFontBold = BaseFont.createFont(TITILLIUM_WEB_FONT_BOLD, BaseFont.WINANSI, true);
 		} catch (IOException | DocumentException e) {
+
+			// Logging dell'errore e restituzione dell'errore
 			logError("Si è verificato un errore durante l'impostazione del font per il rendering PDF: {}", e.getMessage(), e);
+			throw new IllegalStateException(e);
+		}
+
+		try {
+
+			// Costruzione del contesto JAXB
+			logInfo("Inizializzazione contesto JAXB");
+			this.context = JAXBContext.newInstance(RapportoValidazione.class);
+		} catch (JAXBException e) {
+
+			// Logging dell'errore e restituzione dell'errore
+			logError("Si è verificato un errore durante la costruzione del contesto JAXB: {}", e.getMessage(), e);
 			throw new IllegalStateException(e);
 		}
 	}
@@ -103,7 +125,65 @@ public class RenderingService implements RenderingServiceInterface {
 			throw new XmlRenderingException("Impossibile eseguire il rendering XML: null");
 		}
 
-		return null;
+		try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+
+			RapportoValidazione rapportoValidazione = convertiInRapportoValidazione(validationReport);
+			context.createMarshaller().marshal(rapportoValidazione, byteArrayOutputStream);
+
+			TipoRenderingEnum xml = TipoRenderingEnum.XML;
+			return new Render(
+					byteArrayOutputStream.toByteArray(),
+					xml,
+					getFileName(xml)
+			);
+
+		} catch (Exception e) {
+
+			logError("Si è verificato un errore in fase di rendering XML: {}", e.getMessage(), e);
+			throw new XmlRenderingException(e);
+		}
+	}
+
+	private RapportoValidazione convertiInRapportoValidazione(ValidationReport validationReport) {
+		RapportoValidazione rapportoValidazione = new RapportoValidazione();
+
+		if (validationReport.contieneErrori()) {
+
+			ListaAssertValidazioneType listaAssertValidazioneType = new ListaAssertValidazioneType();
+
+			boolean contieneFatal = false;
+			for (ValidationAssert validationAssert : validationReport.getErroriDiValidazione()) {
+
+				AssertValidazioneType assertValidazioneType = new AssertValidazioneType();
+				assertValidazioneType.setDescrizione(validationAssert.getTesto());
+				assertValidazioneType.setPosizione(validationAssert.getLocation());
+				assertValidazioneType.setTest(validationAssert.getTest());
+
+
+				if (validationAssert.isFatal()) {
+					contieneFatal = true;
+					assertValidazioneType.setLivelloErrore(Livello.FATAL);
+				} else {
+					assertValidazioneType.setLivelloErrore(Livello.WARNING);
+				}
+
+				listaAssertValidazioneType.getAssertValidazione().add(assertValidazioneType);
+			}
+
+			rapportoValidazione.setAssertValidazione(listaAssertValidazioneType);
+
+			rapportoValidazione.setEsito(
+					contieneFatal ?
+							EsitoValidazione.FATAL
+							: EsitoValidazione.WARNING
+			);
+
+		} else {
+
+			rapportoValidazione.setEsito(EsitoValidazione.OK);
+		}
+
+		return rapportoValidazione;
 	}
 
 	/**
@@ -119,7 +199,7 @@ public class RenderingService implements RenderingServiceInterface {
 		pdfDocument.add(
 				new Paragraph(
 						"Rapporto di validazione",
-						new Font(PDF_MAIN_FONT_BOLD, 23f, Font.NORMAL, BaseColor.BLACK)
+						new Font(pdfMainFontBold, 23f, Font.NORMAL, BaseColor.BLACK)
 				)
 		);
 
@@ -127,7 +207,7 @@ public class RenderingService implements RenderingServiceInterface {
 		pdfDocument.add(
 				new Paragraph(
 						"Report di validazione stampato in data: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()),
-						new Font(PDF_MAIN_FONT, 12f, Font.NORMAL, BaseColor.BLACK)
+						new Font(pdfMainFont, 12f, Font.NORMAL, BaseColor.BLACK)
 				)
 		);
 
@@ -137,7 +217,7 @@ public class RenderingService implements RenderingServiceInterface {
 			pdfDocument.add(
 					new Paragraph(
 							"Risultato: il file non è valido",
-							new Font(PDF_MAIN_FONT, 19f, Font.NORMAL, BaseColor.RED)
+							new Font(pdfMainFont, 19f, Font.NORMAL, BaseColor.RED)
 					)
 			);
 			pdfDocument.add(
@@ -152,7 +232,7 @@ public class RenderingService implements RenderingServiceInterface {
 			pdfDocument.add(
 					new Paragraph(
 							"Risultato: il file è valido",
-							new Font(PDF_MAIN_FONT, 19f, Font.NORMAL, BaseColor.BLUE)
+							new Font(pdfMainFont, 19f, Font.NORMAL, BaseColor.BLUE)
 					)
 			);
 		}
@@ -208,7 +288,7 @@ public class RenderingService implements RenderingServiceInterface {
 							 BaseColor coloreDelTesto) throws DocumentException {
 		pdfDocument.add(new Paragraph(
 				intestazioneParagrafo,
-				new Font(PDF_MAIN_FONT_BOLD, 11f, Font.NORMAL, BaseColor.BLACK)
+				new Font(pdfMainFontBold, 11f, Font.NORMAL, BaseColor.BLACK)
 		));
 		Paragraph test = writeParagraph(contenutoParagrafo, messaggioDiLog, coloreDelTesto);
 		pdfDocument.add(test);
@@ -226,7 +306,7 @@ public class RenderingService implements RenderingServiceInterface {
 		logDebug(messaggioLogDebug, valoreDaInserire);
 		return new Paragraph(
 				valoreDaInserire,
-				new Font(PDF_MAIN_FONT, 11f, Font.NORMAL, colore)
+				new Font(pdfMainFont, 11f, Font.NORMAL, colore)
 		);
 	}
 
