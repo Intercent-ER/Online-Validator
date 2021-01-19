@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -66,6 +67,10 @@ public class ValidatorController {
 			paginaRisultato.addObject(
 					CostantiWeb.RESULT_CONTROLLER_ERRORE_XSD,
 					risultatoValidazione.getDescrizioneErroreXsd()
+			);
+			paginaRisultato.addObject(
+					CostantiWeb.RESULT_CONTROLLER_DATA_VALIDAZIONE,
+					new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(risultatoValidazione.getDataDiGenerazione())
 			);
 			session.setAttribute(
 					CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,

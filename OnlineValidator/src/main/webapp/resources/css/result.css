@@ -1,0 +1,22 @@
+.classe-fatal {
+  color: red;
+}
+
+.classe-warning {
+  color: darkOrange;
+}
+
+.row > b {
+  padding: 0;
+}
+
+.function-button-container > button {
+  border-radius: 0;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.function-button-container > button:hover:nth-child(-n+2) {
+  background-color: transparent;
+  color: #007bff;
+}

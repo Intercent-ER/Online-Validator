@@ -1,4 +1,4 @@
-<footer class="d-flex flex-column">
+<footer class="d-flex flex-column" id="footer">
     <div class="container">
 
         <div class="row div-logo-container">

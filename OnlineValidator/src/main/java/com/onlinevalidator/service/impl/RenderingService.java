@@ -12,6 +12,7 @@ import com.onlinevalidator.exception.rendering.XmlRenderingException;
 import com.onlinevalidator.generatedsources.xsd.rendering.*;
 import com.onlinevalidator.pojo.TipoRenderingEnum;
 import com.onlinevalidator.service.RenderingServiceInterface;
+import com.onlinevalidator.util.CostantiWeb;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -206,7 +207,7 @@ public class RenderingService implements RenderingServiceInterface {
 		// Aggiungo la data di generazione del PDF
 		pdfDocument.add(
 				new Paragraph(
-						"Report di validazione stampato in data: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()),
+						"Report di validazione generato in data " + new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(validationReport.getDataDiGenerazione()),
 						new Font(pdfMainFont, 12f, Font.NORMAL, BaseColor.BLACK)
 				)
 		);

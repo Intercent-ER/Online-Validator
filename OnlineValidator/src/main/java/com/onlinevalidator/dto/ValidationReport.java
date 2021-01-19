@@ -2,6 +2,7 @@ package com.onlinevalidator.dto;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +20,12 @@ public class ValidationReport {
 	private List<ValidationAssert> erroriDiValidazione;
 
 	private String descrizioneErroreXsd;
+
+	private final Date dataDiGenerazione;
+
+	public ValidationReport() {
+		this.dataDiGenerazione = new Date();
+	}
 
 	/**
 	 * Metodo che restituisce <code>true</code> nel caso in cui il risultato di validazione contenga errori,
@@ -65,5 +72,9 @@ public class ValidationReport {
 
 	public void setDescrizioneErroreXsd(String descrizioneErroreXsd) {
 		this.descrizioneErroreXsd = descrizioneErroreXsd;
+	}
+
+	public Date getDataDiGenerazione() {
+		return dataDiGenerazione;
 	}
 }
