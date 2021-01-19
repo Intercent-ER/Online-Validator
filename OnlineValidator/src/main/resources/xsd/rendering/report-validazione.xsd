@@ -13,6 +13,7 @@
                 <xs:element name="Esito" type="EsitoValidazione" minOccurs="1"
                             maxOccurs="1"/>
                 <xs:element name="DataValidazione" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="ErroreXSD" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 <xs:element name="ListaAssertValidazione" type="ListaAssertValidazioneType"
                             minOccurs="0" maxOccurs="1"/>
             </xs:sequence>

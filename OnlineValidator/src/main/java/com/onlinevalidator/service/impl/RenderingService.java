@@ -14,10 +14,12 @@ import com.onlinevalidator.pojo.TipoRenderingEnum;
 import com.onlinevalidator.service.RenderingServiceInterface;
 import com.onlinevalidator.util.CostantiWeb;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -130,10 +132,15 @@ public class RenderingService implements RenderingServiceInterface {
 
 		try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
 
-			RapportoValidazione rapportoValidazione = convertiInRapportoValidazione(validationReport);
-			context.createMarshaller().marshal(rapportoValidazione, byteArrayOutputStream);
-
 			TipoRenderingEnum xml = TipoRenderingEnum.XML;
+
+			RapportoValidazione rapportoValidazione = convertiInRapportoValidazione(validationReport);
+			Marshaller marshaller = context.createMarshaller();
+
+			// Auto indentazione del risultato XML
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+			marshaller.marshal(rapportoValidazione, byteArrayOutputStream);
+
 			return new Render(
 					byteArrayOutputStream.toByteArray(),
 					xml,
@@ -154,6 +161,25 @@ public class RenderingService implements RenderingServiceInterface {
 				new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(validationReport.getDataDiGenerazione())
 		);
 
+		if (!StringUtils.isEmpty(validationReport.getDescrizioneErroreXsd())) {
+
+			rapportoValidazione.setErroreXSD(validationReport.getDescrizioneErroreXsd());
+			rapportoValidazione.setEsito(EsitoValidazione.FATAL);
+		} else {
+
+			composeListFailedAssert(validationReport, rapportoValidazione);
+		}
+
+		return rapportoValidazione;
+	}
+
+	/**
+	 * Compone una lista di failed assert, sull'oggetto Java JAXB.
+	 *
+	 * @param validationReport    è il report di validazione
+	 * @param rapportoValidazione è la rappresentazione JAXB dell'XSD di riferimento
+	 */
+	private void composeListFailedAssert(ValidationReport validationReport, RapportoValidazione rapportoValidazione) {
 		if (validationReport.contieneErrori()) {
 
 			ListaAssertValidazioneType listaAssertValidazioneType = new ListaAssertValidazioneType();
@@ -189,8 +215,6 @@ public class RenderingService implements RenderingServiceInterface {
 
 			rapportoValidazione.setEsito(EsitoValidazione.OK);
 		}
-
-		return rapportoValidazione;
 	}
 
 	/**
@@ -255,30 +279,37 @@ public class RenderingService implements RenderingServiceInterface {
 	 */
 	private void writePdfDetails(Document pdfDocument, ValidationReport validationReport) throws DocumentException {
 
-		for (ValidationAssert validationAssert : validationReport.getErroriDiValidazione()) {
+		if (!StringUtils.isEmpty(validationReport.getDescrizioneErroreXsd())) {
 
-			writeDetail(pdfDocument, "Test:", validationAssert.getTest(), "Aggiungo test [{}]", BaseColor.BLACK);
+			writeDetail(pdfDocument, "Errore XSD:", validationReport.getDescrizioneErroreXsd(), "Aggiungo errore XSD [{}]", BaseColor.RED);
+		} else {
 
-			writeDetail(pdfDocument, "Posizione:", validationAssert.getLocation(), "Aggiungo posizione [{}]", BaseColor.BLACK);
+			for (ValidationAssert validationAssert : validationReport.getErroriDiValidazione()) {
 
-			writeDetail(pdfDocument, "Livello:", validationAssert.isWarning() ?
-					"WARNING"
-					: "FATAL", "Aggiungo level [{}]", validationAssert.isWarning() ? BaseColor.ORANGE
-					: BaseColor.RED);
+				writeDetail(pdfDocument, "Test:", validationAssert.getTest(), "Aggiungo test [{}]", BaseColor.BLACK);
 
-			writeDetail(
-					pdfDocument,
-					"Descrizione:",
-					validationAssert.getTesto(),
-					"Aggiungo descrizione [{}]",
-					validationAssert.isWarning() ? BaseColor.ORANGE
-							: BaseColor.RED
-			);
+				writeDetail(pdfDocument, "Posizione:", validationAssert.getLocation(), "Aggiungo posizione [{}]", BaseColor.BLACK);
 
-			pdfDocument.add(
-					Chunk.NEWLINE
-			);
+				writeDetail(pdfDocument, "Livello:", validationAssert.isWarning() ?
+						"WARNING"
+						: "FATAL", "Aggiungo level [{}]", validationAssert.isWarning() ? BaseColor.ORANGE
+						: BaseColor.RED);
+
+				writeDetail(
+						pdfDocument,
+						"Descrizione:",
+						validationAssert.getTesto(),
+						"Aggiungo descrizione [{}]",
+						validationAssert.isWarning() ? BaseColor.ORANGE
+								: BaseColor.RED
+				);
+
+				pdfDocument.add(
+						Chunk.NEWLINE
+				);
+			}
 		}
+
 	}
 
 	/**
