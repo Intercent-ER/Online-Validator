@@ -31,7 +31,11 @@
 
 <%@ include file="common/header.jsp" %>
 
-<div class="container" id="main-container">
+<form action="esportaRisultato.html" method="get" id="renderingFormId">
+    <input name="tipoRendering" type="hidden" id="tipoRenderingId"/>
+</form>
+
+<div class="container main-container">
     <div class="row">
         <div class="col-xl-12">
             <h2 class="mt-3 mb-0">Rapporto validazione</h2>
@@ -92,10 +96,7 @@
             validazione
         </button>
     </div>
-</div>
 
-<form action="esportaRisultato.html" method="get" id="renderingFormId">
-    <input name="tipoRendering" type="hidden" id="tipoRenderingId"/>
-</form>
+</div>
 
 <%@ include file="common/footer.jsp" %>

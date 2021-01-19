@@ -31,6 +31,8 @@ public class RenderingService implements RenderingServiceInterface {
 
 	private static final String TITILLIUM_WEB_FONT = "/fonts/TitilliumWeb-Regular.ttf";
 	private static final String TITILLIUM_WEB_FONT_BOLD = "/fonts/TitilliumWeb-Bold.ttf";
+	private static final String VERSIONE_DEFAULT = "1.0";
+
 	private BaseFont pdfMainFont, pdfMainFontBold;
 
 	private JAXBContext context;
@@ -147,6 +149,10 @@ public class RenderingService implements RenderingServiceInterface {
 
 	private RapportoValidazione convertiInRapportoValidazione(ValidationReport validationReport) {
 		RapportoValidazione rapportoValidazione = new RapportoValidazione();
+		rapportoValidazione.setVersione(VERSIONE_DEFAULT);
+		rapportoValidazione.setDataValidazione(
+				new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(validationReport.getDataDiGenerazione())
+		);
 
 		if (validationReport.contieneErrori()) {
 
@@ -171,7 +177,7 @@ public class RenderingService implements RenderingServiceInterface {
 				listaAssertValidazioneType.getAssertValidazione().add(assertValidazioneType);
 			}
 
-			rapportoValidazione.setAssertValidazione(listaAssertValidazioneType);
+			rapportoValidazione.setListaAssertValidazione(listaAssertValidazioneType);
 
 			rapportoValidazione.setEsito(
 					contieneFatal ?
