@@ -43,7 +43,7 @@ public class RenderingService implements RenderingServiceInterface {
 		try {
 
 			// Inizializzazione dei font PDF
-			logInfo("Inizializzazione font ");
+			logInfo("Inizializzazione font");
 			this.pdfMainFont = BaseFont.createFont(TITILLIUM_WEB_FONT, BaseFont.WINANSI, true);
 			this.pdfMainFontBold = BaseFont.createFont(TITILLIUM_WEB_FONT_BOLD, BaseFont.WINANSI, true);
 		} catch (IOException | DocumentException e) {
