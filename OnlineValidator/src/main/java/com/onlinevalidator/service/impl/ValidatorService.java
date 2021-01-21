@@ -71,10 +71,14 @@ public class ValidatorService implements ValidatorServiceInterface {
 	public static final boolean NAMESPACE_AWARE = true;
 	public static final boolean IGNORING_ELEMENT_CONTENT_WHITESPACE = true;
 
-	@PostConstruct
-	public void init() throws FileNotFoundException {
-
-		// Inizializzazione cache dei validatori
+    /**
+     *
+     * @throws FileNotFoundException
+     */
+    @PostConstruct
+	public void init() {
+            
+                // Inizializzazione cache dei validatori
 		logInfo("Inizializzazione cache validatori {}", TipoFileEnum.XSD.name());
 		this.cacheXsd = new HashMap<>();
 		logInfo("Inizializzazione cache validatori {}", TipoFileEnum.SCHEMATRON.name());
@@ -87,7 +91,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 					"Attenzione, si è verificato un errore durante il recupero del catalogo, verificare che il file {} sia presente dentro al progetto",
 					XML_CATALOG_XML
 			);
-			throw new FileNotFoundException(
+			throw new IllegalStateException(
 					String.format(
 							"File %s non trovato all'interno del progetto",
 							XML_CATALOG_XML
@@ -97,6 +101,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 		// Recupera ed inizializza una tantum i parametri XSLT da utilizzare per i cataloghi
 		initXsltParameters();
+		
 	}
 
 	@Autowired
