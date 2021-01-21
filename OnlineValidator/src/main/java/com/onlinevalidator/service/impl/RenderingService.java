@@ -242,7 +242,16 @@ public class RenderingService implements RenderingServiceInterface {
 				)
 		);
 
-		if (validationReport.contieneErrori()) {
+		if (validationReport.isValido()) {
+
+			// Descrivo il risultato positivo della validazione
+			pdfDocument.add(
+					new Paragraph(
+							"Risultato: il file è valido",
+							new Font(pdfMainFont, 19f, Font.NORMAL, BaseColor.BLUE)
+					)
+			);
+		} else {
 
 			// Descrivo lo status negativo della validazione
 			pdfDocument.add(
@@ -254,18 +263,12 @@ public class RenderingService implements RenderingServiceInterface {
 			pdfDocument.add(
 					Chunk.NEWLINE
 			);
+		}
+
+		if (validationReport.contieneErrori()) {
 
 			// Scrivo i dettagli di validazione
 			writePdfDetails(pdfDocument, validationReport);
-		} else {
-
-			// Descrivo il risultato positivo della validazione
-			pdfDocument.add(
-					new Paragraph(
-							"Risultato: il file è valido",
-							new Font(pdfMainFont, 19f, Font.NORMAL, BaseColor.BLUE)
-					)
-			);
 		}
 
 	}

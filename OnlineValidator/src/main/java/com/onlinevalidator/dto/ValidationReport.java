@@ -23,8 +23,11 @@ public class ValidationReport {
 
 	private final Date dataDiGenerazione;
 
+	private boolean isValido;
+
 	public ValidationReport() {
 		this.dataDiGenerazione = new Date();
+		this.isValido = true;
 	}
 
 	/**
@@ -48,6 +51,9 @@ public class ValidationReport {
 		erroriDiValidazione.add(
 				validationAssert
 		);
+		if (validationAssert.isFatal()) {
+			this.isValido = false;
+		}
 	}
 
 	public void aggiungiDettaglio(String descrizioneErroreXsd) {
@@ -72,9 +78,14 @@ public class ValidationReport {
 
 	public void setDescrizioneErroreXsd(String descrizioneErroreXsd) {
 		this.descrizioneErroreXsd = descrizioneErroreXsd;
+		this.isValido = false;
 	}
 
 	public Date getDataDiGenerazione() {
 		return dataDiGenerazione;
+	}
+
+	public boolean isValido() {
+		return isValido;
 	}
 }

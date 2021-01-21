@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -48,7 +49,11 @@ public class ValidatorController {
 
 			// Eseguo la validazione
 			logger.info("Ricevuta richiesta di validazione per tipo documento {}", id);
-			ValidationReport risultatoValidazione = validatorService.effettuaValidazione(file.getBytes(), validatorService.getOvTipoDocumentoById(id));
+			String documentoString = new String(file.getBytes());
+			ValidationReport risultatoValidazione = validatorService.effettuaValidazione(
+					documentoString.getBytes(StandardCharsets.UTF_8),
+					validatorService.getOvTipoDocumentoById(id)
+			);
 			if (risultatoValidazione == null) {
 				throw new NullPointerException("Nessun risultato di validazione consultabile");
 			}
@@ -63,6 +68,10 @@ public class ValidatorController {
 			paginaRisultato.addObject(
 					CostantiWeb.RESULT_CONTROLLER_ASSERT_VALIDAZIONE,
 					risultatoValidazione.getErroriDiValidazione()
+			);
+			paginaRisultato.addObject(
+					CostantiWeb.RESULT_CONTROLLER_IS_VALIDO,
+					risultatoValidazione.isValido()
 			);
 			paginaRisultato.addObject(
 					CostantiWeb.RESULT_CONTROLLER_ERRORE_XSD,

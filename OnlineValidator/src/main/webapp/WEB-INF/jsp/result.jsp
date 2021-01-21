@@ -41,7 +41,12 @@
             <h2 class="mt-3 mb-0">Rapporto validazione</h2>
             <c:choose>
                 <c:when test="${ not empty assertDiValidazione}">
-                    <h3 class="mb-4" style="color:red">Risultato: il file non &egrave; valido</h3>
+                    <c:choose>
+                        <c:when test="${ not risultatoValido }"><h3 class="mb-4" style="color:red">Risultato: il file
+                            non &egrave; valido</h3></c:when>
+                        <c:otherwise><h3 class="mb-4" style="color:darkgreen">Risultato: il file &egrave;
+                            valido</h3></c:otherwise>
+                    </c:choose>
                     <div class="container pr-0 pl-0">
                         <c:forEach items="${ assertDiValidazione }" var="singoloAssert">
                             <c:if test="${ singoloAssert.warning }">
