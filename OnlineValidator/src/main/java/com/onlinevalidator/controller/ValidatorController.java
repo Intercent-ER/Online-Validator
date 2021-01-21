@@ -1,7 +1,10 @@
 package com.onlinevalidator.controller;
 
+import com.onlinevalidator.dto.Render;
+import com.onlinevalidator.dto.ValidationReport;
 import com.onlinevalidator.model.OvTipoDocumento;
-import com.onlinevalidator.pojo.ValidationReport;
+import com.onlinevalidator.pojo.TipoRenderingEnum;
+import com.onlinevalidator.service.RenderingServiceInterface;
 import com.onlinevalidator.service.impl.ValidatorService;
 import com.onlinevalidator.util.CostantiWeb;
 import com.onlinevalidator.util.FileUtil;
@@ -14,8 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -26,6 +30,9 @@ public class ValidatorController {
 	@Autowired
 	private ValidatorService validatorService;
 
+	@Autowired
+	private RenderingServiceInterface renderingService;
+
 	@ModelAttribute("tipoDocumento")
 	public List<OvTipoDocumento> getAllTipoDocumento() {
 		return validatorService.filtraTuttiITipiDocumento();
@@ -34,7 +41,7 @@ public class ValidatorController {
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	public @ResponseBody
 	ModelAndView validazione(@RequestParam("file") MultipartFile file,
-							 @RequestParam(value = "id") int id) {
+							 @RequestParam(value = "id") int id, HttpSession session) {
 
 		ModelAndView paginaRisultato = new ModelAndView("result");
 		try {
@@ -61,6 +68,14 @@ public class ValidatorController {
 					CostantiWeb.RESULT_CONTROLLER_ERRORE_XSD,
 					risultatoValidazione.getDescrizioneErroreXsd()
 			);
+			paginaRisultato.addObject(
+					CostantiWeb.RESULT_CONTROLLER_DATA_VALIDAZIONE,
+					new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(risultatoValidazione.getDataDiGenerazione())
+			);
+			session.setAttribute(
+					CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,
+					risultatoValidazione
+			);
 
 		} catch (Exception e) {
 
@@ -73,23 +88,27 @@ public class ValidatorController {
 	}
 
 	@RequestMapping(value = "/esportaRisultato", method = RequestMethod.GET)
-	public void stampaXml(HttpServletResponse response, @RequestParam("reportValidazione") ValidationReport report) {
-		String xmlConvertito = convertiInXml(report);
+	public void stampaXml(@RequestParam("tipoRendering") TipoRenderingEnum tipoRendering, HttpServletResponse response, HttpSession session) {
 		try {
+
+			ValidationReport report = (ValidationReport) session.getAttribute(
+					CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE
+			);
+
+			// Eseguo il rendering
+			Render render = renderingService.render(report, tipoRendering);
+
+			// Salvo l'output
 			FileUtil.outputFile(
 					response,
-					new ByteArrayInputStream(xmlConvertito.getBytes(StandardCharsets.UTF_8)),
-					"esito-validazione.xml"
+					new ByteArrayInputStream(
+							render.getFile()
+					),
+					render.getFileName()
 			);
 		} catch (Exception e) {
 			logger.error("Si è verificato un errore durante l'esportazione: {}", e.getMessage(), e);
 		}
-	}
-
-
-	private String convertiInXml(ValidationReport report) {
-
-		return null; // TODO da fare
 	}
 
 }

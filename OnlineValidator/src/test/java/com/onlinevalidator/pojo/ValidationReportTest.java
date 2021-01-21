@@ -1,5 +1,7 @@
 package com.onlinevalidator.pojo;
 
+import com.onlinevalidator.dto.ValidationAssert;
+import com.onlinevalidator.dto.ValidationReport;
 import org.junit.Test;
 
 import java.util.List;

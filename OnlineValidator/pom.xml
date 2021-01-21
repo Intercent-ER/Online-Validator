@@ -152,6 +152,12 @@
             <version>10.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.10</version>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
@@ -194,8 +200,20 @@
                             <goal>xjc</goal>
                         </goals>
                         <configuration>
-                            <schemaDirectory>${project.basedir}/src/main/resources/xsd</schemaDirectory>
-                            <packageName>com.onlinevalidator.generatedsources.xsd</packageName>
+                            <schemaDirectory>${project.basedir}/src/main/resources/xsd/report</schemaDirectory>
+                            <packageName>com.onlinevalidator.generatedsources.xsd.report</packageName>
+                            <clearOutputDir>false</clearOutputDir>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>xsd-rendering</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                        <configuration>
+                            <schemaDirectory>${project.basedir}/src/main/resources/xsd/rendering</schemaDirectory>
+                            <packageName>com.onlinevalidator.generatedsources.xsd.rendering</packageName>
                             <clearOutputDir>false</clearOutputDir>
                         </configuration>
                     </execution>

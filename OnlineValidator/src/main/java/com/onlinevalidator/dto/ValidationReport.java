@@ -1,7 +1,8 @@
-package com.onlinevalidator.pojo;
+package com.onlinevalidator.dto;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +21,12 @@ public class ValidationReport {
 
 	private String descrizioneErroreXsd;
 
+	private final Date dataDiGenerazione;
+
+	public ValidationReport() {
+		this.dataDiGenerazione = new Date();
+	}
+
 	/**
 	 * Metodo che restituisce <code>true</code> nel caso in cui il risultato di validazione contenga errori,
 	 * <code>false</code> altrimenti.
@@ -27,17 +34,7 @@ public class ValidationReport {
 	 * @return <code>true</code> nel caso in cui l'esito della validazione non sia positivo
 	 */
 	public boolean contieneErrori() {
-
-		if (erroriDiValidazione != null && !erroriDiValidazione.isEmpty()) {
-
-			for (ValidationAssert validationAssert : erroriDiValidazione) {
-
-				if (validationAssert.isFatal()) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return erroriDiValidazione != null && !erroriDiValidazione.isEmpty();
 	}
 
 	/**
@@ -75,5 +72,9 @@ public class ValidationReport {
 
 	public void setDescrizioneErroreXsd(String descrizioneErroreXsd) {
 		this.descrizioneErroreXsd = descrizioneErroreXsd;
+	}
+
+	public Date getDataDiGenerazione() {
+		return dataDiGenerazione;
 	}
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
+<xs:schema
+        xmlns="http://intercenter.rer.it/rendering/xml"
+        targetNamespace="http://intercenter.rer.it/rendering/xml"
+        version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:element name="RapportoValidazione">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Versione" type="TokenNVMax10Type"
+                            minOccurs="1" maxOccurs="1"/>
+                <xs:element name="Esito" type="EsitoValidazione" minOccurs="1"
+                            maxOccurs="1"/>
+                <xs:element name="DataValidazione" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="ListaAssertValidazione" type="ListaAssertValidazioneType"
+                            minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="TokenNVMax10Type">
+        <xs:restriction base="xs:token">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="10"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="EsitoValidazione">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="OK"/>
+            <xs:enumeration value="WARNING"/>
+            <xs:enumeration value="FATAL"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="ListaAssertValidazioneType">
+        <xs:sequence>
+            <xs:element name="AssertValidazione" type="AssertValidazioneType" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AssertValidazioneType">
+        <xs:sequence>
+            <xs:element name="LivelloErrore" type="Livello"
+                        minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Posizione" type="xs:string"
+                        minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Test" type="xs:string"
+                        minOccurs="1" maxOccurs="1"/>
+            <xs:element name="Descrizione" type="xs:string"
+                        minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="Livello">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="WARNING"/>
+            <xs:enumeration value="FATAL"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
