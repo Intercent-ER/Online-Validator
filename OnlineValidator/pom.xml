@@ -171,6 +171,14 @@
             <version>2.23.4</version>
             <scope>test</scope>
         </dependency>
+        <!-- Spring test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
     <build>

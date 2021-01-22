@@ -33,6 +33,5 @@ public class ConfigurationNotFoundExceptionTest {
 					e.getMessage()
 			);
 		}
-
 	}
 }

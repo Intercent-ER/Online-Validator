@@ -66,7 +66,7 @@ public class ValidationAssert {
 
 	@Override
 	public String toString() {
-		return "ValidazioneSchematronResult [test=" + test + ", location=" + location + ", testo=" + testo + ", warning=" + warning + ", fatal=" + fatal + "]";
+		return "ValidationAssert [test=" + test + ", location=" + location + ", testo=" + testo + ", warning=" + warning + ", fatal=" + fatal + "]";
 	}
 
 	public void setFatal(boolean fatal) {
