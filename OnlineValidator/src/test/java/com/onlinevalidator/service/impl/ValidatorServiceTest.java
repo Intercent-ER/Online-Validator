@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -95,6 +96,38 @@ public class ValidatorServiceTest {
 		OvValidatore validatoreDdtXsl = validatorService.filtraValidatore(ddt, TipoFileEnum.SCHEMATRON);
 		assertNotNull(validatoreDdtXsl);
 		assertNotNull(validatoreDdtXsl.getBlFile());
+
+		try {
+
+			validatorService.filtraValidatore(ddt, null);
+		} catch (Exception e) {
+
+			assertTrue(e instanceof NullPointerException);
+			assertEquals("Tipo file enum null", e.getMessage());
+		}
+
+		try {
+
+			validatorService.filtraValidatore(null, TipoFileEnum.SCHEMATRON);
+		} catch (Exception e) {
+
+			assertTrue(e instanceof NullPointerException);
+			assertEquals("Tipo documento null", e.getMessage());
+		}
+
+		try {
+
+			validatorService.filtraValidatore(null, null);
+		} catch (Exception e) {
+
+			assertTrue(e instanceof NullPointerException);
+			assertEquals("Tipo documento null", e.getMessage());
+		}
+
+		OvTipoDocumento tipoDocumento = new OvTipoDocumento();
+		tipoDocumento.setValidatori(Collections.emptyList());
+		OvValidatore validatore = validatorService.filtraValidatore(tipoDocumento, TipoFileEnum.SCHEMATRON);
+		assertNull(validatore);
 	}
 
 	@Test

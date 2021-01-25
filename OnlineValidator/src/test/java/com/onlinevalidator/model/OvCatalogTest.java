@@ -5,8 +5,7 @@ import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 
 /**
@@ -47,7 +46,10 @@ public class OvCatalogTest {
 	@Test
 	public void getBlFileCatalogAsString() {
 
-		assertNull(new OvCatalog().getBlFileCatalogAsString());
+		OvCatalog catalog = new OvCatalog();
+		assertNull(catalog.getBlFileCatalogAsString());
+		catalog.setBlFileCatalog("a string".getBytes(StandardCharsets.UTF_8));
+		assertNotNull(catalog.getBlFileCatalogAsString());
 	}
 
 	@Test
