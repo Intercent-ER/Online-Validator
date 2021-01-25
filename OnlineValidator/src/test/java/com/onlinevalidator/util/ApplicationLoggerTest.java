@@ -16,8 +16,7 @@ public class ApplicationLoggerTest implements ApplicationLogger {
 			logInfo("messaggio");
 			logInfo(null);
 			logInfo("messaggio {}", new Object());
-			String nullObject = null;
-			logInfo("messaggio {}", nullObject);
+			logInfo("messaggio {}", (String) null);
 		} catch (Exception e) {
 			fail();
 		}
@@ -31,8 +30,7 @@ public class ApplicationLoggerTest implements ApplicationLogger {
 			logError("messaggio");
 			logError(null);
 			logError("messaggio {}", new Object());
-			String nullObject = null;
-			logError("messaggio {}", nullObject);
+			logError("messaggio {}", (String) null);
 		} catch (Exception e) {
 			fail();
 		}
