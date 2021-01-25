@@ -206,6 +206,16 @@ public class ConfigurazioneServiceTest {
 
 		String value = configurazioneService.readFromCache(ChiaveConfigurazioneEnum.CONTEXT_PATH);
 		Assert.assertFalse(value.isEmpty());
+
+		try {
+
+			configurazioneService.readFromCache(null);
+			Assert.fail("La lettura di una configurazione null deve restituire errore");
+		} catch (Exception e) {
+
+			Assert.assertTrue(e instanceof NullPointerException);
+			Assert.assertEquals("Impossibile leggere una chiave di configurazione null", e.getMessage());
+		}
 	}
 
 	@Test
@@ -213,5 +223,15 @@ public class ConfigurazioneServiceTest {
 
 		String value = configurazioneService.readFromDatabase(ChiaveConfigurazioneEnum.CONTEXT_PATH);
 		Assert.assertFalse(value.isEmpty());
+
+		try {
+
+			configurazioneService.readFromDatabase(null);
+			Assert.fail("La lettura di una configurazione null deve restituire errore");
+		} catch (Exception e) {
+
+			Assert.assertTrue(e instanceof NullPointerException);
+			Assert.assertEquals("Impossibile leggere una chiave di configurazione null", e.getMessage());
+		}
 	}
 }

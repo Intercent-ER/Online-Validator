@@ -54,6 +54,10 @@ public class ConfigurazioneService implements ConfigurazioneServiceInterface {
 	@Override
 	public String readFromCache(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum) {
 
+		if (chiaveConfigurazioneEnum == null) {
+			throw new NullPointerException("Impossibile leggere una chiave di configurazione null");
+		}
+
 		// Leggo dalla cache
 		logInfo("Lettura configurazione {} da cache", chiaveConfigurazioneEnum.name());
 		String value = cache.get(chiaveConfigurazioneEnum);
@@ -74,12 +78,16 @@ public class ConfigurazioneService implements ConfigurazioneServiceInterface {
 	@Override
 	public String readFromDatabase(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum) {
 
+		if (chiaveConfigurazioneEnum == null) {
+			throw new NullPointerException("Impossibile leggere una chiave di configurazione null");
+		}
+
 		// Leggo la configurazione dal database
 		logInfo("Lettura configurazione {} da database", chiaveConfigurazioneEnum.name());
 		OvConfigurazione configurazione = configurazioneJpaRepository.findByCdChiaveConfigurazione(chiaveConfigurazioneEnum);
 
 		// Se non ho trovato la configurazione, o se il suo valore è null, restituisco eccezione
-		if (configurazione == null || configurazione.getCdValoreConfigurazione() == null) {
+		if (configurazione.getCdValoreConfigurazione() == null) {
 			throw ConfigurationNotFoundException.notFound(chiaveConfigurazioneEnum);
 		}
 
