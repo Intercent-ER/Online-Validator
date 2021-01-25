@@ -5,7 +5,7 @@ package com.onlinevalidator.model.enumerator;
  */
 public enum ChiaveConfigurazioneEnum {
 
-	CONTEXT_PATH, NULL;
+	CONTEXT_PATH;
 
 	@Override
 	public String toString() {

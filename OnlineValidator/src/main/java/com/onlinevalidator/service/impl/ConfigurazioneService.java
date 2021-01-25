@@ -51,13 +51,8 @@ public class ConfigurazioneService implements ConfigurazioneServiceInterface {
 				: readFromDatabase(chiaveConfigurazioneEnum);
 	}
 
-	/**
-	 * Legge un valore di configurazione dalla cache; aggiorna la cache se necessario.
-	 *
-	 * @param chiaveConfigurazioneEnum è la chiave di configurazione
-	 * @return il valore di configurazione
-	 */
-	private String readFromCache(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum) {
+	@Override
+	public String readFromCache(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum) {
 
 		// Leggo dalla cache
 		logInfo("Lettura configurazione {} da cache", chiaveConfigurazioneEnum.name());
@@ -67,7 +62,7 @@ public class ConfigurazioneService implements ConfigurazioneServiceInterface {
 		if (value == null) {
 
 			logInfo("Chiave di configurazione {} non trovata in cache, si procede alla lettura sul database", chiaveConfigurazioneEnum.name());
-			value = readFromDatabase(chiaveConfigurazioneEnum);
+			value = this.readFromDatabase(chiaveConfigurazioneEnum);
 
 			// Inserisco in cache il valore recuperato
 			cache.put(chiaveConfigurazioneEnum, value);
@@ -76,13 +71,8 @@ public class ConfigurazioneService implements ConfigurazioneServiceInterface {
 		return value;
 	}
 
-	/**
-	 * Legge un valore di configurazione dal database.
-	 *
-	 * @param chiaveConfigurazioneEnum è la chiave di configurazione
-	 * @return il valore recuperato
-	 */
-	private String readFromDatabase(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum) {
+	@Override
+	public String readFromDatabase(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum) {
 
 		// Leggo la configurazione dal database
 		logInfo("Lettura configurazione {} da database", chiaveConfigurazioneEnum.name());

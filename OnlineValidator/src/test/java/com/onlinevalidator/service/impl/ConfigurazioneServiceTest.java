@@ -1,15 +1,12 @@
 package com.onlinevalidator.service.impl;
 
 import com.onlinevalidator.exception.ConfigurationNotFoundException;
-import com.onlinevalidator.model.OvConfigurazione;
 import com.onlinevalidator.model.enumerator.ChiaveConfigurazioneEnum;
-import com.onlinevalidator.repository.OvConfigurazioneJpaRepository;
 import com.onlinevalidator.service.ConfigurazioneServiceInterface;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -24,52 +21,197 @@ public class ConfigurazioneServiceTest {
 	@Autowired
 	private ConfigurazioneServiceInterface configurazioneService;
 
-	@Autowired
-	private OvConfigurazioneJpaRepository configurazioneJpaRepository;
-
-	private OvConfigurazione ovConfigurazione;
-
-	@Before
-	public void before() {
-		ovConfigurazione = new OvConfigurazione();
-		ovConfigurazione.setIdConfigurazione(-100);
-		ovConfigurazione.setCdChiaveConfigurazione(ChiaveConfigurazioneEnum.NULL);
-		ovConfigurazione.setDsDescrizione("null");
-		ovConfigurazione.setCdValoreConfigurazione("vuoto");
-		ovConfigurazione = configurazioneJpaRepository.save(ovConfigurazione);
-	}
-
-	@After
-	public void after() {
-
-		configurazioneJpaRepository.delete(ovConfigurazione);
-	}
-
 	@Test
 	public void init() {
-		((ConfigurazioneService) configurazioneService).init();
-	}
-
-	@Test
-	public void readValue() {
-
-		String valore = configurazioneService.readValue(ChiaveConfigurazioneEnum.NULL);
-		Assert.assertEquals("vuoto", valore);
 
 		try {
-			valore = configurazioneService.readValue(null);
 
+			// Verifico che l'inizializzazione non generi errori
+			((ConfigurazioneService) configurazioneService).init();
 		} catch (Exception e) {
 
-			Assert.assertTrue(e instanceof ConfigurationNotFoundException);
-			Assert.assertEquals("Chiave di configurazione null", e.getMessage());
+			Assert.fail(e.getMessage());
 		}
 	}
 
 	@Test
-	public void testReadValue() {
+	public void readValueNoParam() {
 
-		String valore = configurazioneService.readValue(ChiaveConfigurazioneEnum.NULL, false);
-		Assert.assertEquals("vuoto", valore);
+		ConfigurazioneService configurazioneServiceSpy = Mockito.spy((ConfigurazioneService) configurazioneService);
+		ChiaveConfigurazioneEnum chiaveDiConfigurazione = ChiaveConfigurazioneEnum.CONTEXT_PATH;
+
+		try {
+
+			String valore = configurazioneServiceSpy.readValue(chiaveDiConfigurazione);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readValue(chiaveDiConfigurazione, true);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readValue(chiaveDiConfigurazione, false);
+
+			// Devo leggere dalla cache
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readFromCache(chiaveDiConfigurazione);
+
+			// Al primo tentativo devo leggere dal database per popolare la cache
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readFromDatabase(chiaveDiConfigurazione);
+			Assert.assertNotNull(valore);
+			Assert.assertFalse(valore.isEmpty());
+
+			// Verifico che al secondo accesso legga dalla cache
+			valore = configurazioneServiceSpy.readValue(chiaveDiConfigurazione);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(2)).readValue(chiaveDiConfigurazione, true);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readValue(chiaveDiConfigurazione, false);
+
+			// Devo leggere da cache
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(2)).readFromCache(chiaveDiConfigurazione);
+
+			// Non devo leggere da database
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readFromDatabase(chiaveDiConfigurazione);
+			Assert.assertNotNull(valore);
+			Assert.assertFalse(valore.isEmpty());
+
+		} catch (ConfigurationNotFoundException e) {
+
+			Assert.fail(
+					String.format(
+							"La configurazione %s deve essere impostata",
+							chiaveDiConfigurazione
+					)
+			);
+		}
+
+		try {
+
+			configurazioneServiceSpy.readValue(null);
+			Assert.fail("La ricerca di un valore con chiave configurazione null deve tirare eccezione");
+		} catch (Exception e) {
+
+			Assert.assertTrue(e instanceof ConfigurationNotFoundException);
+			Assert.assertEquals("Chiave di configurazione null", e.getMessage());
+
+			// Se ho un null in ingresso non devo procedere con ulteriori funzioni
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(2)).readValue(chiaveDiConfigurazione, true);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readValue(chiaveDiConfigurazione, false);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(2)).readFromCache(chiaveDiConfigurazione);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readFromDatabase(chiaveDiConfigurazione);
+		}
+	}
+
+	@Test
+	public void readValueWithParam() {
+
+		ConfigurazioneService configurazioneServiceSpy = Mockito.spy((ConfigurazioneService) configurazioneService);
+		ChiaveConfigurazioneEnum chiaveDiConfigurazione = ChiaveConfigurazioneEnum.CONTEXT_PATH;
+
+		try {
+
+			String valore = configurazioneServiceSpy.readValue(chiaveDiConfigurazione, true);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readValue(chiaveDiConfigurazione, true);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readValue(chiaveDiConfigurazione, false);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readValue(chiaveDiConfigurazione);
+
+			// Devo leggere dalla cache
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readFromCache(chiaveDiConfigurazione);
+
+			// Al primo tentativo devo leggere dal database per popolare la cache
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readFromDatabase(chiaveDiConfigurazione);
+			Assert.assertNotNull(valore);
+			Assert.assertFalse(valore.isEmpty());
+
+			valore = configurazioneServiceSpy.readValue(chiaveDiConfigurazione, true);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(2)).readValue(chiaveDiConfigurazione, true);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readValue(chiaveDiConfigurazione, false);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readValue(chiaveDiConfigurazione);
+
+			// Devo leggere dalla cache
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(2)).readFromCache(chiaveDiConfigurazione);
+
+			// Non devo leggere da database
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readFromDatabase(chiaveDiConfigurazione);
+			Assert.assertNotNull(valore);
+			Assert.assertFalse(valore.isEmpty());
+
+		} catch (ConfigurationNotFoundException e) {
+
+			Assert.fail(
+					String.format(
+							"La configurazione %s deve essere impostata",
+							chiaveDiConfigurazione
+					)
+			);
+		}
+
+		try {
+
+			String valore = configurazioneServiceSpy.readValue(chiaveDiConfigurazione, false);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(2)).readValue(chiaveDiConfigurazione, true);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readValue(chiaveDiConfigurazione, false);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readValue(chiaveDiConfigurazione);
+
+			// Non devo leggere dalla cache
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(2)).readFromCache(chiaveDiConfigurazione);
+
+			// Devo leggere dal database
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readFromDatabase(chiaveDiConfigurazione);
+			Assert.assertNotNull(valore);
+			Assert.assertFalse(valore.isEmpty());
+
+			valore = configurazioneServiceSpy.readValue(chiaveDiConfigurazione, true);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(3)).readValue(chiaveDiConfigurazione, true);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readValue(chiaveDiConfigurazione, false);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readValue(chiaveDiConfigurazione);
+
+			// Non devo leggere dalla cache
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(3)).readFromCache(chiaveDiConfigurazione);
+
+			// Devo leggere da database
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readFromDatabase(chiaveDiConfigurazione);
+			Assert.assertNotNull(valore);
+			Assert.assertFalse(valore.isEmpty());
+
+		} catch (ConfigurationNotFoundException e) {
+
+			Assert.fail(
+					String.format(
+							"La configurazione %s deve essere impostata",
+							chiaveDiConfigurazione
+					)
+			);
+		}
+
+		try {
+
+			configurazioneServiceSpy.readValue(null, false);
+			Assert.fail("La ricerca di un valore con chiave configurazione null deve tirare eccezione");
+		} catch (Exception e) {
+
+			Assert.assertTrue(e instanceof ConfigurationNotFoundException);
+			Assert.assertEquals("Chiave di configurazione null", e.getMessage());
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readValue(null, false);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(0)).readValue(null, true);
+		}
+
+		try {
+
+			configurazioneServiceSpy.readValue(null, true);
+			Assert.fail("La ricerca di un valore con chiave configurazione null deve tirare eccezione");
+		} catch (Exception e) {
+
+			Assert.assertTrue(e instanceof ConfigurationNotFoundException);
+			Assert.assertEquals("Chiave di configurazione null", e.getMessage());
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readValue(null, false);
+			Mockito.verify(configurazioneServiceSpy, Mockito.times(1)).readValue(null, true);
+		}
+	}
+
+	@Test
+	public void readFromCache() {
+
+		String value = configurazioneService.readFromCache(ChiaveConfigurazioneEnum.CONTEXT_PATH);
+		Assert.assertFalse(value.isEmpty());
+	}
+
+	@Test
+	public void readFromDatabase() {
+
+		String value = configurazioneService.readFromDatabase(ChiaveConfigurazioneEnum.CONTEXT_PATH);
+		Assert.assertFalse(value.isEmpty());
 	}
 }
