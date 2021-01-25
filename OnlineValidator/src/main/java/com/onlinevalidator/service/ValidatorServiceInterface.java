@@ -8,6 +8,9 @@ import com.onlinevalidator.util.ApplicationLogger;
 
 import java.util.List;
 
+/**
+ * @author Manuel Gozzi
+ */
 public interface ValidatorServiceInterface extends ApplicationLogger {
 
 	String NET_SF_SAXON_TRANSFORMER_FACTORY_IMPL = "net.sf.saxon.TransformerFactoryImpl";
@@ -33,21 +36,21 @@ public interface ValidatorServiceInterface extends ApplicationLogger {
 	/**
 	 * Dato un tipo documento e un tipo di file, recupera il corrispondente validatore.
 	 *
-	 * @param tipodocumento è il tipo del documento
+	 * @param tipoDocumento è il tipo del documento
 	 * @param tipoFileEnum  è il tipo di file {@link TipoFileEnum}
 	 * @return il validatore corrispondente
 	 */
-	OvValidatore filtraValidatore(OvTipoDocumento tipodocumento, TipoFileEnum tipoFileEnum);
+	OvValidatore filtraValidatore(OvTipoDocumento tipoDocumento, TipoFileEnum tipoFileEnum);
 
 	/**
 	 * Dato uno specifico documento, se ne effettua la validazione, incapsulando il risultato all'interno di un'istanza
 	 * dell'oggetto ValidationReport.
 	 *
 	 * @param documento     è il documento su cui occorre applicare la validazione XSLT (in byte[])
-	 * @param tipodocumento è il tipo del documento che occorre validare
+	 * @param tipoDocumento è il tipo del documento che occorre validare
 	 * @return il risultato di validazione
 	 * @author Manuel Gozzi
 	 */
-	ValidationReport effettuaValidazione(byte[] documento, OvTipoDocumento tipodocumento);
+	ValidationReport effettuaValidazione(byte[] documento, OvTipoDocumento tipoDocumento);
 
 }

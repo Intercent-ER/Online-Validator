@@ -71,6 +71,12 @@ public class RenderingService implements RenderingServiceInterface {
 	@Override
 	public Render render(ValidationReport validationReport, TipoRenderingEnum tipoRenderingEnum) throws RenderingException {
 
+		if (tipoRenderingEnum == null) {
+
+			logError("TipoRenderingEnum è null");
+			throw new NullPointerException("Impossibile eseguire il rendering senza specificare il tipo");
+		}
+
 		switch (tipoRenderingEnum) {
 			case PDF:
 				return renderToPdf(validationReport);

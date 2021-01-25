@@ -31,6 +31,16 @@ public interface RenderingServiceInterface extends ApplicationLogger {
 	 */
 	Render renderToXml(ValidationReport validationReport) throws XmlRenderingException;
 
+	/**
+	 * Esegue il rendering di un report di validazione, contenente i relativi risultati del processo, a seconda della
+	 * tipologia di rendering indicata.
+	 *
+	 * @param validationReport  è il report di validazione
+	 * @param tipoRenderingEnum è il tipo di rendering {@link TipoRenderingEnum}
+	 * @return l'oggetto Render che contiene il risultato di validazione
+	 * @throws RenderingException nel caso in cui qualcosa vada storto nel processo di rendering
+	 *                            {@link XmlRenderingException}, {@link PdfRenderingException}
+	 */
 	Render render(ValidationReport validationReport, TipoRenderingEnum tipoRenderingEnum) throws RenderingException;
 
 }

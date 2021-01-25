@@ -37,7 +37,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -45,6 +44,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+/**
+ * @author Manuel Gozzi
+ */
 @Service
 public class ValidatorService implements ValidatorServiceInterface {
 
@@ -71,14 +73,10 @@ public class ValidatorService implements ValidatorServiceInterface {
 	public static final boolean NAMESPACE_AWARE = true;
 	public static final boolean IGNORING_ELEMENT_CONTENT_WHITESPACE = true;
 
-    /**
-     *
-     * @throws FileNotFoundException
-     */
-    @PostConstruct
+	@PostConstruct
 	public void init() {
-            
-                // Inizializzazione cache dei validatori
+
+		// Inizializzazione cache dei validatori
 		logInfo("Inizializzazione cache validatori {}", TipoFileEnum.XSD.name());
 		this.cacheXsd = new HashMap<>();
 		logInfo("Inizializzazione cache validatori {}", TipoFileEnum.SCHEMATRON.name());
@@ -101,7 +99,6 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 		// Recupera ed inizializza una tantum i parametri XSLT da utilizzare per i cataloghi
 		initXsltParameters();
-		
 	}
 
 	@Autowired
@@ -153,7 +150,15 @@ public class ValidatorService implements ValidatorServiceInterface {
 	}
 
 	@Override
-	public ValidationReport effettuaValidazione(byte[] documento, OvTipoDocumento tipodocumento) {
+	public ValidationReport effettuaValidazione(byte[] documento, OvTipoDocumento tipoDocumento) {
+
+		if (documento == null) {
+			throw new NullPointerException("Impossibile validare un documento null");
+		}
+
+		if (tipoDocumento == null) {
+			throw new NullPointerException("Impossibile validare un documento senza averne specificato il tipo");
+		}
 
 		ValidationReport validationReport = new ValidationReport();
 
@@ -161,7 +166,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 			// Esecuzione validazione XSD
 			logInfo("Avvio validazione XSD");
-			OvValidatore validatoreXsd = filtraValidatore(tipodocumento, TipoFileEnum.XSD);
+			OvValidatore validatoreXsd = filtraValidatore(tipoDocumento, TipoFileEnum.XSD);
 			validazioneXsd(
 					documento,
 					getSchemaXsd(validatoreXsd)
@@ -181,7 +186,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 			// Esecuzione validazione schematron
 			logInfo("Avvio validazione XSLT");
-			OvValidatore validatoreSchematron = filtraValidatore(tipodocumento, TipoFileEnum.SCHEMATRON);
+			OvValidatore validatoreSchematron = filtraValidatore(tipoDocumento, TipoFileEnum.SCHEMATRON);
 			Collection<ValidationAssert> validationAsserts = validazioneSemantica(
 					new String(documento, StandardCharsets.UTF_8),
 					getSchematron(validatoreSchematron)
