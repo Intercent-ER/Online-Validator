@@ -12,15 +12,14 @@ import java.util.List;
 
 @Controller
 public class HomeController {
-	
+
 	@Autowired
 	private ValidatorService validatorService;
-	
-	@RequestMapping("/")
-	public ModelAndView fileUploader() {
 
-		ModelAndView modelAndView = new ModelAndView("index");
-		return modelAndView;
+	@RequestMapping("/")
+	public ModelAndView index() {
+
+		return new ModelAndView("index");
 	}
 
 	@ModelAttribute("tipoDocumento")

@@ -1,6 +1,7 @@
 package com.onlinevalidator.service.impl;
 
 import com.onlinevalidator.model.OvCatalog;
+import com.onlinevalidator.model.enumerator.NomeCatalogEnum;
 import com.onlinevalidator.repository.OvCatalogJpaRepository;
 import com.onlinevalidator.service.LocalServiceUriResolverInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,12 +58,12 @@ public class LocalServiceURIResolverService implements LocalServiceUriResolverIn
 	}
 
 	private OvCatalog getCatalog(Map<String, String> parameters) {
-		String nomeCatalog = parameters.get("nomeCatalog");
+		NomeCatalogEnum nomeCatalog = NomeCatalogEnum.valueOf(parameters.get("nomeCatalog"));
 		String versione = parameters.get("versione");
 		String index = nomeCatalog + "_" + versione;
 		OvCatalog catalog = catalogMap.get(index);
 		if (catalog == null) {
-			catalog = catalogRepository.getOneBy(nomeCatalog, versione);
+			catalog = catalogRepository.findByNmNomeAndCdVersione(nomeCatalog, versione);
 			catalogMap.put(index, catalog);
 		}
 		return catalog;

@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface OvTipoDocumentoJpaRepository extends JpaRepository<OvTipoDocumento, Integer> {
 
 	OvTipoDocumento findByNmNome(NomeTipoDocumentoEnum nmNome);
-
 }

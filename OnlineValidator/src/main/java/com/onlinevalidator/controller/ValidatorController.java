@@ -2,7 +2,6 @@ package com.onlinevalidator.controller;
 
 import com.onlinevalidator.dto.Render;
 import com.onlinevalidator.dto.ValidationReport;
-import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.pojo.TipoRenderingEnum;
 import com.onlinevalidator.service.RenderingServiceInterface;
 import com.onlinevalidator.service.impl.ValidatorService;
@@ -12,7 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,7 +23,6 @@ import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 @Controller
 public class ValidatorController {
@@ -34,15 +35,10 @@ public class ValidatorController {
 	@Autowired
 	private RenderingServiceInterface renderingService;
 
-	@ModelAttribute("tipoDocumento")
-	public List<OvTipoDocumento> getAllTipoDocumento() {
-		return validatorService.filtraTuttiITipiDocumento();
-	}
-
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	public @ResponseBody
-	ModelAndView validazione(@RequestParam("file") MultipartFile file,
-							 @RequestParam(value = "id") int id, HttpSession session) {
+	ModelAndView uploadFile(@RequestParam("file") MultipartFile file,
+							@RequestParam(value = "id") int id, HttpSession session) {
 
 		ModelAndView paginaRisultato = new ModelAndView("result");
 		try {
@@ -97,7 +93,7 @@ public class ValidatorController {
 	}
 
 	@RequestMapping(value = "/esportaRisultato", method = RequestMethod.GET)
-	public void stampaXml(@RequestParam("tipoRendering") TipoRenderingEnum tipoRendering, HttpServletResponse response, HttpSession session) {
+	public void esportaRisultato(@RequestParam("tipoRendering") TipoRenderingEnum tipoRendering, HttpServletResponse response, HttpSession session) {
 		try {
 
 			ValidationReport report = (ValidationReport) session.getAttribute(
