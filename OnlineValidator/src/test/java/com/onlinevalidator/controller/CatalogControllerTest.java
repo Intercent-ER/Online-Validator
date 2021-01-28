@@ -1,7 +1,6 @@
 package com.onlinevalidator.controller;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/bean-servlet-test.xml")
 @WebAppConfiguration
-
-@Ignore
 public class CatalogControllerTest {
 
 	private MockMvc mockMvc;
@@ -49,8 +46,9 @@ public class CatalogControllerTest {
 		try {
 
 			mockMvc.perform(
-					get("/" + CatalogController.CATALOG_BASE_URL, "nomeCatalog=" + UnitOfMeasureCode.name(), "versione=1.0")
-			)
+					get("/catalog")
+							.param("nomeCatalog", UnitOfMeasureCode.name())
+							.param("versione", "2.1"))
 					.andExpect(
 							status().isOk()
 					);
