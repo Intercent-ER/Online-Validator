@@ -31,4 +31,19 @@ public interface ConfigurazioneServiceInterface extends ApplicationLogger {
 	 */
 	String readValue(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum, boolean useCache) throws ConfigurationNotFoundException;
 
+	/**
+	 * Legge un valore di configurazione dalla cache; aggiorna la cache se necessario.
+	 *
+	 * @param chiaveConfigurazioneEnum è la chiave di configurazione
+	 * @return il valore di configurazione
+	 */
+	String readFromCache(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum);
+
+	/**
+	 * Legge un valore di configurazione dal database.
+	 *
+	 * @param chiaveConfigurazioneEnum è la chiave di configurazione
+	 * @return il valore recuperato
+	 */
+	String readFromDatabase(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum);
 }

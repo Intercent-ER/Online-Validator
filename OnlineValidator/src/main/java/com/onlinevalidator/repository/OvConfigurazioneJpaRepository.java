@@ -12,5 +12,4 @@ import org.springframework.stereotype.Repository;
 public interface OvConfigurazioneJpaRepository extends JpaRepository<OvConfigurazione, Integer> {
 
 	OvConfigurazione findByCdChiaveConfigurazione(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum);
-
 }

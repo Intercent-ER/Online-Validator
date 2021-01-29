@@ -51,13 +51,12 @@ public class ConfigurazioneService implements ConfigurazioneServiceInterface {
 				: readFromDatabase(chiaveConfigurazioneEnum);
 	}
 
-	/**
-	 * Legge un valore di configurazione dalla cache; aggiorna la cache se necessario.
-	 *
-	 * @param chiaveConfigurazioneEnum è la chiave di configurazione
-	 * @return il valore di configurazione
-	 */
-	private String readFromCache(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum) {
+	@Override
+	public String readFromCache(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum) {
+
+		if (chiaveConfigurazioneEnum == null) {
+			throw new NullPointerException("Impossibile leggere una chiave di configurazione null");
+		}
 
 		// Leggo dalla cache
 		logInfo("Lettura configurazione {} da cache", chiaveConfigurazioneEnum.name());
@@ -67,7 +66,7 @@ public class ConfigurazioneService implements ConfigurazioneServiceInterface {
 		if (value == null) {
 
 			logInfo("Chiave di configurazione {} non trovata in cache, si procede alla lettura sul database", chiaveConfigurazioneEnum.name());
-			value = readFromDatabase(chiaveConfigurazioneEnum);
+			value = this.readFromDatabase(chiaveConfigurazioneEnum);
 
 			// Inserisco in cache il valore recuperato
 			cache.put(chiaveConfigurazioneEnum, value);
@@ -76,20 +75,19 @@ public class ConfigurazioneService implements ConfigurazioneServiceInterface {
 		return value;
 	}
 
-	/**
-	 * Legge un valore di configurazione dal database.
-	 *
-	 * @param chiaveConfigurazioneEnum è la chiave di configurazione
-	 * @return il valore recuperato
-	 */
-	private String readFromDatabase(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum) {
+	@Override
+	public String readFromDatabase(ChiaveConfigurazioneEnum chiaveConfigurazioneEnum) {
+
+		if (chiaveConfigurazioneEnum == null) {
+			throw new NullPointerException("Impossibile leggere una chiave di configurazione null");
+		}
 
 		// Leggo la configurazione dal database
 		logInfo("Lettura configurazione {} da database", chiaveConfigurazioneEnum.name());
 		OvConfigurazione configurazione = configurazioneJpaRepository.findByCdChiaveConfigurazione(chiaveConfigurazioneEnum);
 
 		// Se non ho trovato la configurazione, o se il suo valore è null, restituisco eccezione
-		if (configurazione == null || configurazione.getCdValoreConfigurazione() == null) {
+		if (configurazione.getCdValoreConfigurazione() == null) {
 			throw ConfigurationNotFoundException.notFound(chiaveConfigurazioneEnum);
 		}
 

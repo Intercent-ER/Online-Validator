@@ -1,4 +1,3 @@
-target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -19,6 +18,10 @@ buildNumber.properties
 /OnlineValidator/.settings/org.eclipse.wst.jsdt.ui.superType.container
 /OnlineValidator/.settings/org.eclipse.wst.jsdt.ui.superType.name
 /OnlineValidator/.settings/org.eclipse.wst.validation.prefs
+/target
+*.iml
+*.idea
+/.idea
 /OnlineValidator/nb-configuration.xml
 /OnlineValidator/nbproject/
 /OnlineValidator/catalina.base_IS_UNDEFINED/

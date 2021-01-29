@@ -19,16 +19,19 @@
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>2.8.2</log4j.version>
         <logback.version>1.1.2</logback.version>
-        <mysql.connector.version>8.0.23</mysql.connector.version>
+        <mockito-core.version>2.23.4</mockito-core.version>
+        <junit.version>4.12</junit.version>
+        <commons-dbcp2.version>2.0.1</commons-dbcp2.version>
+        <itextpdf.version>5.5.10</itextpdf.version>
+        <Saxon-HE.version>10.0</Saxon-HE.version>
+        <javax.servlet-api.version>3.0.1</javax.servlet-api.version>
+        <javax.annotation-api.version>1.2</javax.annotation-api.version>
+        <jaxb-api.version>2.4.0-b180830.0359</jaxb-api.version>
+        <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <jaxb2-maven-plugin.version>1.6</jaxb2-maven-plugin.version>
     </properties>
     <dependencies>
-
-        <!-- Da rimuovere quando la VPN di L&G è configurata -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.connector.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -104,7 +107,7 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.4.0-b180830.0359</version>
+            <version>${jaxb-api.version}</version>
         </dependency>
 
         <dependency>
@@ -134,40 +137,69 @@
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
-            <version>1.2</version>
+            <version>${javax.annotation-api.version}</version>
         </dependency>
+
         <!-- Javax Servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
+            <version>${javax.servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/net.sf.saxon/Saxon-HE -->
+        <!-- Saxon HE -->
         <dependency>
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>
-            <version>10.0</version>
+            <version>${Saxon-HE.version}</version>
         </dependency>
 
+        <!-- IText PDF -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
-            <version>5.5.10</version>
+            <version>${itextpdf.version}</version>
         </dependency>
 
-        <!-- Test -->
+        <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- OJDBC -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc16</artifactId>
+            <version>11.2.0.3.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito-->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.23.4</version>
+            <version>${mockito-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Apache Commons DBCP2 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>${commons-dbcp2.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring test -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <type>jar</type>
             <scope>test</scope>
         </dependency>
 
@@ -176,22 +208,23 @@
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.3</version>
+                <version>${maven-war-plugin.version}</version>
             </plugin>
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>1.6</version>
+                <version>${jaxb2-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>xsd-utility-validazione</id>
@@ -204,7 +237,6 @@
                             <clearOutputDir>false</clearOutputDir>
                         </configuration>
                     </execution>
-
                     <execution>
                         <id>xsd-rendering</id>
                         <goals>
@@ -221,8 +253,8 @@
                     <target>2.2</target>
                 </configuration>
             </plugin>
-
         </plugins>
-        <finalName>${project.artifactId}</finalName>
+
+        <finalName>${project.artifactId}-${project.version}</finalName>
     </build>
 </project>

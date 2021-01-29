@@ -3,7 +3,10 @@ package com.onlinevalidator.util;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Importata da NoTI-ER.
@@ -64,8 +67,6 @@ public class FileUtil {
 			output = response.getOutputStream();
 			output.write(bos.toByteArray());
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

@@ -1,7 +1,5 @@
-package com.onlinevalidator.pojo;
+package com.onlinevalidator.dto;
 
-import com.onlinevalidator.dto.ValidationAssert;
-import com.onlinevalidator.dto.ValidationReport;
 import org.junit.Test;
 
 import java.util.List;
@@ -12,6 +10,34 @@ import static org.junit.Assert.*;
  * @author Manuel Gozzi
  */
 public class ValidationReportTest {
+
+	@Test
+	public void getDescrizioneErroreXsd() {
+
+		ValidationReport validationReport = new ValidationReport();
+		assertNull(validationReport.getDescrizioneErroreXsd());
+	}
+
+	@Test
+	public void setDescrizioneErroreXsd() {
+
+		ValidationReport validationReport = new ValidationReport();
+		validationReport.setDescrizioneErroreXsd("descrizione errore xsd");
+	}
+
+	@Test
+	public void getDataDiGenerazione() {
+
+		ValidationReport validationReport = new ValidationReport();
+		assertNotNull(validationReport.getDataDiGenerazione());
+	}
+
+	@Test
+	public void isValido() {
+
+		ValidationReport validationReport = new ValidationReport();
+		assertTrue(validationReport.isValido());
+	}
 
 	@Test
 	public void contieneErrori() {
@@ -25,7 +51,6 @@ public class ValidationReportTest {
 
 		validationReport = new ValidationReport();
 		assertFalse(validationReport.contieneErrori());
-
 	}
 
 	@Test
@@ -38,7 +63,6 @@ public class ValidationReportTest {
 		validationReport.aggiungiDettaglio(validationAssert);
 
 		assertNotNull(validationReport.getErroriDiValidazione());
-
 	}
 
 	@Test
@@ -50,7 +74,6 @@ public class ValidationReportTest {
 		validationReport.aggiungiDettaglio("descrizione errore xsd");
 		assertNotNull(validationReport.getDescrizioneErroreXsd());
 		assertEquals("descrizione errore xsd", validationReport.getDescrizioneErroreXsd());
-
 	}
 
 	@Test
@@ -64,6 +87,5 @@ public class ValidationReportTest {
 		List<ValidationAssert> lista2 = validationReport.getErroriDiValidazione();
 
 		assertSame(lista1, lista2);
-
 	}
 }
