@@ -19,3 +19,7 @@ buildNumber.properties
 /OnlineValidator/.settings/org.eclipse.wst.jsdt.ui.superType.container
 /OnlineValidator/.settings/org.eclipse.wst.jsdt.ui.superType.name
 /OnlineValidator/.settings/org.eclipse.wst.validation.prefs
+/OnlineValidator/nb-configuration.xml
+/OnlineValidator/nbproject/
+/OnlineValidator/catalina.base_IS_UNDEFINED/
+/OnlineValidator/nbactions.xml

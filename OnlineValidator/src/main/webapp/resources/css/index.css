@@ -41,14 +41,23 @@ header > div {
 }
 
 .peppol-logo-style {
-    width: 200px;
+    width: 150px;
     height: auto;
     max-height: 60px;
 }
 
 .title {
-    font-size: 40px;
+    font-size: 35px;
     font-weight: bold;
+}
+
+.description-container{
+    border: 1px solid #0059B3;
+    padding: 10px;
+}
+
+.description-container > b:first-child{
+    color: #0059B3;
 }
 
 .validation-column {
@@ -58,10 +67,6 @@ header > div {
 .subtitle {
     flex: 1;
     margin-bottom: 5px;
-}
-
-.validation-container {
-    margin-top: 100px;
 }
 
 .file-container {
@@ -204,7 +209,11 @@ li > a:hover {
     padding-left: 15px;
 }
 
-@media screen and (max-width: 992px) {
+.display-none{
+    display: none;
+}
+
+@media screen and (max-width: 1200px) {
     .header-peppol-logo > span {
         display: none;
     }
@@ -219,6 +228,14 @@ li > a:hover {
     .title-container {
         margin-left: 16.666667%;
     }
+    
+    .main-container {
+        padding-bottom: 500px;
+    }
+
+    .footer {
+        height: 450px;
+    }
 
     .div-logo-container div:last-child {
         -ms-flex-pack: flex-start !important;
@@ -232,8 +249,16 @@ li > a:hover {
         margin-left: 0;
     }
 
-    footer {
-        bottom: -400px;
+    .title{
+        font-size: 6vw;
+    }
+
+    .main-container {
+        padding-bottom: 600px;
+    }
+
+    .footer {
+        height: 550px;
     }
 
     .div-logo-container div:first-child, .div-logo-container div:last-child {

@@ -15,8 +15,9 @@
 
 <%@ include file="common/header.jsp" %>
 
-<div class="main-container container row validation-container">
-    <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 d-flex flex-column justify-content-center">
+<div class="main-container container row pt-5">
+    
+    <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1 d-flex flex-column justify-content-center pt-2 pt-sm-4">
         <form:form method="POST" action="uploadFile.html"
                    enctype="multipart/form-data">
 
@@ -38,6 +39,25 @@
             </div>
         </form:form>
     </div>
+    <div class="w-100"></div>
+    
+    <div class="description-container col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12 d-flex flex-column rounded mt-5">
+        <b>A cosa serve la piattaforma?</b>
+        <span>
+            La piattaforma consente di effettuare la validazione di documenti Peppol, in particolare: ordine, DDT, Risposta all&apos;ordine, Fattura e Nota di Credito, al fine di effettuare autonomamente delle prove di verifica della qualità dei singoli file xml.
+            <!-- TODO: Aggiungere testo disclaimer informazioni -->
+        </span>
+    </div>
+    <div class="w-100"></div>
+    
+    <div class="description-container col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12 d-flex flex-column rounded mt-3">
+        <b>Che dati vengono salvati?</b>
+        <span>
+            La piattaforma non salva nessun dato contenuto all'interno dei documenti processati 
+            <!-- TODO: Aggiungere testo disclaimer informazioni -->
+        </span>
+    </div>
+    
 </div>
 
 <%@ include file="common/footer.jsp" %>
