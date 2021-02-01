@@ -208,6 +208,7 @@ public class RenderingServiceTest {
 		when(validationReport.getErroriDiValidazione()).thenReturn(asserts);
 		when(validationReport.getDataDiGenerazione()).thenReturn(new Date());
 		when(validationReport.isValido()).thenReturn(false);
+		when(validationReport.getDocumentoValidato()).thenReturn("<?xml version=\"1.0\"><Order/>");
 
 		return validationReport;
 	}
@@ -223,6 +224,7 @@ public class RenderingServiceTest {
 		when(validationReport.getErroriDiValidazione()).thenReturn(Collections.emptyList());
 		when(validationReport.getDataDiGenerazione()).thenReturn(new Date());
 		when(validationReport.isValido()).thenReturn(true);
+		when(validationReport.getDocumentoValidato()).thenReturn("<?xml version=\"1.0\"><Order/>");
 
 		return validationReport;
 	}
