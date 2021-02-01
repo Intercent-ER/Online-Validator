@@ -92,7 +92,7 @@ public class ValidatorControllerTest {
 					.getRequest()
 					.getSession();
 			assertNotNull(httpSession);
-			assertNotNull(httpSession.getAttribute("risultato-validazione"));
+			assertNotNull(httpSession.getAttribute("risultatoValidazione"));
 
 			// Test di validazione da controller DDT FATAL
 			multipartFile = new MockMultipartFile(
@@ -115,7 +115,7 @@ public class ValidatorControllerTest {
 					.getRequest()
 					.getSession();
 			assertNotNull(httpSession);
-			assertNotNull(httpSession.getAttribute("risultato-validazione"));
+			assertNotNull(httpSession.getAttribute("risultatoValidazione"));
 
 			// Test di validazione da controller Ordine OK
 			multipartFile = new MockMultipartFile(
@@ -138,7 +138,7 @@ public class ValidatorControllerTest {
 					.getRequest()
 					.getSession();
 			assertNotNull(httpSession);
-			assertNotNull(httpSession.getAttribute("risultato-validazione"));
+			assertNotNull(httpSession.getAttribute("risultatoValidazione"));
 
 			// Test di validazione da controller Ordine FATAL
 			multipartFile = new MockMultipartFile(
@@ -161,7 +161,7 @@ public class ValidatorControllerTest {
 					.getRequest()
 					.getSession();
 			assertNotNull(httpSession);
-			assertNotNull(httpSession.getAttribute("risultato-validazione"));
+			assertNotNull(httpSession.getAttribute("risultatoValidazione"));
 		} catch (Exception e) {
 
 			fail(e.getMessage());
@@ -182,7 +182,7 @@ public class ValidatorControllerTest {
 		try {
 
 			MockHttpSession mockHttpSession = new MockHttpSession();
-			mockHttpSession.setAttribute("risultato-validazione", fatalReport);
+			mockHttpSession.setAttribute("risultatoValidazione", fatalReport);
 
 			this.mockMvc.perform(
 					get("/esportaRisultato")
@@ -191,7 +191,7 @@ public class ValidatorControllerTest {
 			).andExpect(status().isOk());
 
 			mockHttpSession = new MockHttpSession();
-			mockHttpSession.setAttribute("risultato-validazione", "XML");
+			mockHttpSession.setAttribute("risultatoValidazione", "XML");
 
 			this.mockMvc.perform(
 					get("/esportaRisultato")
@@ -203,7 +203,7 @@ public class ValidatorControllerTest {
 			ValidationReport validationReport = new ValidationReport();
 
 			mockHttpSession = new MockHttpSession();
-			mockHttpSession.setAttribute("risultato-validazione", validationReport);
+			mockHttpSession.setAttribute("risultatoValidazione", validationReport);
 
 			this.mockMvc.perform(
 					get("/esportaRisultato")
@@ -212,7 +212,7 @@ public class ValidatorControllerTest {
 			).andExpect(status().isOk());
 
 			mockHttpSession = new MockHttpSession();
-			mockHttpSession.setAttribute("risultato-validazione", validationReport);
+			mockHttpSession.setAttribute("risultatoValidazione", validationReport);
 
 			this.mockMvc.perform(
 					get("/esportaRisultato")

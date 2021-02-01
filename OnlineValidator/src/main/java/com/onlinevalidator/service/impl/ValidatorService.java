@@ -160,7 +160,7 @@ public class ValidatorService implements ValidatorServiceInterface {
 			throw new NullPointerException("Impossibile validare un documento senza averne specificato il tipo");
 		}
 
-		ValidationReport validationReport = new ValidationReport();
+		ValidationReport validationReport = new ValidationReport(documento);
 
 		try {
 

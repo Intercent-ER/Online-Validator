@@ -1,5 +1,6 @@
 package com.onlinevalidator.dto;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -21,13 +22,21 @@ public class ValidationReport {
 
 	private String descrizioneErroreXsd;
 
-	private final Date dataDiGenerazione;
+	private Date dataDiGenerazione;
 
 	private boolean isValido;
+
+	private String documentoValidato;
 
 	public ValidationReport() {
 		this.dataDiGenerazione = new Date();
 		this.isValido = true;
+	}
+
+	public ValidationReport(byte[] documentoValidato) {
+		this.dataDiGenerazione = new Date();
+		this.isValido = true;
+		this.setDocumentoValidato(documentoValidato);
 	}
 
 	/**
@@ -87,5 +96,14 @@ public class ValidationReport {
 
 	public boolean isValido() {
 		return isValido;
+	}
+
+	public void setDocumentoValidato(byte[] documentoValidato) {
+
+		this.documentoValidato = new String(documentoValidato, StandardCharsets.UTF_8);
+	}
+
+	public String getDocumentoValidato() {
+		return this.documentoValidato;
 	}
 }

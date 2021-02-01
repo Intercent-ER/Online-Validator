@@ -112,6 +112,21 @@ public class RenderingService implements RenderingServiceInterface {
 			// Compongo la struttura del pdf
 			logDebug("Avvio scrittura del documento PDF");
 			composePdfFile(pdfDocument, validationReport);
+
+			// Aggiungo in conclusione il file validato
+			pdfDocument.newPage();
+			pdfDocument.add(new Paragraph("Documento:", new Font(pdfMainFont, 19f, Font.NORMAL, BaseColor.BLACK)));
+			logDebug("Aggiungo documento validato");
+			pdfDocument.add(
+					Chunk.NEWLINE
+			);
+			pdfDocument.add(
+					new Paragraph(
+							validationReport.getDocumentoValidato().replace("\t", "    "),
+							new Font(pdfMainFont, 9f, Font.NORMAL, BaseColor.DARK_GRAY)
+					)
+			);
+
 			logDebug("Chiusura del documento PDF");
 			pdfDocument.close();
 

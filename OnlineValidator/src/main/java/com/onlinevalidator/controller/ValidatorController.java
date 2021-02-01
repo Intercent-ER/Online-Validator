@@ -77,6 +77,10 @@ public class ValidatorController {
 					CostantiWeb.RESULT_CONTROLLER_DATA_VALIDAZIONE,
 					new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(risultatoValidazione.getDataDiGenerazione())
 			);
+			paginaRisultato.addObject(
+					CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,
+					risultatoValidazione
+			);
 			session.setAttribute(
 					CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,
 					risultatoValidazione

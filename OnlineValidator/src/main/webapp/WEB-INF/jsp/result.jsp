@@ -93,7 +93,7 @@
             </div>
 
             <textarea readonly>
-                ${ stringaDocumentoValidato}
+                ${ risultatoValidazione.documentoValidato }
             </textarea>
 
             <div class="row">
