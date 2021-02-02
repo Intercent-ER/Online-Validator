@@ -5,9 +5,8 @@ import com.onlinevalidator.model.enumerator.TipoFileEnum;
 import javax.persistence.*;
 import java.io.Serializable;
 
-
 /**
- * The persistent class for the validatore database table.
+ * The persistent class for the OV_VALIDATORE database table.
  */
 @Entity
 @Table(name = "OV_VALIDATORE")
@@ -36,6 +35,9 @@ public class OvValidatore implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "FK_ID_TIPO_DOCUMENTO", nullable = false)
 	private OvTipoDocumento tipoDocumento;
+
+	@Column(name = "NI_VERSIONE", length = 10, nullable = false)
+	private String niVersione;
 
 	public OvValidatore() {
 	}
@@ -70,5 +72,29 @@ public class OvValidatore implements Serializable {
 
 	public void setCdTipoFile(TipoFileEnum tipoFileEnum) {
 		this.cdTipoFile = tipoFileEnum;
+	}
+
+	public String getNmNome() {
+		return nmNome;
+	}
+
+	public void setNmNome(String nmNome) {
+		this.nmNome = nmNome;
+	}
+
+	public OvTipoDocumento getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(OvTipoDocumento tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
+	public String getNiVersione() {
+		return niVersione;
+	}
+
+	public void setNiVersione(String niVersione) {
+		this.niVersione = niVersione;
 	}
 }
