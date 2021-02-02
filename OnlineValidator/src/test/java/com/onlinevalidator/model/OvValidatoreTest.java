@@ -38,15 +38,15 @@ public class OvValidatoreTest {
 	}
 
 	@Test
-	public void getName() {
+	public void getNmNome() {
 
-		assertNull(new OvValidatore().getName());
+		assertNull(new OvValidatore().getNmNome());
 	}
 
 	@Test
-	public void setName() {
+	public void setNmNome() {
 
-		new OvValidatore().setName("nome validatore");
+		new OvValidatore().setNmNome("nome validatore");
 	}
 
 	@Test
@@ -63,5 +63,29 @@ public class OvValidatoreTest {
 
 			validatore.setCdTipoFile(value);
 		}
+	}
+
+	@Test
+	public void getTipoDocumento() {
+
+		assertNull(new OvValidatore().getTipoDocumento());
+	}
+
+	@Test
+	public void setTipoDocumento() {
+
+		new OvValidatore().setTipoDocumento(null);
+	}
+
+	@Test
+	public void getNiVersione() {
+
+		assertNull(new OvValidatore().getNiVersione());
+	}
+
+	@Test
+	public void setNiVersione() {
+
+		new OvValidatore().setNiVersione("1.0");
 	}
 }

@@ -54,16 +54,16 @@ public class OvValidatore implements Serializable {
 		return this.blFile;
 	}
 
-	public void setBlFile(byte[] file) {
-		this.blFile = file;
+	public void setBlFile(byte[] blFile) {
+		this.blFile = blFile;
 	}
 
-	public String getName() {
+	public String getNmNome() {
 		return this.nmNome;
 	}
 
-	public void setName(String nome) {
-		this.nmNome = nome;
+	public void setNmNome(String nmNome) {
+		this.nmNome = nmNome;
 	}
 
 	public TipoFileEnum getCdTipoFile() {
@@ -72,14 +72,6 @@ public class OvValidatore implements Serializable {
 
 	public void setCdTipoFile(TipoFileEnum tipoFileEnum) {
 		this.cdTipoFile = tipoFileEnum;
-	}
-
-	public String getNmNome() {
-		return nmNome;
-	}
-
-	public void setNmNome(String nmNome) {
-		this.nmNome = nmNome;
 	}
 
 	public OvTipoDocumento getTipoDocumento() {
