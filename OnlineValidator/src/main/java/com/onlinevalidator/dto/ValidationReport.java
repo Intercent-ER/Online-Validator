@@ -22,11 +22,13 @@ public class ValidationReport {
 
 	private String descrizioneErroreXsd;
 
-	private Date dataDiGenerazione;
+	private final Date dataDiGenerazione;
 
 	private boolean isValido;
 
 	private String documentoValidato;
+
+	private String versioneSchematron;
 
 	public ValidationReport() {
 		this.dataDiGenerazione = new Date();
@@ -105,5 +107,13 @@ public class ValidationReport {
 
 	public String getDocumentoValidato() {
 		return this.documentoValidato;
+	}
+
+	public String getVersioneSchematron() {
+		return versioneSchematron;
+	}
+
+	public void setVersioneSchematron(String versioneSchematron) {
+		this.versioneSchematron = versioneSchematron;
 	}
 }

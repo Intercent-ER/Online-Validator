@@ -187,6 +187,10 @@ public class ValidatorService implements ValidatorServiceInterface {
 			// Esecuzione validazione schematron
 			logInfo("Avvio validazione XSLT");
 			OvValidatore validatoreSchematron = filtraValidatore(tipoDocumento, TipoFileEnum.SCHEMATRON);
+
+			// Aggiungo la versione dello schematron
+			validationReport.setVersioneSchematron(validatoreSchematron.getNiVersione());
+
 			Collection<ValidationAssert> validationAsserts = validazioneSemantica(
 					new String(documento, StandardCharsets.UTF_8),
 					getSchematron(validatoreSchematron)

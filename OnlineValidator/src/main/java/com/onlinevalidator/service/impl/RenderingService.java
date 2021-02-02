@@ -263,6 +263,17 @@ public class RenderingService implements RenderingServiceInterface {
 				)
 		);
 
+		// Aggiungo la data di generazione del PDF
+		pdfDocument.add(
+				new Paragraph(
+						String.format(
+								"Versione schematron: %s",
+								validationReport.getVersioneSchematron()
+						),
+						new Font(pdfMainFont, 12f, Font.NORMAL, BaseColor.DARK_GRAY)
+				)
+		);
+
 		if (validationReport.isValido()) {
 
 			// Descrivo il risultato positivo della validazione

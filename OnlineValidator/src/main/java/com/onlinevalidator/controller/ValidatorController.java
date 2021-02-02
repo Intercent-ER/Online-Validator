@@ -62,18 +62,6 @@ public class ValidatorController {
 
 			// Aggiunta dei risultati
 			paginaRisultato.addObject(
-					CostantiWeb.RESULT_CONTROLLER_ASSERT_VALIDAZIONE,
-					risultatoValidazione.getErroriDiValidazione()
-			);
-			paginaRisultato.addObject(
-					CostantiWeb.RESULT_CONTROLLER_IS_VALIDO,
-					risultatoValidazione.isValido()
-			);
-			paginaRisultato.addObject(
-					CostantiWeb.RESULT_CONTROLLER_ERRORE_XSD,
-					risultatoValidazione.getDescrizioneErroreXsd()
-			);
-			paginaRisultato.addObject(
 					CostantiWeb.RESULT_CONTROLLER_DATA_VALIDAZIONE,
 					new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(risultatoValidazione.getDataDiGenerazione())
 			);
