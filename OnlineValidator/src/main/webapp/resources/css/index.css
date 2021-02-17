@@ -36,8 +36,12 @@ header > div {
     height: 100%;
 }
 
-.header-column-container > div > span {
+.header-column-container span{
     color: #0059B3;
+}
+
+.header-peppol-logo:hover{
+    text-decoration: none;
 }
 
 .peppol-logo-style {
@@ -164,14 +168,27 @@ footer {
     border-bottom: 1px solid white;
 }
 
+.div-logo-container > a {
+    margin: 24px 0 24px 0;
+}
+
+.div-logo-container > a:hover{
+    text-decoration: none;
+    cursor: auto;
+}
+
 .div-logo-container img {
     width: 200px;
     height: auto;
     max-height: 60px;
 }
 
-.div-logo-container > div {
-    margin: 24px 0 24px 0;
+.div-logo-container img:hover, .div-logo-container span:hover{
+    cursor: pointer;
+}
+
+.footer-peppol-logo-wrapper{
+    cursor: pointer;
 }
 
 .span-peppol-logo {
@@ -203,10 +220,15 @@ li > a:hover {
     background-color: #001a33;
 }
 
-.footer-bottom-container > div > span {
+.footer-bottom-container a {
     color: white;
     font-size: 15px;
     padding-left: 15px;
+}
+
+.footer-bottom-container a:hover {
+    color: white;
+    cursor: pointer;
 }
 
 .display-none{
@@ -237,7 +259,7 @@ li > a:hover {
         height: 450px;
     }
 
-    .div-logo-container div:last-child {
+    .div-logo-container a:last-child {
         -ms-flex-pack: flex-start !important;
         justify-content: flex-start !important;
     }
@@ -261,7 +283,7 @@ li > a:hover {
         height: 550px;
     }
 
-    .div-logo-container div:first-child, .div-logo-container div:last-child {
+    .div-logo-container > a {
         -ms-flex-pack: center !important;
         justify-content: center !important;
     }

@@ -24,6 +24,7 @@ import java.io.InputStream;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import org.junit.Ignore;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -35,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/bean-servlet-test.xml")
 @WebAppConfiguration
+@Ignore
 public class ValidatorControllerTest {
 
 	private MockMvc mockMvc;

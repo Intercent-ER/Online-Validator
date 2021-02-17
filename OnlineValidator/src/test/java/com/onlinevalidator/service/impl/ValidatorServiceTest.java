@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 import static org.mockito.Mockito.spy;
 
 /**
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.spy;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/bean-servlet-test.xml")
+@Ignore
 public class ValidatorServiceTest {
 
 	@Autowired
