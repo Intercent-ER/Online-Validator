@@ -162,11 +162,23 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 		ValidationReport validationReport = new ValidationReport(documento);
 
+		OvValidatore validatoreXsd = filtraValidatore(tipoDocumento, TipoFileEnum.XSD);
+		if (validatoreXsd == null) {
+			throw new NullPointerException("Impossibile eseguire una validazione XSD senza il validatore corrispondente");
+		}
+
+		OvValidatore validatoreSchematron = filtraValidatore(tipoDocumento, TipoFileEnum.SCHEMATRON);
+		if (validatoreSchematron == null) {
+			throw new NullPointerException("Impossibile eseguire una validazione XSLT senza il validatore corrispondente");
+		}
+
+		// Aggiungo la versione dello schematron
+		validationReport.setVersioneSchematron(validatoreSchematron.getNiVersione());
+
 		try {
 
 			// Esecuzione validazione XSD
 			logInfo("Avvio validazione XSD");
-			OvValidatore validatoreXsd = filtraValidatore(tipoDocumento, TipoFileEnum.XSD);
 			validazioneXsd(
 					documento,
 					getSchemaXsd(validatoreXsd)
@@ -186,10 +198,6 @@ public class ValidatorService implements ValidatorServiceInterface {
 
 			// Esecuzione validazione schematron
 			logInfo("Avvio validazione XSLT");
-			OvValidatore validatoreSchematron = filtraValidatore(tipoDocumento, TipoFileEnum.SCHEMATRON);
-
-			// Aggiungo la versione dello schematron
-			validationReport.setVersioneSchematron(validatoreSchematron.getNiVersione());
 
 			Collection<ValidationAssert> validationAsserts = validazioneSemantica(
 					new String(documento, StandardCharsets.UTF_8),
