@@ -81,7 +81,7 @@
                 <c:when test="${ not empty risultatoValidazione and not empty risultatoValidazione.descrizioneErroreXsd }">
                     <h3 style="color:red">Risultato: il file non &egrave; valido</h3>
                     <p>Si &egrave; verificato un errore in sede di validazione xsd.</p>
-                    <blockquote>${ risultatoValidazione.descrizioneErroreXsd }</blockquote>
+                    <blockquote style="color:red">${ risultatoValidazione.descrizioneErroreXsd }</blockquote>
                     <%@ include file="common/result_button.jsp" %>
                 </c:when>
                 <c:otherwise>
