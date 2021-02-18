@@ -105,6 +105,8 @@ public class ValidatorController {
 					render.getFileName()
 			);
 		} catch (Exception e) {
+
+			// Logging dell'errore
 			logger.error("Si è verificato un errore durante l'esportazione: {}", e.getMessage(), e);
 
 			try {
