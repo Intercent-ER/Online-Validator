@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 
@@ -105,6 +106,21 @@ public class ValidatorController {
 			);
 		} catch (Exception e) {
 			logger.error("Si è verificato un errore durante l'esportazione: {}", e.getMessage(), e);
+
+			try {
+
+				// Scrivo a video il problema
+				response.getWriter().write(
+						String.format(
+								"Si è verificato un errore: %s%s",
+								System.getProperty("line.separator"),
+								e.getMessage()
+						)
+				);
+			} catch (IOException ie) {
+
+				logger.error("Si è verificato un problema durante il rendering dell'errore generico: {}", ie.getMessage(), ie);
+			}
 		}
 	}
 
