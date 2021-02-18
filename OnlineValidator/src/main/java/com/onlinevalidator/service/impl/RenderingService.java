@@ -318,7 +318,7 @@ public class RenderingService implements RenderingServiceInterface {
 	 * @return il {@link BaseColor} corrispondente al darkGreen
 	 */
 	private BaseColor getDarkGreenColor() {
-		return new BaseColor(1f, 100f, 32f);
+		return new BaseColor(1, 100, 32);
 	}
 
 	/**
