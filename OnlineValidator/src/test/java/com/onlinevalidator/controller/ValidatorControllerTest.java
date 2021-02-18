@@ -5,7 +5,6 @@ import com.onlinevalidator.dto.ValidationReport;
 import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.model.enumerator.NomeTipoDocumentoEnum;
 import com.onlinevalidator.repository.OvTipoDocumentoJpaRepository;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +14,11 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-import org.junit.Ignore;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -36,25 +30,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/bean-servlet-test.xml")
 @WebAppConfiguration
-@Ignore
-public class ValidatorControllerTest {
-
-	private MockMvc mockMvc;
-
-	@Autowired
-	private WebApplicationContext webApplicationContext;
-
-	@Autowired
-	private OvTipoDocumentoJpaRepository tipoDocumentoRepository;
+public class ValidatorControllerTest extends AbstractControllerTest {
 
 	@Autowired
 	private ValidatorController validatorController;
 
-	@Before
-	public void setup() {
+	@Autowired
+	private OvTipoDocumentoJpaRepository tipoDocumentoRepository;
 
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-		assertNotNull(validatorController);
+	@Override
+	protected Object getController() {
+		return validatorController;
 	}
 
 	@Test
@@ -85,16 +71,16 @@ public class ValidatorControllerTest {
 							.param("id", documentoDiTrasporto.getIdTipoDocumento() + ""))
 					.andExpect(status().isOk())
 					.andExpect(model().hasNoErrors())
-					.andExpect(model().attributeExists("assertDiValidazione"))
-					.andExpect(model().attributeDoesNotExist("erroreXsd"))
-					.andExpect(model().attributeExists("assertDiValidazione"))
+					.andExpect(model().attributeExists("risultatoValidazione"))
 					.andExpect(model().attributeExists("dataValidazione"))
-					.andExpect(model().attribute("risultatoValido", true))
 					.andReturn()
 					.getRequest()
 					.getSession();
 			assertNotNull(httpSession);
-			assertNotNull(httpSession.getAttribute("risultatoValidazione"));
+
+			ValidationReport risultatoValidazione = (ValidationReport) httpSession.getAttribute("risultatoValidazione");
+			assertNotNull(risultatoValidazione);
+			assertTrue(risultatoValidazione.isValido());
 
 			// Test di validazione da controller DDT FATAL
 			multipartFile = new MockMultipartFile(
@@ -108,16 +94,16 @@ public class ValidatorControllerTest {
 							.param("id", documentoDiTrasporto.getIdTipoDocumento() + ""))
 					.andExpect(status().isOk())
 					.andExpect(model().hasNoErrors())
-					.andExpect(model().attributeExists("assertDiValidazione"))
-					.andExpect(model().attributeDoesNotExist("erroreXsd"))
-					.andExpect(model().attributeExists("assertDiValidazione"))
+					.andExpect(model().attributeExists("risultatoValidazione"))
 					.andExpect(model().attributeExists("dataValidazione"))
-					.andExpect(model().attribute("risultatoValido", false))
 					.andReturn()
 					.getRequest()
 					.getSession();
 			assertNotNull(httpSession);
-			assertNotNull(httpSession.getAttribute("risultatoValidazione"));
+
+			risultatoValidazione = (ValidationReport) httpSession.getAttribute("risultatoValidazione");
+			assertNotNull(risultatoValidazione);
+			assertFalse(risultatoValidazione.isValido());
 
 			// Test di validazione da controller Ordine OK
 			multipartFile = new MockMultipartFile(
@@ -131,16 +117,16 @@ public class ValidatorControllerTest {
 							.param("id", ordine.getIdTipoDocumento() + ""))
 					.andExpect(status().isOk())
 					.andExpect(model().hasNoErrors())
-					.andExpect(model().attributeExists("assertDiValidazione"))
-					.andExpect(model().attributeDoesNotExist("erroreXsd"))
-					.andExpect(model().attributeExists("assertDiValidazione"))
+					.andExpect(model().attributeExists("risultatoValidazione"))
 					.andExpect(model().attributeExists("dataValidazione"))
-					.andExpect(model().attribute("risultatoValido", true))
 					.andReturn()
 					.getRequest()
 					.getSession();
 			assertNotNull(httpSession);
-			assertNotNull(httpSession.getAttribute("risultatoValidazione"));
+
+			risultatoValidazione = (ValidationReport) httpSession.getAttribute("risultatoValidazione");
+			assertNotNull(risultatoValidazione);
+			assertTrue(risultatoValidazione.isValido());
 
 			// Test di validazione da controller Ordine FATAL
 			multipartFile = new MockMultipartFile(
@@ -154,16 +140,16 @@ public class ValidatorControllerTest {
 							.param("id", ordine.getIdTipoDocumento() + ""))
 					.andExpect(status().isOk())
 					.andExpect(model().hasNoErrors())
-					.andExpect(model().attributeExists("assertDiValidazione"))
-					.andExpect(model().attributeDoesNotExist("erroreXsd"))
-					.andExpect(model().attributeExists("assertDiValidazione"))
+					.andExpect(model().attributeExists("risultatoValidazione"))
 					.andExpect(model().attributeExists("dataValidazione"))
-					.andExpect(model().attribute("risultatoValido", false))
 					.andReturn()
 					.getRequest()
 					.getSession();
 			assertNotNull(httpSession);
-			assertNotNull(httpSession.getAttribute("risultatoValidazione"));
+
+			risultatoValidazione = (ValidationReport) httpSession.getAttribute("risultatoValidazione");
+			assertNotNull(risultatoValidazione);
+			assertFalse(risultatoValidazione.isValido());
 		} catch (Exception e) {
 
 			fail(e.getMessage());

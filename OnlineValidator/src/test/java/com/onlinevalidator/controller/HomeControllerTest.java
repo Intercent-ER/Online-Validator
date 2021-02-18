@@ -2,17 +2,13 @@ package com.onlinevalidator.controller;
 
 import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.repository.OvTipoDocumentoJpaRepository;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
@@ -25,12 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/bean-servlet-test.xml")
 @WebAppConfiguration
-public class HomeControllerTest {
-
-	private MockMvc mockMvc;
-
-	@Autowired
-	private WebApplicationContext webApplicationContext;
+public class HomeControllerTest extends AbstractControllerTest {
 
 	@Autowired
 	private OvTipoDocumentoJpaRepository tipoDocumentoRepository;
@@ -38,11 +29,9 @@ public class HomeControllerTest {
 	@Autowired
 	private HomeController homeController;
 
-	@Before
-	public void setup() {
-
-		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
-		assertNotNull(homeController);
+	@Override
+	protected Object getController() {
+		return homeController;
 	}
 
 	@Test
