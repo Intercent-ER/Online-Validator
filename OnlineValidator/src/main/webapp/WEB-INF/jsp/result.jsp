@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
     <meta charset="ISO-8859-1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Validazione documenti Peppol - Risultato validazione</title>
+    <title>Risultato validazione - Validazione documenti Peppol</title>
     <%@include file="common/css.jsp" %>
     <%@include file="common/script.jsp" %>
 
@@ -36,7 +36,7 @@
     <input name="tipoRendering" type="hidden" id="tipoRenderingId"/>
 </form>
 
-<div class="container main-container">
+<div id="main-container" class="container">
     <div class="row">
         <div class="col-xl-12 mt-3 pl-0 pr-0">
             <span class="h2 mb-0">Rapporto validazione <small>(versione schematron ${ risultatoValidazione.versioneSchematron })</small></span>
@@ -60,7 +60,7 @@
                                 <c:set var="classeCss" value="classe-fatal"/>
                                 <c:set var="tipoDiv" value="fatal-error"/>
                             </c:if>
-                            <div class="${ tipoDiv } mb-3">
+                            <div class="${ tipoDiv } mb-3" role="alert">
                                 <div class="row">
                                     <b class="col-lg-1 col-md-2 col-sm-2 col-3">Test</b>
                                     <span class="col-lg-11 col-md-10 col-sm-10 col-9">${ singoloAssert.test }</span>
@@ -96,8 +96,9 @@
         ${ risultatoValidazione.documentoValidato }
     </textarea>
 
-    <div class="row">
+    <div class="d-flex flex-column">
         <span class="report-date">Report di validazione generato in data <b>${ dataValidazione }</b></span>
+        <span class="tipo-documento">Tipo documento selezionato: <b>${ tipoDocumento }</b></span>
     </div>
     <br>
 

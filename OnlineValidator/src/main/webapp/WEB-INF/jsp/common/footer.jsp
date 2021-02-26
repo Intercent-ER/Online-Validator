@@ -3,22 +3,22 @@
 
         <div class="row div-logo-container">
 
-            <a class="col-md-4 col-sm-6 d-flex justify-content-start" href="https://peppol.agid.gov.it/it/">
+            <a class="col-md-4 col-sm-6 d-flex justify-content-start" href="https://peppol.agid.gov.it/it/" target="_blank">
                 <div class="d-flex flex-column align-items-center footer-peppol-logo-wrapper">
-                    <img src="<c:url value="/resources/images/peppol-logo-blue.svg"/>">
+                    <img src="<c:url value="/resources/images/peppol-logo-blue.svg"/>" alt="Peppol logo">
                     <span class="span-peppol-logo">Peppol Authority Italia</span>
                 </div>
             </a>
 
             <a class="col-md-4 col-sm-6 d-flex justify-content-center align-items-center"
-               href="https://www.agid.gov.it">
+               href="https://www.agid.gov.it" target="_blank">
                 <img
-                        src="<c:url value="/resources/images/agid-logo-white.svg"/>">
+                        src="<c:url value="/resources/images/agid-logo-white.svg"/>" alt="Agenzia per l'Italia Digitale">
             </a>
             <a class="col-md-4 col-sm-6 d-flex justify-content-end align-items-center"
-               href="https://intercenter.regione.emilia-romagna.it/">
+               href="https://intercenter.regione.emilia-romagna.it/" target="_blank">
                 <img
-                    src="<c:url value="/resources/images/intercenter-logo.png"/>">
+                    src="<c:url value="/resources/images/intercenter-logo.png"/>" alt="Intercent-ER">
             </a>
 
         </div>

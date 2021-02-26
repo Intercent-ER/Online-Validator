@@ -6,7 +6,7 @@ body {
     min-height: 100vh;
 }
 
-.main-container {
+#main-container {
     padding-bottom: 350px;
 }
 
@@ -51,6 +51,7 @@ header > div {
 }
 
 .title {
+    color: #0059B3;
     font-size: 35px;
     font-weight: bold;
 }
@@ -251,7 +252,7 @@ li > a:hover {
         margin-left: 16.666667%;
     }
     
-    .main-container {
+    #main-container {
         padding-bottom: 500px;
     }
 
@@ -275,7 +276,7 @@ li > a:hover {
         font-size: 6vw;
     }
 
-    .main-container {
+    #main-container {
         padding-bottom: 600px;
     }
 
