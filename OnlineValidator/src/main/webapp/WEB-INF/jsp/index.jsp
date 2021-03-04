@@ -18,7 +18,7 @@
 
         <main id="main-container" class="container row pt-5">
             
-            <div class="offset-lg-3 offset-md-2 offset-sm-1">
+            <div class="offset-lg-3 offset-md-2 offset-sm-1 mt-2">
                 <h1>Area di validazione</h1>
             </div>
             
@@ -37,7 +37,7 @@
                         </select>
                     </div>
                     <div class="d-flex flex-column container file-type-container">
-                        <label class="subtitle" for="lista-customizationid">CustomizationID</label> 
+                        <label class="subtitle" for="lista-customizationid">Formato del documento</label> 
                         <select id="lista-customizationid" class="entity-select" type="select" name="idRappresentazione">
                             <c:forEach items="${rappresentazione}" var="val">
                                 <option type="int" value="${val.idRappresentazione}">${val.dsNomeRappresentazione}</option>

@@ -68,7 +68,7 @@ public class ValidatorController {
 			);
                         paginaRisultato.addObject(
 					CostantiWeb.RESULT_CONTROLLER_TIPO_DOCUMENTO_VALIDAZIONE,
-					validatorService.getOvTipoDocumentoById(id).getName().getReadableValue()
+					risultatoValidazione.getTipoDocumentoValidato()
 			);
 			paginaRisultato.addObject(
 					CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,

@@ -7,113 +7,127 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Classe POJO responsabile di contenere il dettaglio degli errori riscontrati in sede di validazione.
+ * Classe POJO responsabile di contenere il dettaglio degli errori riscontrati
+ * in sede di validazione.
  *
  * @author Manuel Gozzi
  */
 public class ValidationReport {
 
-	/*
+    /*
 	 * Lista di ValidationAssert che contiene l'elenco delle regole di validazione violate insieme ai relativi
 	 * messaggi d'errore di dettaglio.
 	 * Se la validazione va a buon fine, questa lista rimane vuota.
-	 */
-	private List<ValidationAssert> erroriDiValidazione;
+     */
+    private List<ValidationAssert> erroriDiValidazione;
 
-	private String descrizioneErroreXsd;
+    private String descrizioneErroreXsd;
 
-	private final Date dataDiGenerazione;
+    private final Date dataDiGenerazione;
 
-	private boolean isValido;
+    private boolean isValido;
 
-	private String documentoValidato;
+    private String documentoValidato;
 
-	private String versioneSchematron;
+    private String versioneSchematron;
 
-	public ValidationReport() {
-		this.dataDiGenerazione = new Date();
-		this.isValido = true;
-	}
+    private String tipoDocumentoValidato;
 
-	public ValidationReport(byte[] documentoValidato) {
-		this.dataDiGenerazione = new Date();
-		this.isValido = true;
-		this.setDocumentoValidato(documentoValidato);
-	}
+    public ValidationReport() {
+        this.dataDiGenerazione = new Date();
+        this.isValido = true;
+    }
 
-	/**
-	 * Metodo che restituisce <code>true</code> nel caso in cui il risultato di validazione contenga errori,
-	 * <code>false</code> altrimenti.
-	 *
-	 * @return <code>true</code> nel caso in cui l'esito della validazione non sia positivo
-	 */
-	public boolean contieneErrori() {
-		return erroriDiValidazione != null && !erroriDiValidazione.isEmpty();
-	}
+    public ValidationReport(byte[] documentoValidato) {
+        this.dataDiGenerazione = new Date();
+        this.isValido = true;
+        this.setDocumentoValidato(documentoValidato);
+    }
 
-	/**
-	 * Data una regola di validazione e una descrizione dell'errore di validazione
-	 * riscontrato, la si aggiunge alla lista di asserzioni fallite.
-	 */
-	public void aggiungiDettaglio(ValidationAssert validationAssert) {
-		if (erroriDiValidazione == null) {
-			erroriDiValidazione = new ArrayList<>();
-		}
-		erroriDiValidazione.add(
-				validationAssert
-		);
-		if (validationAssert.isFatal()) {
-			this.isValido = false;
-		}
-	}
+    /**
+     * Metodo che restituisce <code>true</code> nel caso in cui il risultato di
+     * validazione contenga errori, <code>false</code> altrimenti.
+     *
+     * @return <code>true</code> nel caso in cui l'esito della validazione non
+     * sia positivo
+     */
+    public boolean contieneErrori() {
+        return erroriDiValidazione != null && !erroriDiValidazione.isEmpty();
+    }
 
-	public void aggiungiDettaglio(String descrizioneErroreXsd) {
-		this.descrizioneErroreXsd = descrizioneErroreXsd;
-	}
+    /**
+     * Data una regola di validazione e una descrizione dell'errore di
+     * validazione riscontrato, la si aggiunge alla lista di asserzioni fallite.
+     */
+    public void aggiungiDettaglio(ValidationAssert validationAssert) {
+        if (erroriDiValidazione == null) {
+            erroriDiValidazione = new ArrayList<>();
+        }
+        erroriDiValidazione.add(
+                validationAssert
+        );
+        if (validationAssert.isFatal()) {
+            this.isValido = false;
+        }
+    }
 
-	/**
-	 * Metodo getter che restituisce una copia della lista degli assert di validazione.
-	 *
-	 * @return la lista di errori di validazione relativi a questo report
-	 */
-	public List<ValidationAssert> getErroriDiValidazione() {
-		if (erroriDiValidazione == null || erroriDiValidazione.isEmpty()) {
-			return Collections.emptyList();
-		}
-		return erroriDiValidazione;
-	}
+    public void aggiungiDettaglio(String descrizioneErroreXsd) {
+        this.descrizioneErroreXsd = descrizioneErroreXsd;
+    }
 
-	public String getDescrizioneErroreXsd() {
-		return descrizioneErroreXsd;
-	}
+    /**
+     * Metodo getter che restituisce una copia della lista degli assert di
+     * validazione.
+     *
+     * @return la lista di errori di validazione relativi a questo report
+     */
+    public List<ValidationAssert> getErroriDiValidazione() {
+        if (erroriDiValidazione == null || erroriDiValidazione.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return erroriDiValidazione;
+    }
 
-	public void setDescrizioneErroreXsd(String descrizioneErroreXsd) {
-		this.descrizioneErroreXsd = descrizioneErroreXsd;
-		this.isValido = false;
-	}
+    public String getDescrizioneErroreXsd() {
+        return descrizioneErroreXsd;
+    }
 
-	public Date getDataDiGenerazione() {
-		return dataDiGenerazione;
-	}
+    public void setDescrizioneErroreXsd(String descrizioneErroreXsd) {
+        this.descrizioneErroreXsd = descrizioneErroreXsd;
+        this.isValido = false;
+    }
 
-	public boolean isValido() {
-		return isValido;
-	}
+    public Date getDataDiGenerazione() {
+        return dataDiGenerazione;
+    }
 
-	public void setDocumentoValidato(byte[] documentoValidato) {
+    public boolean isValido() {
+        return isValido;
+    }
 
-		this.documentoValidato = new String(documentoValidato, StandardCharsets.UTF_8);
-	}
+    public void setDocumentoValidato(byte[] documentoValidato) {
 
-	public String getDocumentoValidato() {
-		return this.documentoValidato;
-	}
+        this.documentoValidato = new String(documentoValidato, StandardCharsets.UTF_8);
+    }
 
-	public String getVersioneSchematron() {
-		return versioneSchematron;
-	}
+    public String getDocumentoValidato() {
+        return this.documentoValidato;
+    }
 
-	public void setVersioneSchematron(String versioneSchematron) {
-		this.versioneSchematron = versioneSchematron;
-	}
+    public String getVersioneSchematron() {
+        return versioneSchematron;
+    }
+
+    public void setVersioneSchematron(String versioneSchematron) {
+        this.versioneSchematron = versioneSchematron;
+    }
+
+    public String getTipoDocumentoValidato() {
+        return tipoDocumentoValidato;
+    }
+
+    public void setTipoDocumentoValidato(String tipoDocumentoValidato) {
+        this.tipoDocumentoValidato = tipoDocumentoValidato;
+    }
+
 }
