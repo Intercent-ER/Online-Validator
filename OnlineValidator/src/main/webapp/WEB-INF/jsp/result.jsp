@@ -93,7 +93,7 @@
                 </c:choose>
             </section>
 
-            <section>
+            <section class="w-100">
                 <textarea readonly>
                     ${ risultatoValidazione.documentoValidato }
                 </textarea>
