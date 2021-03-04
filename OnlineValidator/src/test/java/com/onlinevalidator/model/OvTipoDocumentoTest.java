@@ -42,14 +42,14 @@ public class OvTipoDocumentoTest {
 	}
 
 	@Test
-	public void getValidatori() {
+	public void getRappresentazione() {
 
-		assertNull(new OvTipoDocumento().getValidatori());
+		assertNull(new OvTipoDocumento().getRappresentazione());
 	}
 
 	@Test
 	public void setValidatori() {
 
-		new OvTipoDocumento().setValidatori(Collections.emptyList());
+		new OvTipoDocumento().setRappresentazione(Collections.emptyList());
 	}
 }

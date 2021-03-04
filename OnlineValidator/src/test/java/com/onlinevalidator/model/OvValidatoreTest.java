@@ -66,15 +66,15 @@ public class OvValidatoreTest {
 	}
 
 	@Test
-	public void getTipoDocumento() {
+	public void getOvRappresentazione() {
 
-		assertNull(new OvValidatore().getTipoDocumento());
+		assertNull(new OvValidatore().getOvRappresentazione());
 	}
 
 	@Test
-	public void setTipoDocumento() {
+	public void setOvRappresentazione() {
 
-		new OvValidatore().setTipoDocumento(null);
+		new OvValidatore().setOvRappresentazione(null);
 	}
 
 	@Test
