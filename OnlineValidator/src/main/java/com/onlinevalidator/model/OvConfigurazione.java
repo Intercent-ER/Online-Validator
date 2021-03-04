@@ -3,6 +3,7 @@ package com.onlinevalidator.model;
 import com.onlinevalidator.model.enumerator.ChiaveConfigurazioneEnum;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Manuel Gozzi
@@ -10,7 +11,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "OV_CONFIGURAZIONE")
 @NamedQuery(name = "OvConfigurazione.findAll", query = "SELECT c FROM OvConfigurazione c")
-public class OvConfigurazione {
+public class OvConfigurazione implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@SequenceGenerator(name = "CONFIGURAZIONE_GENERATOR", allocationSize = 1, sequenceName = "SEQ_OV_CONFIGURAZIONE")

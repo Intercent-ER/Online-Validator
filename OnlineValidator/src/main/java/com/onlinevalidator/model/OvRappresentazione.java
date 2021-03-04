@@ -1,23 +1,20 @@
 package com.onlinevalidator.model;
 
 import com.onlinevalidator.model.enumerator.RappresentazionePaeseEnum;
-import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Manuel Gozzi
  */
-public class OvRappresentazione {
+@Entity
+@Table(name = "OV_RAPPRESENTAZIONE")
+@NamedQuery(name = "OvRappresentazione.findAll", query = "SELECT c FROM OvRappresentazione c")
+public class OvRappresentazione implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     // Tipo documento --- rappresentazione >> 1:N
     // Id (chiave della tabella)@Id
