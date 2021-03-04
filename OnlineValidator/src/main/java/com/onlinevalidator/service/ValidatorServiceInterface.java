@@ -36,7 +36,7 @@ public interface ValidatorServiceInterface extends ApplicationLogger {
 	 */
 	OvTipoDocumento getOvTipoDocumentoById(int idTipoDocumento);
         
-        OvRappresentazione getOvRappresnetazioneById(int idRappresentazione);
+        OvRappresentazione getOvRappresentazioneById(int idRappresentazione);
 
 	/**
 	 * Dato un tipo documento e un tipo di file, recupera il corrispondente validatore.

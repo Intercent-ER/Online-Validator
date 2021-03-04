@@ -49,7 +49,7 @@ public class ValidatorController {
 			String documentoString = new String(file.getBytes());
 			ValidationReport risultatoValidazione = validatorService.effettuaValidazione(
 					documentoString.getBytes(StandardCharsets.UTF_8),
-					validatorService.getOvRappresnetazioneById(id)
+					validatorService.getOvRappresentazioneById(id)
 			);
 			if (risultatoValidazione == null) {
 				throw new NullPointerException("Nessun risultato di validazione consultabile");

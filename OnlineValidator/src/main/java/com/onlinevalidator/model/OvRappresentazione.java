@@ -18,6 +18,7 @@ public class OvRappresentazione implements Serializable {
 
     // Tipo documento --- rappresentazione >> 1:N
     // Id (chiave della tabella)@Id
+    @Id
     @SequenceGenerator(name = "OV_RAPPRESENTAZIONE_GENERATOR", allocationSize = 1, sequenceName = "SEQ_OV_RAPPRESNETAZIONE")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OV_RAPPRESENTAZIONE_GENERATOR")
     @Column(name = "ID_RAPPRESENTAZIONE", unique = true, nullable = false)

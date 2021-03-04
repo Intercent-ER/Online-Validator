@@ -40,7 +40,7 @@
                         <label class="subtitle" for="lista-customizationid">CustomizationID</label> 
                         <select id="lista-customizationid" class="entity-select" type="select" name="idRappresentazione">
                             <c:forEach items="${rappresentazione}" var="val">
-                                <option type="int" value="${val.idrappresentazione}">${val.dsNomeRappresentazione}</option>
+                                <option type="int" value="${val.idRappresentazione}">${val.dsNomeRappresentazione}</option>
                             </c:forEach>
                         </select>
                     </div>

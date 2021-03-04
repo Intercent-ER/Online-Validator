@@ -28,7 +28,7 @@ public class HomeController {
 		return validatorService.filtraTuttiITipiDocumento();
 	}
         
-        @ModelAttribute("tipoDocumento")
+        @ModelAttribute("rappresentazione")
 	public List<OvRappresentazione> getRappresentazione() {
 		return validatorService.filtraRappresentazione();
 	}
