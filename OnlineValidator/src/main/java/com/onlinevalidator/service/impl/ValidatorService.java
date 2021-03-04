@@ -159,11 +159,10 @@ public class ValidatorService implements ValidatorServiceInterface {
         logDebug("Recupero dei validatori associati alla rappresentazione {}", rappresentazione.getIdRappresentazione());
 
         List<OvValidatore> validatori = rappresentazione.getOvValidatore();
-        System.out.println("Validatore 1: " + validatori.get(0).getNmNome());
+        
         for (OvValidatore validatoreCorrente : validatori) {
 
             if (tipoFileEnum.equals(validatoreCorrente.getCdTipoFile())) {
-                System.out.println("Validatore " + validatoreCorrente.getIdValidatore() + ": " + validatoreCorrente.getNmNome());
                 logDebug("Ritrovato il validatore {}", validatoreCorrente.getIdValidatore());
                 return validatoreCorrente;
             }
