@@ -39,7 +39,7 @@ public class ValidatorController {
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	public @ResponseBody
 	ModelAndView uploadFile(@RequestParam("file") MultipartFile file,
-							@RequestParam(value = "id") int id, HttpSession session) {
+							@RequestParam(value = "idRappresentazione") int id, HttpSession session) {
 
 		ModelAndView paginaRisultato = new ModelAndView("result");
 		try {
@@ -49,7 +49,7 @@ public class ValidatorController {
 			String documentoString = new String(file.getBytes());
 			ValidationReport risultatoValidazione = validatorService.effettuaValidazione(
 					documentoString.getBytes(StandardCharsets.UTF_8),
-					validatorService.getOvTipoDocumentoById(id)
+					validatorService.getOvRappresnetazioneById(id)
 			);
 			if (risultatoValidazione == null) {
 				throw new NullPointerException("Nessun risultato di validazione consultabile");

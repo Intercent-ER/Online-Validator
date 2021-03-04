@@ -1,9 +1,18 @@
 package com.onlinevalidator.model;
 
 import com.onlinevalidator.model.enumerator.RappresentazionePaeseEnum;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 /**
  * @author Manuel Gozzi
@@ -11,28 +20,41 @@ import javax.persistence.ManyToOne;
 public class OvRappresentazione {
 
     // Tipo documento --- rappresentazione >> 1:N
-
-    // Id (chiave della tabella)
+    // Id (chiave della tabella)@Id
+    @SequenceGenerator(name = "OV_RAPPRESENTAZIONE_GENERATOR", allocationSize = 1, sequenceName = "SEQ_OV_RAPPRESNETAZIONE")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "OV_RAPPRESENTAZIONE_GENERATOR")
+    @Column(name = "ID_RAPPRESENTAZIONE", unique = true, nullable = false)
     private int idRappresentazione;
 
     // Process type della versione del BIS
+    @Column(name = "CD_PROCESS_TYPE_IDENTIFIER", length = 64, nullable = false)
     private String cdProcessTypeIdentifier;
 
     // Document tye identifier della versione del BIS
+    @Column(name = "CD_DOCUMENT_TYPE_IDENTIFIER", length = 512, nullable = false)
     private String cdDocumentTypeIdentifier;
 
     // Nome della rappresentazione (visibile in interfaccia)
+    @Column(name = "DS_NOME_RAPPRESENTAZIONE", length = 64, nullable = false)
     private String dsNomeRappresentazione;
 
     // Versione della rappresentazione
+    @Column(name = "NI_VERSIONE", length = 10, nullable = false)
     private String niVersione;
 
     // Paese di riferimento (IT/EU)
+    @Column(name = "CD_RAPPRESENTAZIONE_PAESE_ENUM", length = 10, nullable = false)
+    @Enumerated(EnumType.STRING)
     private RappresentazionePaeseEnum cdRappresentazionePaeseEnum;
 
-    // Tipo documento
+    // Validatore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "ovRappresentazione")
+    private List<OvValidatore> ovValidatore;
+
+    // Tipo di documento
     @ManyToOne(fetch = FetchType.EAGER)
-    private OvTipoDocumento tipoDocumento;
+    @JoinColumn(name = "FK_TIPO_DOCUMENTO", nullable = false)
+    private OvTipoDocumento ovTipoDocumento;
 
     public int getIdRappresentazione() {
         return idRappresentazione;
@@ -82,11 +104,20 @@ public class OvRappresentazione {
         this.cdRappresentazionePaeseEnum = cdRappresentazionePaeseEnum;
     }
 
-    public OvTipoDocumento getTipoDocumento() {
-        return tipoDocumento;
+    public List<OvValidatore> getOvValidatore() {
+        return ovValidatore;
     }
 
-    public void setTipoDocumento(OvTipoDocumento tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
+    public void setOvValidatore(List<OvValidatore> ovValidatore) {
+        this.ovValidatore = ovValidatore;
     }
+
+    public OvTipoDocumento getOvTipoDocumento() {
+        return ovTipoDocumento;
+    }
+
+    public void setOvTipoDocumento(OvTipoDocumento ovTipoDocumento) {
+        this.ovTipoDocumento = ovTipoDocumento;
+    }
+
 }

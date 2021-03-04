@@ -30,7 +30,7 @@
                     </div>
                     <div class="d-flex flex-column container file-type-container">
                         <label class="subtitle" for="lista-documenti">Tipo di documento</label> 
-                        <select id="lista-documenti" class="entity-select" type="select" name="id">
+                        <select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento">
                             <c:forEach items="${tipoDocumento}" var="val">
                                 <option type="int" value="${val.idTipoDocumento}">${val.name.readableValue}</option>
                             </c:forEach>
@@ -38,9 +38,9 @@
                     </div>
                     <div class="d-flex flex-column container file-type-container">
                         <label class="subtitle" for="lista-customizationid">CustomizationID</label> 
-                        <select id="lista-customizationid" class="entity-select" type="select" name="id">
-                            <c:forEach items="${tipoCustomazionID}" var="val">
-                                <option type="int" value="${val.idCustomizationID}">${val.name.readableValue}</option>
+                        <select id="lista-customizationid" class="entity-select" type="select" name="idRappresentazione">
+                            <c:forEach items="${rappresentazione}" var="val">
+                                <option type="int" value="${val.idrappresentazione}">${val.dsNomeRappresentazione}</option>
                             </c:forEach>
                         </select>
                     </div>

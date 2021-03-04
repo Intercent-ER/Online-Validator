@@ -1,6 +1,7 @@
 package com.onlinevalidator.service;
 
 import com.onlinevalidator.dto.ValidationReport;
+import com.onlinevalidator.model.OvRappresentazione;
 import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.model.OvValidatore;
 import com.onlinevalidator.model.enumerator.TipoFileEnum;
@@ -24,6 +25,8 @@ public interface ValidatorServiceInterface extends ApplicationLogger {
 	 * @return tutti i tipi documento presenti a sistema
 	 */
 	List<OvTipoDocumento> filtraTuttiITipiDocumento();
+        
+        List<OvRappresentazione> filtraRappresentazione();
 
 	/**
 	 * Recupera un tipo documento partendo dal suo id.
@@ -32,25 +35,27 @@ public interface ValidatorServiceInterface extends ApplicationLogger {
 	 * @return l'istanza del tipo documento
 	 */
 	OvTipoDocumento getOvTipoDocumentoById(int idTipoDocumento);
+        
+        OvRappresentazione getOvRappresnetazioneById(int idRappresentazione);
 
 	/**
 	 * Dato un tipo documento e un tipo di file, recupera il corrispondente validatore.
 	 *
-	 * @param tipoDocumento è il tipo del documento
+	 * @param rappresentazione è il tipo del documento
 	 * @param tipoFileEnum  è il tipo di file {@link TipoFileEnum}
 	 * @return il validatore corrispondente
 	 */
-	OvValidatore filtraValidatore(OvTipoDocumento tipoDocumento, TipoFileEnum tipoFileEnum);
+	OvValidatore filtraValidatore(OvRappresentazione rappresentazione, TipoFileEnum tipoFileEnum);
 
 	/**
 	 * Dato uno specifico documento, se ne effettua la validazione, incapsulando il risultato all'interno di un'istanza
 	 * dell'oggetto ValidationReport.
 	 *
 	 * @param documento     è il documento su cui occorre applicare la validazione XSLT (in byte[])
-	 * @param tipoDocumento è il tipo del documento che occorre validare
+	 * @param rappresentazione è il tipo del documento che occorre validare
 	 * @return il risultato di validazione
 	 * @author Manuel Gozzi
 	 */
-	ValidationReport effettuaValidazione(byte[] documento, OvTipoDocumento tipoDocumento);
+	ValidationReport effettuaValidazione(byte[] documento, OvRappresentazione rappresentazione);
 
 }
