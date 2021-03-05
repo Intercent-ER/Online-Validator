@@ -1,6 +1,5 @@
 package com.onlinevalidator.controller;
 
-import com.onlinevalidator.model.OvRappresentazione;
 import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.service.impl.ValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +25,6 @@ public class HomeController {
 	@ModelAttribute("tipoDocumento")
 	public List<OvTipoDocumento> getAllTipoDocumento() {
 		return validatorService.filtraTuttiITipiDocumento();
-	}
-        
-        @ModelAttribute("rappresentazione")
-	public List<OvRappresentazione> getRappresentazione() {
-		return validatorService.filtraRappresentazione();
 	}
 
 }

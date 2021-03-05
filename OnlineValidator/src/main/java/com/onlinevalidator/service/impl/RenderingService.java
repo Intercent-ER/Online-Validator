@@ -276,6 +276,19 @@ public class RenderingService implements RenderingServiceInterface {
 			);
 		}
 
+		// Aggiungo il tipo del documento validato
+		if (!StringUtils.isEmpty(validationReport.getTipoDocumentoValidato())) {
+			pdfDocument.add(
+					new Paragraph(
+							String.format(
+									"Tipo documento validato: %s",
+									validationReport.getTipoDocumentoValidato()
+							),
+							new Font(pdfMainFont, 12f, Font.NORMAL, BaseColor.DARK_GRAY)
+					)
+			);
+		}
+
 		if (validationReport.isValido()) {
 
 			// Descrivo il risultato positivo della validazione

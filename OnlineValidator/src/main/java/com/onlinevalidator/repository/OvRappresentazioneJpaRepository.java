@@ -13,5 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author luca.bergonzoni
  */
 public interface OvRappresentazioneJpaRepository extends JpaRepository<OvRappresentazione, Integer>{
-    
+
 }

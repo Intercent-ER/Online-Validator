@@ -25,8 +25,8 @@ public interface ValidatorServiceInterface extends ApplicationLogger {
 	 * @return tutti i tipi documento presenti a sistema
 	 */
 	List<OvTipoDocumento> filtraTuttiITipiDocumento();
-        
-        List<OvRappresentazione> filtraRappresentazione();
+
+	List<OvRappresentazione> filtraRappresentazione();
 
 	/**
 	 * Recupera un tipo documento partendo dal suo id.
@@ -35,14 +35,14 @@ public interface ValidatorServiceInterface extends ApplicationLogger {
 	 * @return l'istanza del tipo documento
 	 */
 	OvTipoDocumento getOvTipoDocumentoById(int idTipoDocumento);
-        
-        OvRappresentazione getOvRappresentazioneById(int idRappresentazione);
+
+	OvRappresentazione getOvRappresentazioneById(int idRappresentazione);
 
 	/**
 	 * Dato un tipo documento e un tipo di file, recupera il corrispondente validatore.
 	 *
 	 * @param rappresentazione è il tipo del documento
-	 * @param tipoFileEnum  è il tipo di file {@link TipoFileEnum}
+	 * @param tipoFileEnum     è il tipo di file {@link TipoFileEnum}
 	 * @return il validatore corrispondente
 	 */
 	OvValidatore filtraValidatore(OvRappresentazione rappresentazione, TipoFileEnum tipoFileEnum);
@@ -51,7 +51,7 @@ public interface ValidatorServiceInterface extends ApplicationLogger {
 	 * Dato uno specifico documento, se ne effettua la validazione, incapsulando il risultato all'interno di un'istanza
 	 * dell'oggetto ValidationReport.
 	 *
-	 * @param documento     è il documento su cui occorre applicare la validazione XSLT (in byte[])
+	 * @param documento        è il documento su cui occorre applicare la validazione XSLT (in byte[])
 	 * @param rappresentazione è il tipo del documento che occorre validare
 	 * @return il risultato di validazione
 	 * @author Manuel Gozzi
