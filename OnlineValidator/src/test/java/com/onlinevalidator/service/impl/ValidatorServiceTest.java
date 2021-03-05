@@ -45,7 +45,7 @@ public class ValidatorServiceTest {
 
 		List<OvTipoDocumento> ovTipoDocumentoList = validatorService.filtraTuttiITipiDocumento();
 		assertNotNull(ovTipoDocumentoList);
-		assertEquals(2, ovTipoDocumentoList.size());
+		assertEquals(3, ovTipoDocumentoList.size());
 		assertTrue(
 				ovTipoDocumentoList.stream()
 						.anyMatch(ov -> ov.getName().equals(NomeTipoDocumentoEnum.DOCUMENTO_DI_TRASPORTO))

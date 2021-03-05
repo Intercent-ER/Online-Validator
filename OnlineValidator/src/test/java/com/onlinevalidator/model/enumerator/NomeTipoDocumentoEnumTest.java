@@ -36,7 +36,7 @@ public class NomeTipoDocumentoEnumTest {
 		NomeTipoDocumentoEnum[] values = NomeTipoDocumentoEnum.values();
 
 		assertNotNull(values);
-		assertEquals(2, values.length);
+		assertEquals(3, values.length);
 
 	}
 }

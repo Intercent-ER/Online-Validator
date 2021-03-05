@@ -41,13 +41,19 @@ public class RappresentazioneServiceTest {
 		try {
 			List<RappresentazioneViewer> rappresentazioneViewers = rappresentazioneServiceInterface.filtraRappresentazioniPerTipoDocumento(1);
 			assertNotNull(rappresentazioneViewers);
-			assertEquals(1, rappresentazioneViewers.size());
+			assertEquals(2, rappresentazioneViewers.size());
 			assertNotNull(rappresentazioneViewers.get(0).getIdRappresentazione());
 			assertNotNull(rappresentazioneViewers.get(0).getDsDescrizione());
 
 			rappresentazioneViewers = rappresentazioneServiceInterface.filtraRappresentazioniPerTipoDocumento(2);
 			assertNotNull(rappresentazioneViewers);
-			assertEquals(1, rappresentazioneViewers.size());
+			assertEquals(2, rappresentazioneViewers.size());
+			assertNotNull(rappresentazioneViewers.get(0).getIdRappresentazione());
+			assertNotNull(rappresentazioneViewers.get(0).getDsDescrizione());
+
+			rappresentazioneViewers = rappresentazioneServiceInterface.filtraRappresentazioniPerTipoDocumento(3);
+			assertNotNull(rappresentazioneViewers);
+			assertEquals(2, rappresentazioneViewers.size());
 			assertNotNull(rappresentazioneViewers.get(0).getIdRappresentazione());
 			assertNotNull(rappresentazioneViewers.get(0).getDsDescrizione());
 		} catch (Exception e) {
