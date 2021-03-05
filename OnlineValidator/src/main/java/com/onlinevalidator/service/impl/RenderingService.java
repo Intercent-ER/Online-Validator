@@ -250,7 +250,11 @@ public class RenderingService implements RenderingServiceInterface {
 		// Titolo principale
 		pdfDocument.add(
 				new Paragraph(
-						"Rapporto di validazione",
+						String.format(
+								"Rapporto di validazione (versione schematron %s)",
+								StringUtils.isEmpty(validationReport.getVersioneSchematron()) ?
+										"n/d" : validationReport.getVersioneSchematron()
+						),
 						new Font(pdfMainFontBold, 23f, Font.NORMAL, BaseColor.BLACK)
 				)
 		);
@@ -262,19 +266,6 @@ public class RenderingService implements RenderingServiceInterface {
 						new Font(pdfMainFont, 12f, Font.NORMAL, BaseColor.BLACK)
 				)
 		);
-
-		// Aggiungo la versione dello schematron
-		if (!StringUtils.isEmpty(validationReport.getVersioneSchematron())) {
-			pdfDocument.add(
-					new Paragraph(
-							String.format(
-									"Versione schematron: %s",
-									validationReport.getVersioneSchematron()
-							),
-							new Font(pdfMainFont, 12f, Font.NORMAL, BaseColor.DARK_GRAY)
-					)
-			);
-		}
 
 		// Aggiungo il tipo del documento validato
 		if (!StringUtils.isEmpty(validationReport.getTipoDocumentoValidato())) {

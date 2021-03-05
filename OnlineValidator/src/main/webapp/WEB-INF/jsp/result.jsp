@@ -40,17 +40,23 @@
 
         <main id="main-container" class="container row">
 
-            <h1 class="mb-0">Rapporto validazione <small>(versione schematron ${ risultatoValidazione.versioneSchematron })</small></h1>
+            <h1 class="mb-0">Rapporto validazione <small>(versione
+                schematron ${ risultatoValidazione.versioneSchematron })</small></h1>
+
+            <section class="d-flex flex-column">
+                <span class="report-date">Report di validazione generato in data <b>${ dataValidazione }</b></span>
+                <span class="tipo-documento">Tipo documento selezionato: <b>${ tipoDocumento }</b></span>
+            </section>
 
             <section class="col-xl-12 mt-3 pl-0 pr-0">
                 <c:choose>
                     <c:when test="${ not empty risultatoValidazione and not empty risultatoValidazione.erroriDiValidazione }">
                         <c:choose>
                             <c:when test="${ not risultatoValidazione.valido }"><h3 style="color:red">Risultato: il file
-                                    non &egrave; valido</h3></c:when>
+                                non &egrave; valido</h3></c:when>
                             <c:otherwise><h2 style="color:darkgreen">Risultato: il file &egrave;
-                                    valido</h2></c:otherwise>
-                            </c:choose>
+                                valido</h2></c:otherwise>
+                        </c:choose>
                             <%@ include file="common/result_button.jsp" %>
                         <div class="container pr-0 pl-0">
                             <c:forEach items="${ risultatoValidazione.erroriDiValidazione }" var="singoloAssert">
@@ -98,11 +104,7 @@
                     ${ risultatoValidazione.documentoValidato }
                 </textarea>
             </section>
-            <section class="d-flex flex-column">
-                <span class="report-date">Report di validazione generato in data <b>${ dataValidazione }</b></span>
-                <span class="tipo-documento">Tipo documento selezionato: <b>${ tipoDocumento }</b></span>
-            </section>
-            
-    </main>
+
+        </main>
 
     <%@ include file="common/footer.jsp" %>
