@@ -25,7 +25,7 @@ public class CatalogControllerTest extends AbstractControllerTest {
 	private CatalogController catalogController;
 
 	@Override
-	protected Object getController() {
+	protected CatalogController getController() {
 		return catalogController;
 	}
 

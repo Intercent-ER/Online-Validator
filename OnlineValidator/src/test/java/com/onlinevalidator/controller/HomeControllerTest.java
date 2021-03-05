@@ -30,7 +30,7 @@ public class HomeControllerTest extends AbstractControllerTest {
 	private HomeController homeController;
 
 	@Override
-	protected Object getController() {
+	protected HomeController getController() {
 		return homeController;
 	}
 

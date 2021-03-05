@@ -39,7 +39,7 @@ public class ValidatorControllerTest extends AbstractControllerTest {
 	private OvTipoDocumentoJpaRepository tipoDocumentoRepository;
 
 	@Override
-	protected Object getController() {
+	protected ValidatorController getController() {
 		return validatorController;
 	}
 
