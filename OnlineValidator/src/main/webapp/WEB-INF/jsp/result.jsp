@@ -45,7 +45,7 @@
 
             <section class="d-flex flex-column">
                 <span class="report-date">Report di validazione generato in data <b>${ dataValidazione }</b></span>
-                <span class="tipo-documento">Tipo documento selezionato: <b>${ tipoDocumento }</b></span>
+                <span class="tipo-documento">Tipo documento selezionato: <b>${ risultatoValidazione.tipoDocumentoValidato }</b>; Formato: <b>${ risultatoValidazione.formatoDocumentoValidato }</b></span>
             </section>
 
             <section class="col-xl-12 mt-3 pl-0 pr-0">

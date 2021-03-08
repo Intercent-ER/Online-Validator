@@ -33,6 +33,8 @@ public class ValidationReport {
 
     private String tipoDocumentoValidato;
 
+    private String formatoDocumentoValidato;
+
     public ValidationReport() {
         this.dataDiGenerazione = new Date();
         this.isValido = true;
@@ -130,4 +132,11 @@ public class ValidationReport {
         this.tipoDocumentoValidato = tipoDocumentoValidato;
     }
 
+    public String getFormatoDocumentoValidato() {
+        return formatoDocumentoValidato;
+    }
+
+    public void setFormatoDocumentoValidato(String formatoDocumentoValidato) {
+        this.formatoDocumentoValidato = formatoDocumentoValidato;
+    }
 }
