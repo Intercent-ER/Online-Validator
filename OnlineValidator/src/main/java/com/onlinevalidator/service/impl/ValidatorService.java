@@ -199,7 +199,7 @@ public class ValidatorService implements ValidatorServiceInterface {
         }
 
         // Aggiungo la versione dello schematron
-        validationReport.setVersioneSchematron(validatoreSchematron.getNiVersione());
+        validationReport.setVersioneValidatore(validatoreSchematron.getNiVersione());
 
         // Aggiungo il tipo di documento validato
         validationReport.setTipoDocumentoValidato(rappresentazione.getOvTipoDocumento().getName().getReadableValue());

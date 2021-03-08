@@ -29,7 +29,7 @@ public class ValidationReport {
 
     private String documentoValidato;
 
-    private String versioneSchematron;
+    private String versioneValidatore;
 
     private String tipoDocumentoValidato;
 
@@ -116,12 +116,12 @@ public class ValidationReport {
         return this.documentoValidato;
     }
 
-    public String getVersioneSchematron() {
-        return versioneSchematron;
+    public String getVersioneValidatore() {
+        return versioneValidatore;
     }
 
-    public void setVersioneSchematron(String versioneSchematron) {
-        this.versioneSchematron = versioneSchematron;
+    public void setVersioneValidatore(String versioneValidatore) {
+        this.versioneValidatore = versioneValidatore;
     }
 
     public String getTipoDocumentoValidato() {
