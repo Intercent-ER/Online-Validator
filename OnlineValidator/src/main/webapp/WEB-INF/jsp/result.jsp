@@ -30,28 +30,28 @@
     </head>
     <body>
 
-        <a class="d-none" href="#main-container">Vai al risultato della validazione</a>
+    <a class="d-none" href="#main-container">Vai al risultato della validazione</a>
 
-        <%@ include file="common/header.jsp" %>
+    <%@ include file="common/header.jsp" %>
 
-        <form action="esportaRisultato.html" method="get" id="renderingFormId">
-            <input name="tipoRendering" type="hidden" id="tipoRenderingId"/>
-        </form>
+    <form action="esportaRisultato.html" method="get" id="renderingFormId">
+        <input name="tipoRendering" type="hidden" id="tipoRenderingId"/>
+    </form>
 
-        <main id="main-container" class="container row">
+    <main id="main-container" class="container row">
 
-            <h1 class="mb-0">Rapporto validazione <small>(versione
-                schematron ${ risultatoValidazione.versioneSchematron })</small></h1>
+        <h1 class="mb-0">Rapporto validazione <small>(versione
+            validatore ${ risultatoValidazione.versioneValidatore })</small></h1>
 
-            <section class="d-flex flex-column">
-                <span class="report-date">Report di validazione generato in data <b>${ dataValidazione }</b></span>
-                <span class="tipo-documento">Tipo documento selezionato: <b>${ tipoDocumento }</b></span>
-            </section>
+        <section class="d-flex flex-column">
+            <span class="report-date">Report di validazione generato in data <b>${ dataValidazione }</b></span>
+            <span class="tipo-documento">Tipo documento selezionato: <b>${ risultatoValidazione.tipoDocumentoValidato }</b>; Formato: <b>${ risultatoValidazione.formatoDocumentoValidato }</b></span>
+        </section>
 
-            <section class="col-xl-12 mt-3 pl-0 pr-0">
-                <c:choose>
-                    <c:when test="${ not empty risultatoValidazione and not empty risultatoValidazione.erroriDiValidazione }">
-                        <c:choose>
+        <section class="col-xl-12 mt-3 pl-0 pr-0">
+            <c:choose>
+                <c:when test="${ not empty risultatoValidazione and not empty risultatoValidazione.erroriDiValidazione }">
+                    <c:choose>
                             <c:when test="${ not risultatoValidazione.valido }"><h3 style="color:red">Risultato: il file
                                 non &egrave; valido</h3></c:when>
                             <c:otherwise><h2 style="color:darkgreen">Risultato: il file &egrave;

@@ -54,6 +54,9 @@ public class OvRappresentazione implements Serializable {
     @JoinColumn(name = "FK_TIPO_DOCUMENTO", nullable = false)
     private OvTipoDocumento ovTipoDocumento;
 
+    @Column(name = "DS_FORMATO", length = 252, nullable = false)
+    private String dsFormato;
+
     public int getIdRappresentazione() {
         return idRappresentazione;
     }
@@ -118,4 +121,11 @@ public class OvRappresentazione implements Serializable {
         this.ovTipoDocumento = ovTipoDocumento;
     }
 
+    public String getDsFormato() {
+        return dsFormato;
+    }
+
+    public void setDsFormato(String dsFormato) {
+        this.dsFormato = dsFormato;
+    }
 }
