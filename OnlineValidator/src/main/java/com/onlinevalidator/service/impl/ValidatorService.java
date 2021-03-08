@@ -468,7 +468,7 @@ public class ValidatorService implements ValidatorServiceInterface {
      * storto in fase di configurazione
      */
     private Templates createAndCacheSchematronTemplate(OvValidatore validatore) throws TransformerConfigurationException {
-        String blobSchematron = new String(validatore.getBlFile());
+        String blobSchematron = new String(validatore.getBlFile()).replaceFirst("^([\\W]+)<", "<");
 
         StreamSource schematronSource = new StreamSource(new StringReader(blobSchematron));
         TransformerFactory schematronFactory = TransformerFactory.newInstance(ValidatorServiceInterface.NET_SF_SAXON_TRANSFORMER_FACTORY_IMPL, null);
