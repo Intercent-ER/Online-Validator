@@ -10,10 +10,6 @@ body {
     padding-bottom: 350px;
 }
 
-#main-container > div:first-child{
-    padding-left: 30px;
-}
-
 .footer {
     position: absolute;
     bottom: 0;

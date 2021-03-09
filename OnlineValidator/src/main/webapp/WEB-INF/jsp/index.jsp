@@ -18,7 +18,7 @@
 
 <main id="main-container" class="container row pt-5">
 
-    <div class="w-100 d-flex justify-content-centerZ">
+    <div class="w-100 d-flex justify-content-center">
         <h1>Area di validazione</h1>
     </div>
 
@@ -67,7 +67,7 @@
             <b>A cosa serve la piattaforma?</b>
             <span>
                         La piattaforma consente di effettuare la validazione di documenti Peppol, quali ad esempio: Ordine, Documento di Trasporto, Fattura, Nota di Credito, al fine di effettuare autonomamente delle prove di verifica della qualità dei singoli file xml.
-                        Per ulteriori dettagli sui documenti che si possono validare e sugli schematron utilizzati è possibile consultare le specifiche tecniche al seguente<a
+                        Per ulteriori dettagli sui documenti che si possono validare e sugli schematron utilizzati è possibile consultare le specifiche tecniche al seguente <a
                     href="https://notier.regione.emilia-romagna.it/docs/" target="_blank">link</a>.
                     </span>
         </div>
