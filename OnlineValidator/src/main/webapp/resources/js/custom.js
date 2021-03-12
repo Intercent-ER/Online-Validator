@@ -25,3 +25,16 @@ function cacheAndSubmit() {
     formUpload.data('formPrefill').writeAll();
     formUpload.submit();
 }
+
+function esportaXml() {
+    esporta('XML')
+}
+
+function esportaPdf() {
+    esporta('PDF')
+}
+
+function esporta(tipoRendering) {
+    document.getElementById('tipoRenderingId').value = tipoRendering;
+    document.getElementById('renderingFormId').submit()
+}
