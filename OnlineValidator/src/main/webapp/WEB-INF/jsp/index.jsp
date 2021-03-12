@@ -17,13 +17,13 @@
          */
         $(document).ready(function () {
 
+            // Avvio il pre-fill della form e leggo dalla cache l'input precedente, se presente
+            prefillFormAndReadCache();
+
             $('select').on('change', function (e) {
-                var optionSelected = $("option:selected", this);
-                var idTipoDocumento = this.value;
+                let idTipoDocumento = this.value;
 
                 if (idTipoDocumento !== -1) {
-
-                    console.log("UPDATE")
 
                     // Esecuzione chiamata Ajax
                     $.ajax({
@@ -42,12 +42,12 @@
                                 let stringHtmlToBeReplaced = "<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\">";
 
                                 // Effettuo il parsing in oggetto Javascript del Json ricevuto
-                                var json = JSON.parse(data)
+                                let json = JSON.parse(data)
 
                                 // Itero il Json
-                                for (var index = 0; index < json.length; index++) {
+                                for (let index = 0; index < json.length; index++) {
                                     let singleInstance = json[index];
-                                    stringHtmlToBeReplaced += getHtml(singleInstance)
+                                    stringHtmlToBeReplaced += getSingleOptionTagHtml(singleInstance)
                                 }
 
                                 // Chiudo il tag "select"
@@ -74,20 +74,8 @@
                     $("#lista-customizationid").replaceWith("<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\" disabled=\"true\"></select>");
                     $("#button-submit-id").prop('disabled', true);
                 }
-
             })
-
         });
-
-        /**
-         * Produce l'HTML corrispondente al tag <option> di un oggetto RappresentazioneViewer.
-         * @param rappresentazioneViewer è l'oggetto da cui partire per produrre il corrispondente HTML
-         * @returns {string} contenuto HTML
-         */
-        function getHtml(rappresentazioneViewer) {
-            return "<option type=\"int\" value=\"" + rappresentazioneViewer.idRappresentazione + "\">" + rappresentazioneViewer.dsDescrizione + "</option>";
-        }
-
     </script>
 </head>
 <body>
@@ -111,14 +99,15 @@
 
     <section
             class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1 d-flex flex-column justify-content-center pt-2 pt-sm-4">
-        <form:form method="POST" action="uploadFile.html" enctype="multipart/form-data">
+        <form:form method="POST" action="uploadFile.html" enctype="multipart/form-data" id="upload-file-form-id">
             <div class="d-flex flex-column container file-container">
                 <label class="subtitle" for="carica-documento">Documento</label>
                 <input id="carica-documento" type="file" name="file" accept=".xml"/>
             </div>
             <div class="d-flex flex-column container file-type-container">
                 <label class="subtitle" for="lista-documenti">Tipo di documento</label>
-                <select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento">
+                <select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento"
+                        data-form-prefill-keys="tipo_documento">
                     <option type="int" value="-1" selected>Seleziona il
                         tipo di documento
                     </option>
@@ -130,13 +119,15 @@
             <div class="d-flex flex-column container file-type-container">
                 <label class="subtitle" for="lista-customizationid">Formato del documento</label>
                 <select id="lista-customizationid" class="entity-select" type="select" name="idRappresentazione"
-                        disabled="true">
+                        data-form-prefill-keys="profilo_documento"
+                        disabled>
                     <!-- Riempita con l'ausilio di Ajax -->
                 </select>
             </div>
             <div class="d-flex container file-submit-container">
-                <input class="submit-data" id="button-submit-id" type="submit" value="Valida"
-                       disabled="true"/>
+                <button class="submit-data" id="button-submit-id" onclick="cacheAndSubmit()" disabled>
+                    Valida
+                </button>
             </div>
         </form:form>
         <div class="w-100"></div>

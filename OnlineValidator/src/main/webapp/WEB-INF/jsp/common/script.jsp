@@ -2,3 +2,5 @@
 <script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
 <script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js"/>"></script>
 <script src="<c:url value="/resources/js/index.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery.formprefill.js"/>"></script>
+<script src="<c:url value="/resources/js/custom.js"/>"></script>
