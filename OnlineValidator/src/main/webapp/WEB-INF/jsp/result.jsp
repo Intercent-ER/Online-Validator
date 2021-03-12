@@ -10,23 +10,6 @@
         <title>Risultato validazione - Validazione documenti Peppol</title>
         <%@include file="common/css.jsp" %>
         <%@include file="common/script.jsp" %>
-
-        <script type="text/javascript">
-
-            function esportaXml() {
-                esporta('XML')
-            }
-
-            function esportaPdf() {
-                esporta('PDF')
-            }
-
-            function esporta(tipoRendering) {
-                document.getElementById('tipoRenderingId').value = tipoRendering;
-                document.getElementById('renderingFormId').submit()
-            }
-
-        </script>
     </head>
     <body>
 

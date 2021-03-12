@@ -1,123 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
-         xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
-         xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
-    <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0
-    </cbc:CustomizationID>
-    <cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
-    <cbc:ID>SINV210036</cbc:ID>
-    <cbc:IssueDate>2021-02-04</cbc:IssueDate>
-    <cbc:DueDate>2021-03-06</cbc:DueDate>
-    <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
-    <cbc:Note>Invoice 210036</cbc:Note>
-    <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
-    <cac:OrderReference>
-        <cbc:ID>2021 PA FEES</cbc:ID>
-    </cac:OrderReference>
-    <cac:AccountingSupplierParty>
-        <cac:Party>
-            <cbc:EndpointID schemeID="9925">BE0848934496</cbc:EndpointID>
-            <cac:PartyName>
-                <cbc:Name>OpenPEPPOL AISBL</cbc:Name>
-            </cac:PartyName>
-            <cac:PostalAddress>
-                <cbc:StreetName>Rond-point Schuman 6</cbc:StreetName>
-                <cbc:CityName>Brussels</cbc:CityName>
-                <cbc:PostalZone>BE1040</cbc:PostalZone>
-                <cac:Country>
-                    <cbc:IdentificationCode>BE</cbc:IdentificationCode>
-                </cac:Country>
-            </cac:PostalAddress>
-            <cac:PartyTaxScheme>
-                <cbc:CompanyID>BE0848934496</cbc:CompanyID>
-                <cac:TaxScheme>
-                    <cbc:ID>VAT</cbc:ID>
-                </cac:TaxScheme>
-            </cac:PartyTaxScheme>
-            <cac:PartyLegalEntity>
-                <cbc:RegistrationName>OpenPEPPOL AISBL</cbc:RegistrationName>
-                <cbc:CompanyID>0848934496</cbc:CompanyID>
-            </cac:PartyLegalEntity>
-            <cac:Contact>
-                <cbc:ElectronicMail>mairi.hayworth@penmarin.co.uk</cbc:ElectronicMail>
-            </cac:Contact>
-        </cac:Party>
-    </cac:AccountingSupplierParty>
-    <cac:AccountingCustomerParty>
-        <cac:Party>
-            <cbc:EndpointID schemeID="0201">F7VRDL</cbc:EndpointID>
-            <cac:PartyIdentification>
-                <cbc:ID>CF:97735020584</cbc:ID>
-            </cac:PartyIdentification>
-            <cac:PartyName>
-                <cbc:Name>Agenzia per d'Italia Digitale</cbc:Name>
-            </cac:PartyName>
-            <cac:PostalAddress>
-                <cbc:StreetName>Viale Liszt 21</cbc:StreetName>
-                <cbc:CityName>Rome</cbc:CityName>
-                <cbc:PostalZone>00144</cbc:PostalZone>
-                <cac:Country>
-                    <cbc:IdentificationCode>IT</cbc:IdentificationCode>
-                </cac:Country>
-            </cac:PostalAddress>
-            <cac:PartyLegalEntity>
-                <cbc:RegistrationName>Agenzia per d'Italia Digitale</cbc:RegistrationName>
-                <cbc:CompanyID>CF:97735020584</cbc:CompanyID>
-            </cac:PartyLegalEntity>
-            <cac:Contact>
-                <cbc:Name>Albenzio Cirillo</cbc:Name>
-                <cbc:ElectronicMail>protocollo@pec.agid.gov.it</cbc:ElectronicMail>
-            </cac:Contact>
-        </cac:Party>
-    </cac:AccountingCustomerParty>
-    <cac:PaymentMeans>
-        <cbc:PaymentMeansCode>30</cbc:PaymentMeansCode>
-        <cac:PayeeFinancialAccount>
-            <cbc:ID>BE50363111460518</cbc:ID>
-            <cac:FinancialInstitutionBranch>
-                <cbc:ID>BBRUBEBB</cbc:ID>
-            </cac:FinancialInstitutionBranch>
-        </cac:PayeeFinancialAccount>
-    </cac:PaymentMeans>
-    <cac:TaxTotal>
-        <cbc:TaxAmount currencyID="EUR">3150.00</cbc:TaxAmount>
-        <cac:TaxSubtotal>
-            <cbc:TaxableAmount currencyID="EUR">15000.00</cbc:TaxableAmount>
-            <cbc:TaxAmount currencyID="EUR">3150.00</cbc:TaxAmount>
-            <cac:TaxCategory>
-                <cbc:ID>S</cbc:ID>
-                <cbc:Percent>21.00</cbc:Percent>
-                <cac:TaxScheme>
-                    <cbc:ID>VAT</cbc:ID>
-                </cac:TaxScheme>
-            </cac:TaxCategory>
-        </cac:TaxSubtotal>
-    </cac:TaxTotal>
-    <cac:LegalMonetaryTotal>
-        <cbc:LineExtensionAmount currencyID="EUR">15000.00</cbc:LineExtensionAmount>
-        <cbc:TaxExclusiveAmount currencyID="EUR">15000.00</cbc:TaxExclusiveAmount>
-        <cbc:TaxInclusiveAmount currencyID="EUR">18150.00</cbc:TaxInclusiveAmount>
-        <cbc:PayableAmount currencyID="EUR">18150.00</cbc:PayableAmount>
-    </cac:LegalMonetaryTotal>
-    <cac:InvoiceLine>
-        <cbc:ID>1</cbc:ID>
-        <cbc:InvoicedQuantity unitCode="EA">1.00000000</cbc:InvoicedQuantity>
-        <cbc:LineExtensionAmount currencyID="EUR">15000.00</cbc:LineExtensionAmount>
-        <cac:Item>
-            <cbc:Name>Annual Member Fee - PEPPOL Authority</cbc:Name>
-            <cac:SellersItemIdentification>
-                <cbc:ID>PA-AN</cbc:ID>
-            </cac:SellersItemIdentification>
-            <cac:ClassifiedTaxCategory>
-                <cbc:ID>S</cbc:ID>
-                <cbc:Percent>21.00</cbc:Percent>
-                <cac:TaxScheme>
-                    <cbc:ID>VAT</cbc:ID>
-                </cac:TaxScheme>
-            </cac:ClassifiedTaxCategory>
-        </cac:Item>
-        <cac:Price>
-            <cbc:PriceAmount currencyID="EUR">15000.00000000</cbc:PriceAmount>
-        </cac:Price>
-    </cac:InvoiceLine>
+<Invoice xmlns:ccts="urn:un:unece:uncefact:documentation:2" xmlns:cr="http://www.ubl-italia.org/ns/CrossReference" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+<cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0</cbc:CustomizationID>
+<cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+<cbc:ID>FAT01</cbc:ID>
+<cbc:IssueDate>2017-01-09</cbc:IssueDate>
+<cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+<cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+<cac:OrderReference>
+  <cbc:ID>123</cbc:ID>
+</cac:OrderReference>
+<cac:AccountingSupplierParty>
+  <cac:Party>
+    <cbc:EndpointID schemeID="0201">UF6WX8</cbc:EndpointID>
+    <cac:PartyName>
+      <cbc:Name>Azienda Ospedaliero-Universitaria di Modena</cbc:Name>
+    </cac:PartyName>
+    <cac:PostalAddress>
+      <cbc:StreetName>Via del Pozzo, 71</cbc:StreetName>
+      <cbc:CityName>MODENA</cbc:CityName>
+      <cbc:PostalZone>41124</cbc:PostalZone>
+      <cbc:CountrySubentity>MO</cbc:CountrySubentity>
+      <cac:Country>
+        <cbc:IdentificationCode>IT</cbc:IdentificationCode>
+      </cac:Country>
+    </cac:PostalAddress>
+    <cac:PartyTaxScheme>
+      <cbc:CompanyID>IT02241740360</cbc:CompanyID>
+      <cac:TaxScheme>
+        <cbc:ID>VAT</cbc:ID>
+      </cac:TaxScheme>
+    </cac:PartyTaxScheme>
+    <cac:PartyLegalEntity>
+      <cbc:RegistrationName>Azienda Ospedaliero-Universitaria di Modena</cbc:RegistrationName>
+    </cac:PartyLegalEntity>
+  </cac:Party>
+</cac:AccountingSupplierParty>
+<cac:AccountingCustomerParty>
+  <cac:Party>
+    <cbc:EndpointID schemeID="0201">0L06J9</cbc:EndpointID>
+    <cac:PartyName>
+      <cbc:Name>AZ.UNITA SANI.LOCALE DELLA ROMAGNA</cbc:Name>
+    </cac:PartyName>
+    <cac:PostalAddress>
+      <cbc:StreetName>VIA DE GASPARI N.8</cbc:StreetName>
+      <cbc:CityName>RAVENNA</cbc:CityName>
+      <cbc:PostalZone>48121</cbc:PostalZone>
+      <cbc:CountrySubentity>RA</cbc:CountrySubentity>
+      <cac:Country>
+        <cbc:IdentificationCode>IT</cbc:IdentificationCode>
+      </cac:Country>
+    </cac:PostalAddress>
+    <cac:PartyTaxScheme>
+      <cbc:CompanyID>IT02483810392</cbc:CompanyID>
+      <cac:TaxScheme>
+        <cbc:ID>VAT</cbc:ID>
+      </cac:TaxScheme>
+    </cac:PartyTaxScheme>
+    <cac:PartyLegalEntity>
+      <cbc:RegistrationName>AZ.UNITA SANI.LOCALE DELLA ROMAGNA</cbc:RegistrationName>
+    </cac:PartyLegalEntity>
+  </cac:Party>
+</cac:AccountingCustomerParty>
+<cac:PaymentMeans>
+  <cbc:PaymentMeansCode>15</cbc:PaymentMeansCode>
+  <cac:PayeeFinancialAccount>
+    <cbc:ID>IT64W0100003245243300306301</cbc:ID>
+    <cac:FinancialInstitutionBranch>
+      <cbc:ID>UNCRIT2B</cbc:ID>
+    </cac:FinancialInstitutionBranch>
+  </cac:PayeeFinancialAccount>
+</cac:PaymentMeans>
+<cac:PaymentTerms>
+  <cbc:Note>D.LGS. 231/2002 S.M.I</cbc:Note>
+</cac:PaymentTerms>
+<cac:AllowanceCharge>
+  <cbc:ChargeIndicator>true</cbc:ChargeIndicator>
+  <cbc:AllowanceChargeReasonCode>SAE</cbc:AllowanceChargeReasonCode>
+  <cbc:AllowanceChargeReason>BOLLO</cbc:AllowanceChargeReason>
+  <cbc:Amount currencyID="EUR">0.00</cbc:Amount>
+  <cac:TaxCategory>
+    <cbc:ID>Z</cbc:ID>
+    <cbc:Percent>0</cbc:Percent>
+    <cac:TaxScheme>
+      <cbc:ID>VAT</cbc:ID>
+    </cac:TaxScheme>
+  </cac:TaxCategory>
+</cac:AllowanceCharge>
+<cac:TaxTotal>
+  <cbc:TaxAmount currencyID="EUR">0.00</cbc:TaxAmount>
+  <cac:TaxSubtotal>
+    <cbc:TaxableAmount currencyID="EUR">1300.00</cbc:TaxableAmount>
+    <cbc:TaxAmount currencyID="EUR">0.00</cbc:TaxAmount>
+    <cac:TaxCategory>
+      <cbc:ID>E</cbc:ID>
+      <cbc:Percent>0</cbc:Percent>
+			<cbc:TaxExemptionReasonCode>vatex-eu-132</cbc:TaxExemptionReasonCode>
+      <cbc:TaxExemptionReason>N4</cbc:TaxExemptionReason>
+      <cac:TaxScheme>
+        <cbc:ID>VAT</cbc:ID>
+      </cac:TaxScheme>
+    </cac:TaxCategory>
+  </cac:TaxSubtotal>
+	<cac:TaxSubtotal>
+    <cbc:TaxableAmount currencyID="EUR">0.00</cbc:TaxableAmount>
+    <cbc:TaxAmount currencyID="EUR">0.00</cbc:TaxAmount>
+    <cac:TaxCategory>
+      <cbc:ID>Z</cbc:ID>
+      <cbc:Percent>0</cbc:Percent>
+      <cac:TaxScheme>
+        <cbc:ID>VAT</cbc:ID>
+      </cac:TaxScheme>
+    </cac:TaxCategory>
+  </cac:TaxSubtotal>
+</cac:TaxTotal>
+<cac:LegalMonetaryTotal>
+  <cbc:LineExtensionAmount currencyID="EUR">1300.00</cbc:LineExtensionAmount>
+  <cbc:TaxExclusiveAmount currencyID="EUR">1300.00</cbc:TaxExclusiveAmount>
+  <cbc:TaxInclusiveAmount currencyID="EUR">1300.00</cbc:TaxInclusiveAmount>
+	<cbc:ChargeTotalAmount currencyID="EUR">0.00</cbc:ChargeTotalAmount>
+  <cbc:PayableAmount currencyID="EUR">1300.00</cbc:PayableAmount>
+</cac:LegalMonetaryTotal>
+<cac:InvoiceLine>
+  <cbc:ID>1</cbc:ID>
+  <cbc:InvoicedQuantity unitCode="C62">1.00000000</cbc:InvoicedQuantity>
+  <cbc:LineExtensionAmount currencyID="EUR">1300.00</cbc:LineExtensionAmount>
+  <cac:Item>
+    <cbc:Name>CONSULENZE SANITARIE VERSO ENTI PUBBLICI</cbc:Name>
+    <cac:ClassifiedTaxCategory>
+      <cbc:ID>E</cbc:ID>
+      <cbc:Percent>0</cbc:Percent>
+      <cac:TaxScheme>
+        <cbc:ID>VAT</cbc:ID>
+      </cac:TaxScheme>
+    </cac:ClassifiedTaxCategory>
+		<cac:AdditionalItemProperty>
+			<cbc:Name>IT:NATURA</cbc:Name>
+			<cbc:Value>N4</cbc:Value>
+		</cac:AdditionalItemProperty>
+  </cac:Item>
+  <cac:Price>
+    <cbc:PriceAmount currencyID="EUR">1300.00000000</cbc:PriceAmount>
+  </cac:Price>
+</cac:InvoiceLine>
 </Invoice>
