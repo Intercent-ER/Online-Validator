@@ -54,6 +54,9 @@
                     <!-- Riempita con l'ausilio di Ajax -->
                 </select>
             </div>
+            <div class="g-recaptcha"
+                 data-sitekey="6Ldr0HkaAAAAAFnyGXhRA99J7lg2dl_TUXRXrZZO">
+            </div>
             <div class="d-flex container file-submit-container">
                 <input class="submit-data" id="button-submit-id" type="submit" value="Valida"
                        disabled="true"/>
