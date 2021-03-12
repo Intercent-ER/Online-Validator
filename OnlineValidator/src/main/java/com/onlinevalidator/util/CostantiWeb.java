@@ -8,6 +8,9 @@ public interface CostantiWeb {
 	String RESULT_CONTROLLER_RISULTATO_VALIDAZIONE = "risultatoValidazione";
 	String RESULT_CONTROLLER_DATA_VALIDAZIONE = "dataValidazione";
 	String PATTERN_SIMPLE_DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
-        String RESULT_CONTROLLER_TIPO_DOCUMENTO_VALIDAZIONE = "tipoDocumento";
+
+	// Filtri selezionati lato web
+	String FILTER_RAPPRESENTAZIONE = "rappresentazioneSelezionata";
+	String FILTER_TIPO_DOCUMENTO = "tipoDocumentoSelezionato";
 
 }

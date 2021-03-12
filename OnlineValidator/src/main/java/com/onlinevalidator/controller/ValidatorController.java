@@ -1,9 +1,12 @@
 package com.onlinevalidator.controller;
 
 import com.onlinevalidator.dto.Render;
+import com.onlinevalidator.dto.SessionFilterStorage;
 import com.onlinevalidator.dto.ValidationReport;
+import com.onlinevalidator.model.OvRappresentazione;
 import com.onlinevalidator.pojo.TipoRenderingEnum;
 import com.onlinevalidator.service.RenderingServiceInterface;
+import com.onlinevalidator.service.SessionCacheInterface;
 import com.onlinevalidator.service.impl.ValidatorService;
 import com.onlinevalidator.util.CostantiWeb;
 import com.onlinevalidator.util.FileUtil;
@@ -36,20 +39,24 @@ public class ValidatorController {
 	@Autowired
 	private RenderingServiceInterface renderingService;
 
+	@Autowired
+	private SessionCacheInterface sessionCache;
+
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	public @ResponseBody
 	ModelAndView uploadFile(@RequestParam("file") MultipartFile file,
-							@RequestParam(value = "idRappresentazione") int id, HttpSession session) {
+							@RequestParam(value = "idRappresentazione") int idRappresentazione, HttpSession session) {
 
 		ModelAndView paginaRisultato = new ModelAndView("result");
 		try {
 
 			// Eseguo la validazione
-			logger.info("Ricevuta richiesta di validazione per tipo documento {}", id);
+			logger.info("Ricevuta richiesta di validazione per tipo documento {}", idRappresentazione);
 			String documentoString = new String(file.getBytes());
+			OvRappresentazione ovRappresentazione = validatorService.getOvRappresentazioneById(idRappresentazione);
 			ValidationReport risultatoValidazione = validatorService.effettuaValidazione(
 					documentoString.getBytes(StandardCharsets.UTF_8),
-					validatorService.getOvRappresentazioneById(id)
+					ovRappresentazione
 			);
 			if (risultatoValidazione == null) {
 				throw new NullPointerException("Nessun risultato di validazione consultabile");
@@ -70,9 +77,18 @@ public class ValidatorController {
 					CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,
 					risultatoValidazione
 			);
+
+			// Aggiunta attributi sessione
 			session.setAttribute(
 					CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,
 					risultatoValidazione
+			);
+
+			sessionCache.addToStorage(
+					session.getId(), new SessionFilterStorage(
+							ovRappresentazione.getIdRappresentazione(),
+							ovRappresentazione.getOvTipoDocumento().getIdTipoDocumento()
+					)
 			);
 
 		} catch (Exception e) {
