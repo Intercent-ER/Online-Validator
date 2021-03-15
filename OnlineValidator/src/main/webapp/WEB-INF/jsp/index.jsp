@@ -11,10 +11,6 @@
     <%@include file="common/script.jsp" %>
     <script>
 
-        /**
-         * Aggiorna dinamicamente il contenuto del tag "select" responsabile di contenere l'elenco delle
-         * rappresentazioni del documento selezionato dall'utente.
-         */
         $(document).ready(function () {
 
             // Avvio il pre-fill della form e leggo dalla cache l'input precedente, se presente
@@ -22,58 +18,7 @@
 
             $('select').on('change', function (e) {
                 let idTipoDocumento = this.value;
-
-                if (idTipoDocumento !== -1) {
-
-                    // Esecuzione chiamata Ajax
-                    $.ajax({
-                        url: "ajax/displayRepresentations.html",
-                        async: true,
-                        datatype: "json",
-                        data: {
-
-                            // Fornisco in ingresso il tipo del documento
-                            idTipoDocumento: idTipoDocumento
-                        },
-                        success: function (data) {
-                            if (data != null && data !== '') {
-
-                                // Dichiaro la stringa che rappresenta il contenuto HTML da rimpiazzare
-                                let stringHtmlToBeReplaced = "<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\">";
-
-                                // Effettuo il parsing in oggetto Javascript del Json ricevuto
-                                let json = JSON.parse(data)
-
-                                // Itero il Json
-                                for (let index = 0; index < json.length; index++) {
-                                    let singleInstance = json[index];
-                                    stringHtmlToBeReplaced += getSingleOptionTagHtml(singleInstance)
-                                }
-
-                                // Chiudo il tag "select"
-                                stringHtmlToBeReplaced += "</select>";
-
-                                // Abilito la selezione sul customization id
-                                let listaCustomizationId = $("#lista-customizationid");
-                                listaCustomizationId.replaceWith(stringHtmlToBeReplaced);
-                                listaCustomizationId.prop('disabled', false);
-
-                                $("#button-submit-id").prop('disabled', false);
-                            }
-                        },
-                        error: function () {
-                            // TODO gestire errore mostrando un modal
-                        }
-                    });
-                } else {
-
-                    /*
-                     * Se l'utente ha ricliccato su "Seleziona il tipo documento", disabilito e svuoto il contenuto del
-                     * tag "select" preposto.
-                     */
-                    $("#lista-customizationid").replaceWith("<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\" disabled=\"true\"></select>");
-                    $("#button-submit-id").prop('disabled', true);
-                }
+                updateOptions(idTipoDocumento);
             })
         });
     </script>
@@ -108,9 +53,7 @@
                 <label class="subtitle" for="lista-documenti">Tipo di documento</label>
                 <select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento"
                         data-form-prefill-keys="tipo_documento">
-                    <option type="int" value="-1" selected>Seleziona il
-                        tipo di documento
-                    </option>
+                    <option type="int" value="-1" id="default-selection">Seleziona il tipo di documento</option>
                     <c:forEach items="${tipoDocumento}" var="val">
                         <option type="int" value="${val.idTipoDocumento}">${val.name.readableValue}</option>
                     </c:forEach>
@@ -128,9 +71,7 @@
                  data-sitekey="6Ldr0HkaAAAAAFnyGXhRA99J7lg2dl_TUXRXrZZO">
             </div>
             <div class="d-flex container file-submit-container">
-                <button class="submit-data" id="button-submit-id" onclick="cacheAndSubmit()" disabled>
-                    Valida
-                </button>
+                <input type="submit" class="submit-data" id="button-submit-id" value="Valida" disabled/>
             </div>
         </form:form>
         <div class="w-100"></div>
