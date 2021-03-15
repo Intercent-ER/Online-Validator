@@ -102,7 +102,7 @@ function updateOptions(idTipoDocumento, filtroRappresentazione) {
          * Se l'utente ha ricliccato su "Seleziona il tipo documento", disabilito e svuoto il contenuto del
          * tag "select" preposto.
          */
-        $("#lista-customizationid").replaceWith("<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\" disabled=\"true\"></select>");
+        $("#lista-customizationid").replaceWith("<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\" disabled></select>");
         $("#button-submit-id").prop('disabled', true);
     }
 }
