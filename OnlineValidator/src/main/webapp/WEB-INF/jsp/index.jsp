@@ -11,12 +11,14 @@
     <%@include file="common/script.jsp" %>
     <script>
 
+        window.onpageshow = function () {
+
+            prefillFormAndReadCache();
+        };
+
         $(document).ready(function () {
 
-            // Avvio il pre-fill della form e leggo dalla cache l'input precedente, se presente
-            prefillFormAndReadCache();
-
-            $('select').on('change', function (e) {
+            $('select').on('change', function () {
                 let idTipoDocumento = this.value;
                 updateOptions(idTipoDocumento);
             })
@@ -47,13 +49,15 @@
         <form:form method="POST" action="uploadFile.html" enctype="multipart/form-data" id="upload-file-form-id">
             <div class="d-flex flex-column container file-container">
                 <label class="subtitle" for="carica-documento">Documento</label>
-                <input id="carica-documento" type="file" name="file" accept=".xml"/>
+                <input id="carica-documento" data-form-prefill-read="file_documento"
+                       data-form-prefill-write="file_documento" type="file" name="file" accept=".xml"/>
             </div>
             <div class="d-flex flex-column container file-type-container">
                 <label class="subtitle" for="lista-documenti">Tipo di documento</label>
                 <select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento"
-                        data-form-prefill-keys="tipo_documento">
-                    <option type="int" value="-1" id="default-selection">Seleziona il tipo di documento</option>
+                        data-form-prefill-read="tipo_documento" data-form-prefill-write="tipo_documento">
+                    <option type="int" value="-1" id="default-selection" selected>Seleziona il tipo di documento
+                    </option>
                     <c:forEach items="${tipoDocumento}" var="val">
                         <option type="int" value="${val.idTipoDocumento}">${val.name.readableValue}</option>
                     </c:forEach>
@@ -62,8 +66,8 @@
             <div class="d-flex flex-column container file-type-container">
                 <label class="subtitle" for="lista-customizationid">Formato del documento</label>
                 <select id="lista-customizationid" class="entity-select" type="select" name="idRappresentazione"
-                        data-form-prefill-keys="profilo_documento"
-                        disabled>
+                        data-form-prefill-read="rappresentazione_documento"
+                        data-form-prefill-write="rappresentazione_documento" disabled>
                     <!-- Riempita con l'ausilio di Ajax -->
                 </select>
             </div>
@@ -71,7 +75,7 @@
                  data-sitekey="6Ldr0HkaAAAAAFnyGXhRA99J7lg2dl_TUXRXrZZO">
             </div>
             <div class="d-flex container file-submit-container">
-                <input type="submit" class="submit-data" id="button-submit-id" value="Valida" disabled/>
+                <button onclick="cacheAndSubmit()" class="submit-data" id="button-submit-id" disabled>Valida</button>
             </div>
         </form:form>
         <div class="w-100"></div>

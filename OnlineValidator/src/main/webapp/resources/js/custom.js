@@ -1,54 +1,21 @@
 /**
  * Produce l'HTML corrispondente al tag <option> di un oggetto RappresentazioneViewer.
  * @param rappresentazioneViewer è l'oggetto da cui partire per produrre il corrispondente HTML
- * @param filtroRappresentazione è l'identificativo della rappresentazione gestito in cache (se presente)
  * @returns {string} contenuto HTML
  */
-function getSingleOptionTagHtml(rappresentazioneViewer, filtroRappresentazione) {
-    let needsToBeSelected = filtroRappresentazione !== null && filtroRappresentazione === rappresentazioneViewer.idRappresentazione;
+function getSingleOptionTagHtml(rappresentazioneViewer) {
     return "<option type=\"int\" value=\""
         + rappresentazioneViewer.idRappresentazione
-        + "\" "
-        + (needsToBeSelected ? "selected" : "")
-        + ">"
+        + "\">"
         + rappresentazioneViewer.dsDescrizione
         + "</option>";
-}
-
-/**
- * Legge la cache del browser al fine di recuperare la selezione indicata in precedenza (se presente).
- */
-function prefillFormAndReadCache() {
-
-    // Esecuzione chiamata Ajax
-    $.ajax({
-        url: "ajax/prefillFilters.html",
-        async: true,
-        datatype: "json",
-        success: function (data) {
-            if (data != null && data !== '' && data !== '{}') {
-
-                // Effettuo il parsing in oggetto Javascript del Json ricevuto
-                let json = JSON.parse(data)
-
-                if (json !== null && json.filtroTipoDocumento !== null && json.filtroRappresentazione !== null) {
-
-                    updateOptions(json.filtroTipoDocumento, json.filtroRappresentazione);
-                    document.getElementById('lista-customizationid').value = (json.filtroRappresentazione + "");
-                }
-            }
-        },
-        error: function () {
-        }
-    });
-
 }
 
 /**
  * Aggiorna dinamicamente il contenuto del tag "select" responsabile di contenere l'elenco delle
  * rappresentazioni del documento selezionato dall'utente.
  */
-function updateOptions(idTipoDocumento, filtroRappresentazione) {
+function updateOptions(idTipoDocumento) {
     if (idTipoDocumento !== -1) {
 
         // Esecuzione chiamata Ajax
@@ -62,10 +29,10 @@ function updateOptions(idTipoDocumento, filtroRappresentazione) {
                 idTipoDocumento: idTipoDocumento
             },
             success: function (data) {
-                if (data != null && data !== '') {
+                if (data !== null && data !== '') {
 
                     // Dichiaro la stringa che rappresenta il contenuto HTML da rimpiazzare
-                    let stringHtmlToBeReplaced = "<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\">";
+                    let stringHtmlToBeReplaced = "<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\" data-form-prefill-keys=\"rappresentazione_documento\">";
 
                     // Effettuo il parsing in oggetto Javascript del Json ricevuto
                     let json = JSON.parse(data);
@@ -73,11 +40,7 @@ function updateOptions(idTipoDocumento, filtroRappresentazione) {
                     // Itero il Json
                     for (let index = 0; index < json.length; index++) {
                         let singleInstance = json[index];
-                        stringHtmlToBeReplaced += getSingleOptionTagHtml(singleInstance, filtroRappresentazione);
-                    }
-
-                    if (filtroRappresentazione === null) {
-                        document.getElementById('default-selection').setAttribute("selected", "");
+                        stringHtmlToBeReplaced += getSingleOptionTagHtml(singleInstance);
                     }
 
                     // Chiudo il tag "select"
@@ -92,7 +55,6 @@ function updateOptions(idTipoDocumento, filtroRappresentazione) {
                 }
             },
             error: function () {
-                // TODO gestire errore mostrando un modal
             }
         });
     } else {
@@ -117,4 +79,20 @@ function esportaPdf() {
 function esporta(tipoRendering) {
     document.getElementById('tipoRenderingId').value = tipoRendering;
     document.getElementById('renderingFormId').submit();
+}
+
+/**
+ * Legge la cache del browser al fine di recuperare la selezione indicata in precedenza (se presente).
+ */
+function prefillFormAndReadCache() {
+    $('#upload-file-form-id').formPrefill();
+}
+
+/**
+ * Scrive la cache salvando i le selezioni digitate in form.
+ */
+function cacheAndSubmit() {
+    let form_ = $('#upload-file-form-id');
+    form_.data('formprefill').writeAll().then(r => console.log(r));
+    form_.submit();
 }
