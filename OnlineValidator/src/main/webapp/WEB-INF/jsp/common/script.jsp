@@ -3,3 +3,4 @@
 <script src="<c:url value="/resources/js/bootstrap/bootstrap.min.js"/>"></script>
 <script src="<c:url value="/resources/js/jquery.formprefill.js"/>"></script>
 <script src="<c:url value="/resources/js/custom.js"/>"></script>
+<script src="https://www.google.com/recaptcha/api.js"></script>
