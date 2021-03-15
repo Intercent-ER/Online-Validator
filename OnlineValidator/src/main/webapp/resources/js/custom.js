@@ -1,10 +1,18 @@
 /**
  * Produce l'HTML corrispondente al tag <option> di un oggetto RappresentazioneViewer.
  * @param rappresentazioneViewer è l'oggetto da cui partire per produrre il corrispondente HTML
+ * @param filtroRappresentazione è l'identificativo della rappresentazione gestito in cache (se presente)
  * @returns {string} contenuto HTML
  */
-function getSingleOptionTagHtml(rappresentazioneViewer) {
-    return "<option type=\"int\" value=\"" + rappresentazioneViewer.idRappresentazione + "\">" + rappresentazioneViewer.dsDescrizione + "</option>";
+function getSingleOptionTagHtml(rappresentazioneViewer, filtroRappresentazione) {
+    let needsToBeSelected = filtroRappresentazione !== null && filtroRappresentazione === rappresentazioneViewer.idRappresentazione;
+    return "<option type=\"int\" value=\""
+        + rappresentazioneViewer.idRappresentazione
+        + "\" "
+        + (needsToBeSelected ? "selected" : "")
+        + ">"
+        + rappresentazioneViewer.dsDescrizione
+        + "</option>";
 }
 
 /**
@@ -26,7 +34,7 @@ function prefillFormAndReadCache() {
 
                 if (json !== null && json.filtroTipoDocumento !== null && json.filtroRappresentazione !== null) {
 
-                    updateOptions(json.filtroTipoDocumento);
+                    updateOptions(json.filtroTipoDocumento, json.filtroRappresentazione);
                     document.getElementById('lista-customizationid').value = (json.filtroRappresentazione + "");
                 }
             }
@@ -41,7 +49,7 @@ function prefillFormAndReadCache() {
  * Aggiorna dinamicamente il contenuto del tag "select" responsabile di contenere l'elenco delle
  * rappresentazioni del documento selezionato dall'utente.
  */
-function updateOptions(idTipoDocumento) {
+function updateOptions(idTipoDocumento, filtroRappresentazione) {
     if (idTipoDocumento !== -1) {
 
         // Esecuzione chiamata Ajax
@@ -61,12 +69,16 @@ function updateOptions(idTipoDocumento) {
                     let stringHtmlToBeReplaced = "<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\">";
 
                     // Effettuo il parsing in oggetto Javascript del Json ricevuto
-                    let json = JSON.parse(data)
+                    let json = JSON.parse(data);
 
                     // Itero il Json
                     for (let index = 0; index < json.length; index++) {
                         let singleInstance = json[index];
-                        stringHtmlToBeReplaced += getSingleOptionTagHtml(singleInstance)
+                        stringHtmlToBeReplaced += getSingleOptionTagHtml(singleInstance, filtroRappresentazione);
+                    }
+
+                    if (filtroRappresentazione === null) {
+                        document.getElementById('default-selection').setAttribute("selected", "");
                     }
 
                     // Chiudo il tag "select"

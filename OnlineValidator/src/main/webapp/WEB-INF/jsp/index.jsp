@@ -53,9 +53,7 @@
                 <label class="subtitle" for="lista-documenti">Tipo di documento</label>
                 <select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento"
                         data-form-prefill-keys="tipo_documento">
-                    <option type="int" value="-1" selected>Seleziona il
-                        tipo di documento
-                    </option>
+                    <option type="int" value="-1" id="default-selection">Seleziona il tipo di documento</option>
                     <c:forEach items="${tipoDocumento}" var="val">
                         <option type="int" value="${val.idTipoDocumento}">${val.name.readableValue}</option>
                     </c:forEach>
