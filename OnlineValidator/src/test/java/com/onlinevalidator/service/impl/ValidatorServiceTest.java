@@ -5,6 +5,7 @@ import com.onlinevalidator.model.OvRappresentazione;
 import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.model.OvValidatore;
 import com.onlinevalidator.model.enumerator.NomeTipoDocumentoEnum;
+import com.onlinevalidator.model.enumerator.RappresentazionePaeseEnum;
 import com.onlinevalidator.model.enumerator.TipoFileEnum;
 import com.onlinevalidator.repository.OvRappresentazioneJpaRepository;
 import com.onlinevalidator.repository.OvTipoDocumentoJpaRepository;
@@ -138,7 +139,6 @@ public class ValidatorServiceTest {
 	@Test
 	public void effettuaValidazione() {
 
-		// TODO: aggiornare metodo
 		ValidatorServiceInterface validatorServiceSpy = spy(this.validatorService);
 
 		try {
@@ -157,11 +157,22 @@ public class ValidatorServiceTest {
 			assertEquals("Impossibile validare un documento senza averne specificato la sua rappresentazione", e.getMessage());
 		}
 
+		OvRappresentazione ddtBis3Ita = tipoDocumentoJpaRepository.findByNmNome(NomeTipoDocumentoEnum.DOCUMENTO_DI_TRASPORTO).getRappresentazione()
+				.stream()
+				.filter(r -> r.getCdRappresentazionePaeseEnum().equals(RappresentazionePaeseEnum.IT))
+				.findFirst()
+				.orElseThrow(NullPointerException::new);
+		OvRappresentazione ordineBis3Ita = tipoDocumentoJpaRepository.findByNmNome(NomeTipoDocumentoEnum.ORDINE).getRappresentazione()
+				.stream()
+				.filter(r -> r.getCdRappresentazionePaeseEnum().equals(RappresentazionePaeseEnum.IT))
+				.findFirst()
+				.orElseThrow(NullPointerException::new);
+
 		try (InputStream inputStream = ValidatorServiceTest.class.getClassLoader().getResourceAsStream("test-case/validator-service/ddt-ok.xml")) {
 
 			assertNotNull(inputStream);
 			byte[] byteArray = IOUtils.toByteArray(inputStream);
-			ValidationReport validationReport = validatorServiceSpy.effettuaValidazione(byteArray, tipoDocumentoJpaRepository.findByNmNome(NomeTipoDocumentoEnum.DOCUMENTO_DI_TRASPORTO).getRappresentazione().get(0));
+			ValidationReport validationReport = validatorServiceSpy.effettuaValidazione(byteArray, ddtBis3Ita);
 			assertNotNull(validationReport);
 			assertTrue(validationReport.isValido());
 			assertNotNull(validationReport.getErroriDiValidazione());
@@ -184,7 +195,7 @@ public class ValidatorServiceTest {
 
 			assertNotNull(inputStream);
 			byte[] byteArray = IOUtils.toByteArray(inputStream);
-			ValidationReport validationReport = validatorServiceSpy.effettuaValidazione(byteArray, tipoDocumentoJpaRepository.findByNmNome(NomeTipoDocumentoEnum.DOCUMENTO_DI_TRASPORTO).getRappresentazione().get(0));
+			ValidationReport validationReport = validatorServiceSpy.effettuaValidazione(byteArray, ddtBis3Ita);
 			assertNotNull(validationReport);
 			assertFalse(validationReport.isValido());
 			assertNotNull(validationReport.getErroriDiValidazione());
@@ -207,7 +218,7 @@ public class ValidatorServiceTest {
 
 			assertNotNull(inputStream);
 			byte[] byteArray = IOUtils.toByteArray(inputStream);
-			ValidationReport validationReport = validatorServiceSpy.effettuaValidazione(byteArray, tipoDocumentoJpaRepository.findByNmNome(NomeTipoDocumentoEnum.ORDINE).getRappresentazione().get(0));
+			ValidationReport validationReport = validatorServiceSpy.effettuaValidazione(byteArray, ordineBis3Ita);
 			assertNotNull(validationReport);
 			assertTrue(validationReport.isValido());
 			assertNotNull(validationReport.getErroriDiValidazione());
@@ -229,7 +240,7 @@ public class ValidatorServiceTest {
 
 			assertNotNull(inputStream);
 			byte[] byteArray = IOUtils.toByteArray(inputStream);
-			ValidationReport validationReport = validatorServiceSpy.effettuaValidazione(byteArray, tipoDocumentoJpaRepository.findByNmNome(NomeTipoDocumentoEnum.ORDINE).getRappresentazione().get(0));
+			ValidationReport validationReport = validatorServiceSpy.effettuaValidazione(byteArray, ordineBis3Ita);
 			assertNotNull(validationReport);
 			assertFalse(validationReport.isValido());
 			assertNotNull(validationReport.getErroriDiValidazione());

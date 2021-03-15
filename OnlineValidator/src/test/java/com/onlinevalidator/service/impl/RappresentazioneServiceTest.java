@@ -53,7 +53,7 @@ public class RappresentazioneServiceTest {
 
 			rappresentazioneViewers = rappresentazioneServiceInterface.filtraRappresentazioniPerTipoDocumento(3);
 			assertNotNull(rappresentazioneViewers);
-			assertEquals(2, rappresentazioneViewers.size());
+			assertEquals(4, rappresentazioneViewers.size());
 			assertNotNull(rappresentazioneViewers.get(0).getIdRappresentazione());
 			assertNotNull(rappresentazioneViewers.get(0).getDsDescrizione());
 		} catch (Exception e) {

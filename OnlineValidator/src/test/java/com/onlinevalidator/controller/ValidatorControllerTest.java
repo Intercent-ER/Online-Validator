@@ -2,8 +2,10 @@ package com.onlinevalidator.controller;
 
 import com.onlinevalidator.dto.ValidationAssert;
 import com.onlinevalidator.dto.ValidationReport;
+import com.onlinevalidator.model.OvRappresentazione;
 import com.onlinevalidator.model.OvTipoDocumento;
 import com.onlinevalidator.model.enumerator.NomeTipoDocumentoEnum;
+import com.onlinevalidator.model.enumerator.RappresentazionePaeseEnum;
 import com.onlinevalidator.repository.OvTipoDocumentoJpaRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +49,15 @@ public class ValidatorControllerTest extends AbstractControllerTest {
 	public void validazione() {
 
 		OvTipoDocumento documentoDiTrasporto = tipoDocumentoRepository.findByNmNome(NomeTipoDocumentoEnum.DOCUMENTO_DI_TRASPORTO);
+		OvRappresentazione ddtBis3Ita = documentoDiTrasporto.getRappresentazione().stream()
+				.filter(r -> r.getCdRappresentazionePaeseEnum().equals(RappresentazionePaeseEnum.IT))
+				.findFirst()
+				.orElseThrow(NullPointerException::new);
 		OvTipoDocumento ordine = tipoDocumentoRepository.findByNmNome(NomeTipoDocumentoEnum.ORDINE);
+		OvRappresentazione ordineBis3Ita = ordine.getRappresentazione().stream()
+				.filter(r -> r.getCdRappresentazionePaeseEnum().equals(RappresentazionePaeseEnum.IT))
+				.findFirst()
+				.orElseThrow(NullPointerException::new);
 
 		try (InputStream ddtOk = ValidatorControllerTest.class.getClassLoader().getResourceAsStream("test-case/validator-service/ddt-ok.xml");
 			 InputStream ddtFatal = ValidatorControllerTest.class.getClassLoader().getResourceAsStream("test-case/validator-service/ddt-fatal.xml");
@@ -68,7 +78,7 @@ public class ValidatorControllerTest extends AbstractControllerTest {
 					fileUpload("/uploadFile")
 							.file(multipartFile)
 							.contentType(MediaType.MULTIPART_FORM_DATA)
-							.param("id", documentoDiTrasporto.getIdTipoDocumento() + ""))
+							.param("idRappresentazione", ddtBis3Ita.getIdRappresentazione() + ""))
 					.andExpect(status().isOk())
 					.andExpect(model().hasNoErrors())
 					.andExpect(model().attributeExists("risultatoValidazione"))
@@ -91,7 +101,7 @@ public class ValidatorControllerTest extends AbstractControllerTest {
 					fileUpload("/uploadFile")
 							.file(multipartFile)
 							.contentType(MediaType.MULTIPART_FORM_DATA)
-							.param("id", documentoDiTrasporto.getIdTipoDocumento() + ""))
+							.param("idRappresentazione", ddtBis3Ita.getIdRappresentazione() + ""))
 					.andExpect(status().isOk())
 					.andExpect(model().hasNoErrors())
 					.andExpect(model().attributeExists("risultatoValidazione"))
@@ -114,7 +124,7 @@ public class ValidatorControllerTest extends AbstractControllerTest {
 					fileUpload("/uploadFile")
 							.file(multipartFile)
 							.contentType(MediaType.MULTIPART_FORM_DATA)
-							.param("id", ordine.getIdTipoDocumento() + ""))
+							.param("idRappresentazione", ordineBis3Ita.getIdRappresentazione() + ""))
 					.andExpect(status().isOk())
 					.andExpect(model().hasNoErrors())
 					.andExpect(model().attributeExists("risultatoValidazione"))
@@ -137,7 +147,7 @@ public class ValidatorControllerTest extends AbstractControllerTest {
 					fileUpload("/uploadFile")
 							.file(multipartFile)
 							.contentType(MediaType.MULTIPART_FORM_DATA)
-							.param("id", ordine.getIdTipoDocumento() + ""))
+							.param("idRappresentazione", ordineBis3Ita.getIdRappresentazione() + ""))
 					.andExpect(status().isOk())
 					.andExpect(model().hasNoErrors())
 					.andExpect(model().attributeExists("risultatoValidazione"))
