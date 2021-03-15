@@ -20,7 +20,6 @@ function getSingleOptionTagHtml(rappresentazioneViewer, filtroRappresentazione) 
  */
 function prefillFormAndReadCache() {
 
-
     // Esecuzione chiamata Ajax
     $.ajax({
         url: "ajax/prefillFilters.html",
@@ -107,26 +106,15 @@ function updateOptions(idTipoDocumento, filtroRappresentazione) {
     }
 }
 
-/**
- * Scrive la cache salvando i le selezioni digitate in form.
- */
-function cacheAndSubmit() {
-    let formUpload = $('#upload-file-form-id');
-    formUpload.formPrefill();
-    let inputTipoDocumento = formUpload.find
-    formUpload.data('formPrefill').writeAll();
-    formUpload.submit();
-}
-
 function esportaXml() {
-    esporta('XML')
+    esporta('XML');
 }
 
 function esportaPdf() {
-    esporta('PDF')
+    esporta('PDF');
 }
 
 function esporta(tipoRendering) {
     document.getElementById('tipoRenderingId').value = tipoRendering;
-    document.getElementById('renderingFormId').submit()
+    document.getElementById('renderingFormId').submit();
 }
