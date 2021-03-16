@@ -1,8 +1,13 @@
 package com.onlinevalidator.service.impl;
 
+import com.onlinevalidator.model.enumerator.ChiaveConfigurazioneEnum;
+import com.onlinevalidator.service.ConfigurazioneServiceInterface;
 import com.onlinevalidator.service.VerifyRecaptchaInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.annotation.PostConstruct;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -16,14 +21,30 @@ import java.net.URL;
 @Service
 public class VerifyRecaptchaService implements VerifyRecaptchaInterface {
 
-	public static final String url = "https://www.google.com/recaptcha/api/siteverify";
-	public static final String secret = "6Ldr0HkaAAAAAA8rLW5fQiVYJJmi3Bb27hNt5vKv";
-	private final static String USER_AGENT = "Mozilla/5.0";
+	private String url;
+	private String secret;
+	private String userAgent;
+
+	@Autowired
+	private ConfigurazioneServiceInterface configurazioneService;
+
+	@PostConstruct
+	public void init() {
+
+		// Inizializzazione dei parametri ReCaptcha
+		logInfo("Inizializzazione parametri utilizzati per la verifica ReCaptcha...");
+		this.url = configurazioneService.readValue(ChiaveConfigurazioneEnum.G_RECAPTCHA_URL);
+		this.secret = configurazioneService.readValue(ChiaveConfigurazioneEnum.G_RECAPTCHA_SECRET);
+		this.userAgent = configurazioneService.readValue(ChiaveConfigurazioneEnum.G_RECAPTCHA_USER_AGENT);
+	}
 
 	@Override
 	public boolean verify(String gRecaptchaResponse) {
 
-		if (gRecaptchaResponse == null || "".equals(gRecaptchaResponse)) {
+		if (StringUtils.isEmpty(gRecaptchaResponse)) {
+
+			// Logging e restituzione dell'errore
+			logWarn("Nessuna risposta ReCaptcha ricevuta, impossibile validare l'input");
 			return false;
 		}
 
@@ -33,7 +54,7 @@ public class VerifyRecaptchaService implements VerifyRecaptchaInterface {
 
 			// add reuqest header
 			con.setRequestMethod("POST");
-			con.setRequestProperty("User-Agent", USER_AGENT);
+			con.setRequestProperty("User-Agent", userAgent);
 			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
 			String postParams = "secret=" + secret + "&response="

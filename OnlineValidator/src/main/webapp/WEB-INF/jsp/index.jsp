@@ -49,13 +49,12 @@
         <form:form method="POST" action="uploadFile.html" enctype="multipart/form-data" id="upload-file-form-id">
             <div class="d-flex flex-column container file-container">
                 <label class="subtitle" for="carica-documento">Documento</label>
-                <input id="carica-documento" data-form-prefill-keys="file_documento" type="file" name="file"
-                       accept=".xml"/>
+                <input id="carica-documento" data-form-prefill-read="file_documento"
+                       data-form-prefill-write="file_documento" type="file" name="file" accept=".xml"/>
             </div>
             <div class="d-flex flex-column container file-type-container">
                 <label class="subtitle" for="lista-documenti">Tipo di documento</label>
-                <select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento"
-                        data-form-prefill-keys="tipo_documento">
+                <select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento">
                     <option type="int" value="-1" id="default-selection" selected>Seleziona il tipo di documento
                     </option>
                     <c:forEach items="${tipoDocumento}" var="val">
@@ -66,7 +65,7 @@
             <div class="d-flex flex-column container file-type-container">
                 <label class="subtitle" for="lista-customizationid">Formato del documento</label>
                 <select id="lista-customizationid" class="entity-select" type="select" name="idRappresentazione"
-                        data-form-prefill-keys="rappresentazione_documento" disabled>
+                        disabled>
                     <!-- Riempita con l'ausilio di Ajax -->
                 </select>
             </div>
