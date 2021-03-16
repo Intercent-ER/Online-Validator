@@ -85,14 +85,21 @@ function esporta(tipoRendering) {
  * Legge la cache del browser al fine di recuperare la selezione indicata in precedenza (se presente).
  */
 function prefillFormAndReadCache() {
-    $('#upload-file-form-id').formPrefill();
+    let _form = $('#upload-file-form-id');
+    _form.formPrefill();
+    _form.data('formPrefill').removeAll(
+        {
+            resetFields: false
+        }
+    ).then(r => console.log(r));
 }
 
 /**
  * Scrive la cache salvando i le selezioni digitate in form.
  */
 function cacheAndSubmit() {
-    let form_ = $('#upload-file-form-id');
-    form_.data('formprefill').writeAll().then(r => console.log(r));
-    form_.submit();
+    let _form = $('#upload-file-form-id');
+    _form.formPrefill();
+    _form.data('formPrefill').writeAll().then(r => console.log(r));
+    _form.submit();
 }
