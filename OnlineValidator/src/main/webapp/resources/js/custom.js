@@ -4,6 +4,26 @@
  * @returns {string} contenuto HTML
  */
 function getSingleOptionTagHtml(rappresentazioneViewer) {
+    let rappresentazioneId = window.sessionStorage.getItem('rappresentazione');
+
+    if (rappresentazioneId !== null) {
+
+        let needsToBeSelected = (rappresentazioneId + "").trim() === (rappresentazioneViewer.idRappresentazione + "").trim();
+        if (needsToBeSelected) {
+            return "<option type=\"int\" value=\""
+                + rappresentazioneViewer.idRappresentazione
+                + "\" selected>"
+                + rappresentazioneViewer.dsDescrizione
+                + "</option>";
+        } else {
+            return "<option type=\"int\" value=\""
+                + rappresentazioneViewer.idRappresentazione
+                + "\">"
+                + rappresentazioneViewer.dsDescrizione
+                + "</option>";
+        }
+    }
+
     return "<option type=\"int\" value=\""
         + rappresentazioneViewer.idRappresentazione
         + "\">"
@@ -16,7 +36,7 @@ function getSingleOptionTagHtml(rappresentazioneViewer) {
  * rappresentazioni del documento selezionato dall'utente.
  */
 function updateOptions(idTipoDocumento) {
-    if (idTipoDocumento !== -1) {
+    if (idTipoDocumento !== -1 && idTipoDocumento !== null) {
 
         // Esecuzione chiamata Ajax
         $.ajax({
@@ -81,6 +101,16 @@ function esporta(tipoRendering) {
     document.getElementById('renderingFormId').submit();
 }
 
+function selectId(rappresentazione, selectId) {
+    $("#" + selectId + " > option").each(function () {
+        if (this.value === rappresentazione) {
+            this.setAttribute('selected', '');
+        } else {
+            this.removeAttribute('selected');
+        }
+    });
+}
+
 /**
  * Legge la cache del browser al fine di recuperare la selezione indicata in precedenza (se presente).
  */
@@ -88,20 +118,24 @@ function prefillFormAndReadCache() {
 
     let tipoDocumento = window.sessionStorage.getItem('tipo_documento');
     if (tipoDocumento !== null && tipoDocumento !== undefined) {
-
+        selectId(tipoDocumento, 'lista-documenti');
+        updateOptions(tipoDocumento);
     }
-
-    $('#upload-file-form-id').formPrefill();
 }
 
 /**
  * Scrive la cache salvando i le selezioni digitate in form.
  */
 function cacheAndSubmit() {
-    let tipoDocumento = $('#lista-documenti').value;
-    window.sessionStorage.setItem('tipo_documento', tipoDocumento);
 
-    let rappresentazioneDocumento = $('#lista-customizationid').value;
+    let tipoDocumento = document.getElementById('lista-documenti').value;
+    let rappresentazioneDocumento = document.getElementById('lista-customizationid').value;
+
+    if (tipoDocumento === null || rappresentazioneDocumento === null) {
+        return false;
+    }
+
+    window.sessionStorage.setItem('tipo_documento', tipoDocumento);
     window.sessionStorage.setItem('rappresentazione', rappresentazioneDocumento);
 
     $('#upload-file-form-id').submit();
