@@ -54,8 +54,7 @@
             </div>
             <div class="d-flex flex-column container file-type-container">
                 <label class="subtitle" for="lista-documenti">Tipo di documento</label>
-                <select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento"
-                        data-form-prefill-read="tipo_documento" data-form-prefill-write="tipo_documento">
+                <select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento">
                     <option type="int" value="-1" id="default-selection" selected>Seleziona il tipo di documento
                     </option>
                     <c:forEach items="${tipoDocumento}" var="val">
@@ -66,8 +65,7 @@
             <div class="d-flex flex-column container file-type-container">
                 <label class="subtitle" for="lista-customizationid">Formato del documento</label>
                 <select id="lista-customizationid" class="entity-select" type="select" name="idRappresentazione"
-                        data-form-prefill-read="rappresentazione_documento"
-                        data-form-prefill-write="rappresentazione_documento" disabled>
+                        disabled>
                     <!-- Riempita con l'ausilio di Ajax -->
                 </select>
             </div>

@@ -32,7 +32,7 @@ function updateOptions(idTipoDocumento) {
                 if (data !== null && data !== '') {
 
                     // Dichiaro la stringa che rappresenta il contenuto HTML da rimpiazzare
-                    let stringHtmlToBeReplaced = "<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\" data-form-prefill-keys=\"rappresentazione_documento\">";
+                    let stringHtmlToBeReplaced = "<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\">";
 
                     // Effettuo il parsing in oggetto Javascript del Json ricevuto
                     let json = JSON.parse(data);
@@ -85,6 +85,12 @@ function esporta(tipoRendering) {
  * Legge la cache del browser al fine di recuperare la selezione indicata in precedenza (se presente).
  */
 function prefillFormAndReadCache() {
+
+    let tipoDocumento = window.sessionStorage.getItem('tipo_documento');
+    if (tipoDocumento !== null && tipoDocumento !== undefined) {
+
+    }
+
     $('#upload-file-form-id').formPrefill();
 }
 
@@ -92,7 +98,11 @@ function prefillFormAndReadCache() {
  * Scrive la cache salvando i le selezioni digitate in form.
  */
 function cacheAndSubmit() {
-    let form_ = $('#upload-file-form-id');
-    form_.data('formprefill').writeAll().then(r => console.log(r));
-    form_.submit();
+    let tipoDocumento = $('#lista-documenti').value;
+    window.sessionStorage.setItem('tipo_documento', tipoDocumento);
+
+    let rappresentazioneDocumento = $('#lista-customizationid').value;
+    window.sessionStorage.setItem('rappresentazione', rappresentazioneDocumento);
+
+    $('#upload-file-form-id').submit();
 }
