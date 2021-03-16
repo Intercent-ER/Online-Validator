@@ -1,6 +1,8 @@
 package com.onlinevalidator.controller;
 
 import com.onlinevalidator.model.OvTipoDocumento;
+import com.onlinevalidator.model.enumerator.ChiaveConfigurazioneEnum;
+import com.onlinevalidator.service.ConfigurazioneServiceInterface;
 import com.onlinevalidator.service.impl.ValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,11 +19,22 @@ public class HomeController {
 	@Autowired
 	private ValidatorService validatorService;
 
+	@Autowired
+	private ConfigurazioneServiceInterface configurazioneService;
+
 	private List<OvTipoDocumento> tipiDocumento;
+
+	private String reCaptchaSiteKey;
 
 	@PostConstruct
 	public void init() {
 		this.tipiDocumento = validatorService.filtraTuttiITipiDocumento();
+		this.reCaptchaSiteKey = configurazioneService.readValue(ChiaveConfigurazioneEnum.G_RECAPTCHA_SITE_KEY);
+	}
+
+	@ModelAttribute("gRecaptchaSiteKey")
+	public String gRecaptchaSiteKey() {
+		return reCaptchaSiteKey;
 	}
 
 	@RequestMapping("/")

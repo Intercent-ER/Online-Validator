@@ -4,6 +4,8 @@
  * @returns {string} contenuto HTML
  */
 function getSingleOptionTagHtml(rappresentazioneViewer) {
+
+    // Leggo dal sessionStorage
     let rappresentazioneId = window.sessionStorage.getItem('rappresentazione');
 
     if (rappresentazioneId !== null) {
@@ -13,12 +15,6 @@ function getSingleOptionTagHtml(rappresentazioneViewer) {
             return "<option type=\"int\" value=\""
                 + rappresentazioneViewer.idRappresentazione
                 + "\" selected>"
-                + rappresentazioneViewer.dsDescrizione
-                + "</option>";
-        } else {
-            return "<option type=\"int\" value=\""
-                + rappresentazioneViewer.idRappresentazione
-                + "\">"
                 + rappresentazioneViewer.dsDescrizione
                 + "</option>";
         }
@@ -101,9 +97,9 @@ function esporta(tipoRendering) {
     document.getElementById('renderingFormId').submit();
 }
 
-function selectId(rappresentazione, selectId) {
+function selectId(valueToSelect, selectId) {
     $("#" + selectId + " > option").each(function () {
-        if (this.value === rappresentazione) {
+        if (this.value === valueToSelect) {
             this.setAttribute('selected', '');
         } else {
             this.removeAttribute('selected');

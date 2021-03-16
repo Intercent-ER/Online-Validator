@@ -49,8 +49,7 @@
         <form:form method="POST" action="uploadFile.html" enctype="multipart/form-data" id="upload-file-form-id">
             <div class="d-flex flex-column container file-container">
                 <label class="subtitle" for="carica-documento">Documento</label>
-                <input id="carica-documento" data-form-prefill-read="file_documento"
-                       data-form-prefill-write="file_documento" type="file" name="file" accept=".xml"/>
+                <input id="carica-documento" type="file" name="file" accept=".xml"/>
             </div>
             <div class="d-flex flex-column container file-type-container">
                 <label class="subtitle" for="lista-documenti">Tipo di documento</label>
@@ -69,7 +68,7 @@
                     <!-- Riempita con l'ausilio di Ajax -->
                 </select>
             </div>
-            <div class="g-recaptcha" data-sitekey="6Ldr0HkaAAAAAFnyGXhRA99J7lg2dl_TUXRXrZZO">
+            <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }">
             </div>
             <div class="d-flex container file-submit-container">
                 <button onclick="cacheAndSubmit()" class="submit-data" id="button-submit-id" disabled>Valida</button>
