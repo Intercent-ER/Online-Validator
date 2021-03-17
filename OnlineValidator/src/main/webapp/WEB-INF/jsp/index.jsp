@@ -49,8 +49,7 @@
         <form:form method="POST" action="uploadFile.html" enctype="multipart/form-data" id="upload-file-form-id">
             <div class="d-flex flex-column container file-container">
                 <label class="subtitle" for="carica-documento">Documento</label>
-                <input id="carica-documento" data-form-prefill-read="file_documento"
-                       data-form-prefill-write="file_documento" type="file" name="file" accept=".xml"/>
+                <input id="carica-documento" type="file" name="file" accept=".xml"/>
             </div>
             <div class="d-flex flex-column container file-type-container">
                 <label class="subtitle" for="lista-documenti">Tipo di documento</label>
@@ -70,10 +69,10 @@
                 </select>
             </div>
             <div class="g-recaptcha-container d-flex justify-content-center">
-                <div class="g-recaptcha " data-sitekey="6Ldr0HkaAAAAAFnyGXhRA99J7lg2dl_TUXRXrZZO">
+            <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }">
             </div>
             </div>
-            
+
             <div class="d-flex container file-submit-container">
                 <button onclick="cacheAndSubmit()" class="submit-data" id="button-submit-id" disabled>Valida</button>
             </div>
@@ -85,8 +84,8 @@
         <div class="description-container col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12 d-flex flex-column rounded mt-5">
             <b>A cosa serve la piattaforma?</b>
             <span>
-                        La piattaforma consente di effettuare la validazione di documenti Peppol, quali ad esempio: Ordine, Documento di Trasporto, Fattura, Nota di Credito, al fine di effettuare autonomamente delle prove di verifica della qualità dei singoli file xml.
-                        Per ulteriori dettagli sui documenti che si possono validare e sugli schematron utilizzati è possibile consultare le specifiche tecniche al seguente <a
+                        La piattaforma consente di effettuare la validazione di documenti Peppol, quali ad esempio: Ordine, Documento di Trasporto, Fattura, Nota di Credito, al fine di effettuare autonomamente delle prove di verifica della qualitï¿½ dei singoli file xml.
+                        Per ulteriori dettagli sui documenti che si possono validare e sugli schematron utilizzati ï¿½ possibile consultare le specifiche tecniche al seguente <a
                     href="https://notier.regione.emilia-romagna.it/docs/" target="_blank">link</a>.
                     </span>
         </div>
