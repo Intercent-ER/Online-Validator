@@ -137,6 +137,11 @@ form input[type=file] {
     margin-top: 20px;
 }
 
+.g-recaptcha-container{
+    width: 100%;
+    margin-top: 20px;
+}
+
 .submit-data {
     margin: 0;
     width: 100%;
@@ -251,7 +256,7 @@ li > a:hover {
     .title-container {
         margin-left: 16.666667%;
     }
-    
+
     #main-container {
         padding-bottom: 500px;
     }
@@ -278,6 +283,11 @@ li > a:hover {
 
     #main-container {
         padding-bottom: 600px;
+    }
+
+    .g-recaptcha{
+        transform:scale(0.77);
+        transform-origin:50% 50%;
     }
 
     .footer {
