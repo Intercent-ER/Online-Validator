@@ -136,6 +136,10 @@ form input[type=file] {
     margin-top: 20px;
 }
 
+.captchaNotCompletedAlert{
+    color: red;
+}
+
 .submit-data {
     margin: 0;
     width: 100%;

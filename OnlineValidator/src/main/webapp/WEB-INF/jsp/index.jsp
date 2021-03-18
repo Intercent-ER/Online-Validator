@@ -68,9 +68,12 @@
                             <!-- Riempita con l'ausilio di Ajax -->
                         </select>
                     </div>
-                    <div class="g-recaptcha-container d-flex justify-content-center">
+                    <div class="g-recaptcha-container d-flex flex-column align-items-center">
                         <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }">
                         </div>
+                        <c:if test="${not isCaptchaCompleted}">
+                            <span class="captchaNotCompletedAlert mt-2">Per proseguire &egrave necessario completare il captcha</span>
+                        </c:if>
                     </div>
 
                     <div class="d-flex container file-submit-container">
