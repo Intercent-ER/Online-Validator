@@ -10,12 +10,6 @@ body {
     padding-bottom: 350px;
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    height: 300px;
-}
-
 header {
     height: 75px;
     background-color: white;
@@ -164,8 +158,8 @@ form input[type=file] {
 footer {
     width: 100%;
     position: absolute;
-    bottom: -250px;
-    height: auto;
+    bottom: 0;
+    height: 300px;
     background-color: #003366;
 }
 
@@ -265,7 +259,7 @@ li > a:hover {
         height: 450px;
     }
 
-    .div-logo-container a:last-child {
+    .div-logo-container > a:last-child {
         -ms-flex-pack: flex-start !important;
         justify-content: flex-start !important;
     }
@@ -294,7 +288,7 @@ li > a:hover {
         height: 550px;
     }
 
-    .div-logo-container > a {
+    .div-logo-container > a, .div-logo-container > a:last-child {
         -ms-flex-pack: center !important;
         justify-content: center !important;
     }
