@@ -14,4 +14,5 @@ public interface VerifyRecaptchaInterface extends ApplicationLogger {
 	 * @return <code>true</code> nel caso in cui il token risulti conforme, <code>false</code> altrimenti
 	 */
 	boolean verify(String gRecaptchaResponse);
+        
 }

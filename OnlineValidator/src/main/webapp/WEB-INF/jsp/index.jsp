@@ -71,7 +71,7 @@
                     <div class="g-recaptcha-container d-flex flex-column align-items-center">
                         <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }">
                         </div>
-                        <c:if test="${not isCaptchaCompleted}">
+                        <c:if test="${not captchaCompleted}">
                             <span class="captchaNotCompletedAlert mt-2">Per proseguire &egrave necessario completare il captcha</span>
                         </c:if>
                     </div>

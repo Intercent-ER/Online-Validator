@@ -31,118 +31,125 @@ import java.text.SimpleDateFormat;
 @Controller
 public class ValidatorController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ValidatorController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ValidatorController.class);
 
-	@Autowired
-	private ValidatorService validatorService;
+    @Autowired
+    private ValidatorService validatorService;
 
-	@Autowired
-	private RenderingServiceInterface renderingService;
+    @Autowired
+    private RenderingServiceInterface renderingService;
 
-	@Autowired
-	private VerifyRecaptchaInterface verifyRecaptchaService;
+    @Autowired
+    private VerifyRecaptchaInterface verifyRecaptchaService;
 
-	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public @ResponseBody
-	ModelAndView uploadFile(@RequestParam("file") MultipartFile file,
-							@RequestParam(value = "idRappresentazione") int idRappresentazione,
-							HttpServletRequest request,
-							HttpSession session) {
+    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    public @ResponseBody
+    ModelAndView uploadFile(@RequestParam("file") MultipartFile file,
+            @RequestParam(value = "idRappresentazione") int idRappresentazione,
+            HttpServletRequest request,
+            HttpSession session) {
 
-		String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        ModelAndView paginaRisultato = new ModelAndView("result");
+        boolean captchaVerificato = false;
 
-		ModelAndView paginaRisultato = new ModelAndView("result");
-		try {
-			boolean captchaVerificato = verifyRecaptchaService.verify(gRecaptchaResponse);
+        try {
+            String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+            captchaVerificato = verifyRecaptchaService.verify(gRecaptchaResponse);
+        } catch (Exception e) {
+            paginaRisultato.setViewName("redirect:/?askForCaptcha=true");
+            return paginaRisultato;
+        }
 
-			if (!captchaVerificato) {
-				paginaRisultato.setViewName("redirect:/");
-				return paginaRisultato;
-			}
+        try {
+            
+            if (!captchaVerificato) {
+                paginaRisultato.setViewName("redirect:/?askForCaptcha=true");
+                return paginaRisultato;
+            }
 
-			// Eseguo la validazione
-			logger.info("Ricevuta richiesta di validazione per tipo documento {}", idRappresentazione);
-			String documentoString = new String(file.getBytes());
-			OvRappresentazione ovRappresentazione = validatorService.getOvRappresentazioneById(idRappresentazione);
-			ValidationReport risultatoValidazione = validatorService.effettuaValidazione(
-					documentoString.getBytes(StandardCharsets.UTF_8),
-					ovRappresentazione
-			);
-			if (risultatoValidazione == null) {
-				throw new NullPointerException("Nessun risultato di validazione consultabile");
-			}
+            // Eseguo la validazione
+            logger.info("Ricevuta richiesta di validazione per tipo documento {}", idRappresentazione);
+            String documentoString = new String(file.getBytes());
+            OvRappresentazione ovRappresentazione = validatorService.getOvRappresentazioneById(idRappresentazione);
+            ValidationReport risultatoValidazione = validatorService.effettuaValidazione(
+                    documentoString.getBytes(StandardCharsets.UTF_8),
+                    ovRappresentazione
+            );
+            if (risultatoValidazione == null) {
+                throw new NullPointerException("Nessun risultato di validazione consultabile");
+            }
 
-			// Logging
-			logger.info(
-					"Risultato di validazione: {}",
-					!risultatoValidazione.contieneErrori()
-			);
+            // Logging
+            logger.info(
+                    "Risultato di validazione: {}",
+                    !risultatoValidazione.contieneErrori()
+            );
 
-			// Aggiunta dei risultati
-			paginaRisultato.addObject(
-					CostantiWeb.RESULT_CONTROLLER_DATA_VALIDAZIONE,
-					new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(risultatoValidazione.getDataDiGenerazione())
-			);
-			paginaRisultato.addObject(
-					CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,
-					risultatoValidazione
-			);
+            // Aggiunta dei risultati
+            paginaRisultato.addObject(
+                    CostantiWeb.RESULT_CONTROLLER_DATA_VALIDAZIONE,
+                    new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(risultatoValidazione.getDataDiGenerazione())
+            );
+            paginaRisultato.addObject(
+                    CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,
+                    risultatoValidazione
+            );
 
-			// Aggiunta attributi sessione
-			session.setAttribute(
-					CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,
-					risultatoValidazione
-			);
+            // Aggiunta attributi sessione
+            session.setAttribute(
+                    CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,
+                    risultatoValidazione
+            );
 
-		} catch (Exception e) {
+        } catch (Exception e) {
 
-			// Logging dell'errore e gestione del messaggio
-			logger.error("Si è verificato un errore durante la validazione: {}", e.getMessage(), e);
-			paginaRisultato.addObject("errorMessage", e.getMessage());
-		}
+            // Logging dell'errore e gestione del messaggio
+            logger.error("Si è verificato un errore durante la validazione: {}", e.getMessage(), e);
+            paginaRisultato.addObject("errorMessage", e.getMessage());
+        }
 
-		return paginaRisultato;
-	}
+        return paginaRisultato;
+    }
 
-	@RequestMapping(value = "/esportaRisultato", method = RequestMethod.GET)
-	public void esportaRisultato(@RequestParam("tipoRendering") TipoRenderingEnum tipoRendering, HttpServletResponse response, HttpSession session) {
-		try {
+    @RequestMapping(value = "/esportaRisultato", method = RequestMethod.GET)
+    public void esportaRisultato(@RequestParam("tipoRendering") TipoRenderingEnum tipoRendering, HttpServletResponse response, HttpSession session) {
+        try {
 
-			ValidationReport report = (ValidationReport) session.getAttribute(
-					CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE
-			);
+            ValidationReport report = (ValidationReport) session.getAttribute(
+                    CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE
+            );
 
-			// Eseguo il rendering
-			Render render = renderingService.render(report, tipoRendering);
+            // Eseguo il rendering
+            Render render = renderingService.render(report, tipoRendering);
 
-			// Salvo l'output
-			FileUtil.outputFile(
-					response,
-					new ByteArrayInputStream(
-							render.getFile()
-					),
-					render.getFileName()
-			);
-		} catch (Exception e) {
+            // Salvo l'output
+            FileUtil.outputFile(
+                    response,
+                    new ByteArrayInputStream(
+                            render.getFile()
+                    ),
+                    render.getFileName()
+            );
+        } catch (Exception e) {
 
-			// Logging dell'errore
-			logger.error("Si è verificato un errore durante l'esportazione: {}", e.getMessage(), e);
+            // Logging dell'errore
+            logger.error("Si è verificato un errore durante l'esportazione: {}", e.getMessage(), e);
 
-			try {
+            try {
 
-				// Scrivo a video il problema
-				response.getWriter().write(
-						String.format(
-								"Si è verificato un errore: %s%s",
-								System.getProperty("line.separator"),
-								e.getMessage()
-						)
-				);
-			} catch (IOException ie) {
+                // Scrivo a video il problema
+                response.getWriter().write(
+                        String.format(
+                                "Si è verificato un errore: %s%s",
+                                System.getProperty("line.separator"),
+                                e.getMessage()
+                        )
+                );
+            } catch (IOException ie) {
 
-				logger.error("Si è verificato un problema durante il rendering dell'errore generico: {}", ie.getMessage(), ie);
-			}
-		}
-	}
+                logger.error("Si è verificato un problema durante il rendering dell'errore generico: {}", ie.getMessage(), ie);
+            }
+        }
+    }
 
 }

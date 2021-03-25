@@ -24,7 +24,6 @@ public class VerifyRecaptchaService implements VerifyRecaptchaInterface {
 	private String url;
 	private String secret;
 	private String userAgent;
-        private boolean isCaptchaCompleted;
 
 	@Autowired
 	private ConfigurazioneServiceInterface configurazioneService;
@@ -37,7 +36,6 @@ public class VerifyRecaptchaService implements VerifyRecaptchaInterface {
 		this.url = configurazioneService.readValue(ChiaveConfigurazioneEnum.G_RECAPTCHA_URL);
 		this.secret = configurazioneService.readValue(ChiaveConfigurazioneEnum.G_RECAPTCHA_SECRET);
 		this.userAgent = configurazioneService.readValue(ChiaveConfigurazioneEnum.G_RECAPTCHA_USER_AGENT);
-                this.isCaptchaCompleted = true;
 	}
 
 	@Override
@@ -47,7 +45,6 @@ public class VerifyRecaptchaService implements VerifyRecaptchaInterface {
 
 			// Logging e restituzione dell'errore
 			logWarn("Nessuna risposta ReCaptcha ricevuta, impossibile validare l'input");
-                        this.isCaptchaCompleted = false;
 			return false;
 		}
 
@@ -85,18 +82,12 @@ public class VerifyRecaptchaService implements VerifyRecaptchaInterface {
 			JsonObject jsonObject = jsonReader.readObject();
 			jsonReader.close();
 
-                        this.isCaptchaCompleted = true;
 			return jsonObject.getBoolean("success");
 		} catch (Exception e) {
 			logError("Si è verificato un errore durante la verifica del captcha: {}", e.getMessage(), e);
-                        this.isCaptchaCompleted = false;
 			return false;
 		}
 	}
-
-    public boolean isIsCaptchaCompleted() {
-        return isCaptchaCompleted;
-    }
         
         
 
