@@ -46,34 +46,35 @@
 
             <section
                 class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1 d-flex flex-column justify-content-center pt-2 pt-sm-4">
-                <form:form method="POST" action="uploadFile.html" enctype="multipart/form-data" id="upload-file-form-id">
+                <form:form method="POST" action="uploadFile.html" enctype="multipart/form-data" id="upload-file-form-id" modelAttribute="valForm">
                     <div class="d-flex flex-column container file-container">
                         <label class="subtitle" for="carica-documento">Documento</label>
-                        <input id="carica-documento" type="file" name="file" accept=".xml"/>
+                        <form:input id="carica-documento" type="file" name="file" path="file" accept=".xml"/>
                     </div>
+                    <form:errors path="file" cssClass="captchaNotCompletedAlert mt-2"/>
+                    
                     <div class="d-flex flex-column container file-type-container">
                         <label class="subtitle" for="lista-documenti">Tipo di documento</label>
-                        <select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento">
+                        <form:select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento" path="selectDocumento">
                             <option type="int" value="-1" id="default-selection" selected>Seleziona il tipo di documento
                             </option>
                             <c:forEach items="${tipoDocumento}" var="val">
-                                <option type="int" value="${val.idTipoDocumento}">${val.name.readableValue}</option>
+                                <form:option type="int" value="${val.idTipoDocumento}" path="documento">${val.name.readableValue}</form:option>
                             </c:forEach>
-                        </select>
+                        </form:select>
                     </div>
+                    
                     <div class="d-flex flex-column container file-type-container">
                         <label class="subtitle" for="lista-customizationid">Formato del documento</label>
-                        <select id="lista-customizationid" class="entity-select" type="select" name="idRappresentazione"
-                                disabled>
+                        <form:select id="lista-customizationid" class="entity-select" type="select" name="idRappresentazione" path="selectFormatoDocumento"
+                                disabled="true">
                             <!-- Riempita con l'ausilio di Ajax -->
-                        </select>
+                        </form:select>
                     </div>
+                    
                     <div class="g-recaptcha-container d-flex flex-column align-items-center">
-                        <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }">
-                        </div>
-                        <c:if test="${not captchaCompleted}">
-                            <span class="captchaNotCompletedAlert mt-2">Per proseguire &egrave necessario completare il captcha</span>
-                        </c:if>
+                        <div class="g-recaptcha" path="captcha" data-sitekey="${ gRecaptchaSiteKey }"></div>
+                        <form:errors path="captcha" cssClass="captchaNotCompletedAlert mt-2"/>
                     </div>
 
                     <div class="d-flex container file-submit-container">

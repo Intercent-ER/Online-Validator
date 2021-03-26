@@ -1,6 +1,7 @@
 package com.onlinevalidator.controller;
 
 import com.onlinevalidator.dto.Render;
+import com.onlinevalidator.dto.ValidationForm;
 import com.onlinevalidator.dto.ValidationReport;
 import com.onlinevalidator.model.OvRappresentazione;
 import com.onlinevalidator.pojo.TipoRenderingEnum;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +27,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import javax.validation.Valid;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 public class ValidatorController {
@@ -44,13 +47,18 @@ public class ValidatorController {
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     public @ResponseBody
-    ModelAndView uploadFile(@RequestParam("file") MultipartFile file,
-            @RequestParam(value = "idRappresentazione") int idRappresentazione,
+    ModelAndView uploadFile(@Valid @ModelAttribute("valForm")ValidationForm validationForm, BindingResult bindingResult,
             HttpServletRequest request,
             HttpSession session) {
+        
+        
 
         ModelAndView paginaRisultato = new ModelAndView("result");
         boolean captchaVerificato = false;
+        
+        if (bindingResult.hasErrors()) {
+            return paginaRisultato;
+        }
 
         try {
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
@@ -68,9 +76,9 @@ public class ValidatorController {
             }
 
             // Eseguo la validazione
-            logger.info("Ricevuta richiesta di validazione per tipo documento {}", idRappresentazione);
-            String documentoString = new String(file.getBytes());
-            OvRappresentazione ovRappresentazione = validatorService.getOvRappresentazioneById(idRappresentazione);
+            logger.info("Ricevuta richiesta di validazione per tipo documento {}", validationForm.getFormatoDocumento());
+            String documentoString = new String(validationForm.getFile().getBytes());
+            OvRappresentazione ovRappresentazione = validatorService.getOvRappresentazioneById(validationForm.getFormatoDocumento());
             ValidationReport risultatoValidazione = validatorService.effettuaValidazione(
                     documentoString.getBytes(StandardCharsets.UTF_8),
                     ovRappresentazione

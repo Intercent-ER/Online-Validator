@@ -14,13 +14,13 @@ function getSingleOptionTagHtml(rappresentazioneViewer) {
         if (needsToBeSelected) {
             return "<option type=\"int\" value=\""
                 + rappresentazioneViewer.idRappresentazione
-                + "\" selected>"
+                + "\" selected path=\"formatoDocumento\">"
                 + rappresentazioneViewer.dsDescrizione
                 + "</option>";
         }
     }
 
-    return "<option type=\"int\" value=\""
+    return "<option type=\"int\" value=\" path=\"formatoDocumento\"" 
         + rappresentazioneViewer.idRappresentazione
         + "\">"
         + rappresentazioneViewer.dsDescrizione
