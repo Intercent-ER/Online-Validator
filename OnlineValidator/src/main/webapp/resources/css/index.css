@@ -39,9 +39,9 @@ header > div {
 }
 
 .peppol-logo-style {
-    width: 150px;
-    height: auto;
+    max-width: 150px;
     max-height: 60px;
+    min-height: 1px;
 }
 
 .title {
@@ -182,9 +182,9 @@ footer {
 }
 
 .div-logo-container img {
-    width: 200px;
-    height: auto;
+    max-width: 200px;
     max-height: 60px;
+    min-height: 1px;
 }
 
 .div-logo-container img:hover, .div-logo-container span:hover{
@@ -192,10 +192,11 @@ footer {
 }
 
 .footer-peppol-logo-wrapper{
+    width: 100%;
     cursor: pointer;
 }
 
-.span-peppol-logo {
+.footer-span-peppol-logo {
     color: white;
 }
 

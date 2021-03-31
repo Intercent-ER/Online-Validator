@@ -83,8 +83,8 @@
                 <div class="w-100"></div>
             </section>
 
-            <section>
-                <div class="description-container col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12 d-flex flex-column rounded mt-5">
+            <section class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12 d-flex flex-column">
+                <div class="description-container d-flex flex-column rounded mt-5">
                     <b>A cosa serve la piattaforma?</b>
                     <span>
                         La piattaforma consente di effettuare la validazione di documenti Peppol (quali ad esempio Ordine, Documento di Trasporto, Fattura, Nota di Credito), al fine di effettuare autonomamente delle prove di verifica della qualit&agrave; dei singoli file xml.
@@ -93,7 +93,7 @@
                     </span>
                 </div>
                 <div class="w-100"></div>
-                <div class="description-container col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12 d-flex flex-column rounded mt-3">
+                <div class="description-container d-flex flex-column rounded mt-3">
                     <b>Che dati vengono salvati?</b>
                     <span>La piattaforma non salva nessun dato contenuto all'interno dei documenti processati.</span>
                 </div>
