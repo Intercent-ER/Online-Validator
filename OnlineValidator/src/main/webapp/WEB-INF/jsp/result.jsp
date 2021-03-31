@@ -10,6 +10,13 @@
         <title>Risultato validazione - Validazione documenti Peppol</title>
         <%@include file="common/css.jsp" %>
         <%@include file="common/script.jsp" %>
+
+        <script type="text/javascript">
+
+            window.onpageshow = function () {
+                window.sessionStorage.setItem("reCaptchaPassed", "true");
+            }
+        </script>
     </head>
     <body>
 

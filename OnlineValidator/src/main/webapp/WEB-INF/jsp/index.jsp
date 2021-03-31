@@ -14,6 +14,12 @@
             window.onpageshow = function () {
 
                 prefillFormAndReadCache();
+
+                let tornoIndietroDaValidazioneOk = window.sessionStorage.getItem("reCaptchaPassed");
+                if (tornoIndietroDaValidazioneOk !== null && (tornoIndietroDaValidazioneOk + "") === "true") {
+                    document.getElementById("span-errore-recaptcha").style.setProperty("display", "hidden");
+                    window.sessionStorage.removeItem("reCaptchaPassed");
+                }
             };
 
             $(document).ready(function () {
@@ -72,7 +78,7 @@
                         <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }">
                         </div>
                         <c:if test="${not captchaCompleted}">
-                            <span class="captchaNotCompletedAlert mt-2">Per proseguire &egrave necessario completare il captcha</span>
+                            <span class="captchaNotCompletedAlert mt-2" id="span-errore-recaptcha">Per proseguire &egrave; necessario completare il captcha</span>
                         </c:if>
                     </div>
 

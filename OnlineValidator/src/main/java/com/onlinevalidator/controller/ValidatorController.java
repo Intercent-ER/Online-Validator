@@ -2,6 +2,7 @@ package com.onlinevalidator.controller;
 
 import com.onlinevalidator.dto.Render;
 import com.onlinevalidator.dto.ValidationReport;
+import com.onlinevalidator.exception.VerificaReCaptchaException;
 import com.onlinevalidator.model.OvRappresentazione;
 import com.onlinevalidator.pojo.TipoRenderingEnum;
 import com.onlinevalidator.service.RenderingServiceInterface;
@@ -50,23 +51,33 @@ public class ValidatorController {
             HttpSession session) {
 
         ModelAndView paginaRisultato = new ModelAndView("result");
-        boolean captchaVerificato = false;
 
         try {
+
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-            captchaVerificato = verifyRecaptchaService.verify(gRecaptchaResponse);
+            boolean captchaVerificato = verifyRecaptchaService.verify(gRecaptchaResponse);
+            if (!captchaVerificato) {
+                throw new VerificaReCaptchaException("Verifica captcha fallita");
+            }
+
+            session.setAttribute(CostantiWeb.CAPTCHA_COMPLETED, Boolean.TRUE.toString());
+
+//        } catch (VerificaReCaptchaException e) {
+//
+//            logger.warn("Errore durante la verifica del ReCaptcha: {}", e.getMessage(), e);
+//            paginaRisultato.setViewName("redirect:/");
+//            session.setAttribute(CostantiWeb.CAPTCHA_COMPLETED, Boolean.FALSE.toString());
+//            return paginaRisultato;
         } catch (Exception e) {
-            paginaRisultato.setViewName("redirect:/?askForCaptcha=true");
+
+            logger.warn("Errore durante la verifica del ReCaptcha: {}", e.getMessage(), e);
+            paginaRisultato.setViewName("redirect:/");
+            session.setAttribute(CostantiWeb.CAPTCHA_COMPLETED, Boolean.FALSE.toString());
             return paginaRisultato;
         }
 
         try {
             
-            if (!captchaVerificato) {
-                paginaRisultato.setViewName("redirect:/?askForCaptcha=true");
-                return paginaRisultato;
-            }
-
             // Eseguo la validazione
             logger.info("Ricevuta richiesta di validazione per tipo documento {}", idRappresentazione);
             String documentoString = new String(file.getBytes());
