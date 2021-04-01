@@ -48,14 +48,15 @@
                 class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-sm-10 offset-sm-1 d-flex flex-column justify-content-center pt-2 pt-sm-4">
                 <form:form method="POST" action="uploadFile.html" enctype="multipart/form-data" id="upload-file-form-id" modelAttribute="valForm">
                     <div class="d-flex flex-column container file-container">
-                        <label class="subtitle" for="carica-documento">Documento</label>
+                        <form:label class="subtitle" for="carica-documento" path="file">Documento</form:label>
                         <form:input id="carica-documento" type="file" name="file" path="file" accept=".xml"/>
+                        <form:errors path="file" cssClass="captchaNotCompletedAlert mt-2"/>
                     </div>
-                    <form:errors path="file" cssClass="captchaNotCompletedAlert mt-2"/>
+                    
                     
                     <div class="d-flex flex-column container file-type-container">
-                        <label class="subtitle" for="lista-documenti">Tipo di documento</label>
-                        <form:select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento" path="selectDocumento">
+                        <form:label class="subtitle" for="lista-documenti" path="documento">Tipo di documento</form:label>
+                        <form:select id="lista-documenti" class="entity-select" type="select" name="idTipoDocumento" path="documento">
                             <option type="int" value="-1" id="default-selection" selected>Seleziona il tipo di documento
                             </option>
                             <c:forEach items="${tipoDocumento}" var="val">
@@ -65,8 +66,8 @@
                     </div>
                     
                     <div class="d-flex flex-column container file-type-container">
-                        <label class="subtitle" for="lista-customizationid">Formato del documento</label>
-                        <form:select id="lista-customizationid" class="entity-select" type="select" name="idRappresentazione" path="selectFormatoDocumento"
+                        <form:label class="subtitle" for="lista-customizationid" path="formatoDocumento">Formato del documento</form:label>
+                        <form:select id="lista-customizationid" class="entity-select" type="select" name="idRappresentazione" path="formatoDocumento"
                                 disabled="true">
                             <!-- Riempita con l'ausilio di Ajax -->
                         </form:select>

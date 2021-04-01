@@ -6,7 +6,6 @@
 package com.onlinevalidator.dto;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -16,18 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class ValidationForm {
     
     @NotNull
-    @Size(message="Per proseguire, caricare il file")
     private MultipartFile file;
-    @NotNull
     private int documento;
-    @NotNull
     private int formatoDocumento;
-    @NotNull
-    @Size(message="Per proseguire, è necessario completare il captcha")
-    private String captcha;
     
-    private String selectDocumento;
-    private String selectFormatoDocumento;
+    private String captcha;
 
     public MultipartFile getFile() {
         return file;
@@ -59,22 +51,6 @@ public class ValidationForm {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
-    }
-
-    public String getSelectDocumento() {
-        return selectDocumento;
-    }
-
-    public void setSelectDocumento(String selectDocumento) {
-        this.selectDocumento = selectDocumento;
-    }
-
-    public String getSelectFormatoDocumento() {
-        return selectFormatoDocumento;
-    }
-
-    public void setSelectFormatoDocumento(String selectFormatoDocumento) {
-        this.selectFormatoDocumento = selectFormatoDocumento;
     }
     
     

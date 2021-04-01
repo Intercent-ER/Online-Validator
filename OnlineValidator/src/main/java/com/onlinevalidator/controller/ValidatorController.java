@@ -57,21 +57,28 @@ public class ValidatorController {
         boolean captchaVerificato = false;
         
         if (bindingResult.hasErrors()) {
+            bindingResult.rejectValue("file", "Per proseguire, caricare il file");
+            paginaRisultato.setViewName("redirect:/");
             return paginaRisultato;
         }
 
         try {
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
             captchaVerificato = verifyRecaptchaService.verify(gRecaptchaResponse);
+            if(!captchaVerificato){
+                bindingResult.rejectValue("captcha", "Per proseguire, è necessario completare il captcha");
+                paginaRisultato.setViewName("redirect:/");
+                return paginaRisultato;
+            }
         } catch (Exception e) {
-            paginaRisultato.setViewName("redirect:/?askForCaptcha=true");
+            paginaRisultato.setViewName("redirect:/");
             return paginaRisultato;
         }
 
         try {
             
             if (!captchaVerificato) {
-                paginaRisultato.setViewName("redirect:/?askForCaptcha=true");
+                paginaRisultato.setViewName("redirect:/");
                 return paginaRisultato;
             }
 
