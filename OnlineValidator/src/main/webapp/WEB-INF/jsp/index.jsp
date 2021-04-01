@@ -17,7 +17,7 @@
 
                 let tornoIndietroDaValidazioneOk = window.sessionStorage.getItem("reCaptchaPassed");
                 if (tornoIndietroDaValidazioneOk !== null && (tornoIndietroDaValidazioneOk + "") === "true") {
-                    document.getElementById("span-errore-recaptcha").style.setProperty("display", "hidden");
+                    document.getElementById("span-errore-recaptcha").style.setProperty("display", "none");
                     window.sessionStorage.removeItem("reCaptchaPassed");
                 }
             };
