@@ -14,7 +14,7 @@
         <script type="text/javascript">
 
             window.onpageshow = function () {
-                window.sessionStorage.setItem("reCaptchaPassed", "true");
+                window.sessionStorage.setItem("validationPassed", "true");
             }
         </script>
     </head>

@@ -13,11 +13,11 @@
 
             window.onpageshow = function () {
 
-                let tornoIndietroDaValidazioneOk = window.sessionStorage.getItem("reCaptchaPassed");
+                let tornoIndietroDaValidazioneOk = window.sessionStorage.getItem("validationPassed");
                 if (tornoIndietroDaValidazioneOk !== null && (tornoIndietroDaValidazioneOk + "") === "true") {
                     document.getElementById("span-errore-file").style.setProperty("display", "none");
                     document.getElementById("span-errore-recaptcha").style.setProperty("display", "none");
-                    window.sessionStorage.removeItem("reCaptchaPassed");
+                    window.sessionStorage.removeItem("validationPassed");
                 }
                 
                 prefillFormAndReadCache();
@@ -59,7 +59,7 @@
                         <label class="subtitle" for="carica-documento">Documento</label>
                         <input id="carica-documento" type="file" name="file" accept=".xml"/>
                         <c:if test="${not fileUploaded}">
-                            <span class="captchaNotCompletedAlert mt-2" id="span-errore-file">Per proseguire &egrave; necessario caricare il file</span>
+                            <span class="fieldValidationAlert mt-2" id="span-errore-file">Per proseguire &egrave; necessario caricare il file</span>
                         </c:if>
                     </div>
                     <div class="d-flex flex-column container file-type-container">
@@ -83,7 +83,7 @@
                         <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }">
                         </div>
                         <c:if test="${not captchaCompleted}">
-                            <span class="captchaNotCompletedAlert mt-2" id="span-errore-recaptcha">Per proseguire &egrave; necessario completare il captcha</span>
+                            <span class="fieldValidationAlert mt-2" id="span-errore-recaptcha">Per proseguire &egrave; necessario completare il captcha</span>
                         </c:if>
                     </div>
 

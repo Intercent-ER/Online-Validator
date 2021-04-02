@@ -152,7 +152,7 @@ form input[type=file] {
     margin-top: 20px;
 }
 
-.captchaNotCompletedAlert{
+.fieldValidationAlert{
     color: red;
 }
 
