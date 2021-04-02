@@ -53,6 +53,21 @@ public class ValidatorController {
         ModelAndView paginaRisultato = new ModelAndView("result");
 
         try {
+            if(file == null || file.isEmpty()){
+                paginaRisultato.setViewName("redirect:/");
+                session.setAttribute(CostantiWeb.FILE_UPLOADED, Boolean.FALSE.toString());
+            }else{
+                session.setAttribute(CostantiWeb.FILE_UPLOADED, Boolean.TRUE.toString());
+            }
+        } catch (Exception e) {
+
+            logger.warn("Errore durante la verifica del file: {}", e.getMessage(), e);
+            paginaRisultato.setViewName("redirect:/");
+            session.setAttribute(CostantiWeb.FILE_UPLOADED, Boolean.FALSE.toString());
+            return paginaRisultato;
+        }
+        
+        try {
 
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
             boolean captchaVerificato = verifyRecaptchaService.verify(gRecaptchaResponse);

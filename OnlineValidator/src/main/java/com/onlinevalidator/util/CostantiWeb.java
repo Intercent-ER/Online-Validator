@@ -6,6 +6,7 @@ package com.onlinevalidator.util;
 public interface CostantiWeb {
 
 	String RESULT_CONTROLLER_RISULTATO_VALIDAZIONE = "risultatoValidazione";
+        String FILE_UPLOADED = "fileUploaded";
         String CAPTCHA_COMPLETED = "captchaCompleted";
 	String RESULT_CONTROLLER_DATA_VALIDAZIONE = "dataValidazione";
 	String PATTERN_SIMPLE_DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";

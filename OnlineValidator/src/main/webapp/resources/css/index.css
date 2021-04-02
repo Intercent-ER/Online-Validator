@@ -85,7 +85,7 @@ header > div {
 }
 
 .file-container {
-    height: 70px;
+    min-height: 70px;
 }
 
 form input[type=file] {

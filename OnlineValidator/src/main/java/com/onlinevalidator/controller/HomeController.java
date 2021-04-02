@@ -55,6 +55,24 @@ public class HomeController {
 
         try {
 
+            String fileOk = (String) httpSession.getAttribute(CostantiWeb.FILE_UPLOADED);
+            if (Boolean.FALSE.toString().equals(fileOk)) {
+                index.addObject(CostantiWeb.FILE_UPLOADED, false);
+            } else {
+                index.addObject(CostantiWeb.FILE_UPLOADED, true);
+            }
+        } catch (Exception e) {
+
+            logger.warn("Errore durante il recupero del file: {}", e.getMessage());
+            index.addObject(CostantiWeb.FILE_UPLOADED, true);
+        } finally {
+
+            // Rimuovo l'attributo dopo averlo letto
+            httpSession.removeAttribute(CostantiWeb.FILE_UPLOADED);
+        }
+        
+        try {
+
             String captchaOk = (String) httpSession.getAttribute(CostantiWeb.CAPTCHA_COMPLETED);
             if (Boolean.FALSE.toString().equals(captchaOk)) {
                 index.addObject(CostantiWeb.CAPTCHA_COMPLETED, false);

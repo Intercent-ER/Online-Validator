@@ -13,13 +13,15 @@
 
             window.onpageshow = function () {
 
-                prefillFormAndReadCache();
-
                 let tornoIndietroDaValidazioneOk = window.sessionStorage.getItem("reCaptchaPassed");
                 if (tornoIndietroDaValidazioneOk !== null && (tornoIndietroDaValidazioneOk + "") === "true") {
+                    document.getElementById("span-errore-file").style.setProperty("display", "none");
                     document.getElementById("span-errore-recaptcha").style.setProperty("display", "none");
                     window.sessionStorage.removeItem("reCaptchaPassed");
                 }
+                
+                prefillFormAndReadCache();
+                
             };
 
             $(document).ready(function () {
@@ -56,6 +58,9 @@
                     <div class="d-flex flex-column container file-container">
                         <label class="subtitle" for="carica-documento">Documento</label>
                         <input id="carica-documento" type="file" name="file" accept=".xml"/>
+                        <c:if test="${not fileUploaded}">
+                            <span class="captchaNotCompletedAlert mt-2" id="span-errore-file">Per proseguire &egrave; necessario caricare il file</span>
+                        </c:if>
                     </div>
                     <div class="d-flex flex-column container file-type-container">
                         <label class="subtitle" for="lista-documenti">Tipo di documento</label>
