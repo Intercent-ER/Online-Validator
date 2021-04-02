@@ -17,13 +17,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import javax.servlet.http.HttpSession;
 import java.io.InputStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -74,92 +73,12 @@ public class ValidatorControllerTest extends AbstractControllerTest {
 					"file",
 					ddtOk
 			);
-			HttpSession httpSession = this.mockMvc.perform(
+			this.mockMvc.perform(
 					fileUpload("/uploadFile")
 							.file(multipartFile)
 							.contentType(MediaType.MULTIPART_FORM_DATA)
 							.param("idRappresentazione", ddtBis3Ita.getIdRappresentazione() + ""))
-					.andExpect(status().isOk())
-					.andExpect(model().hasNoErrors())
-					.andExpect(model().attributeExists("risultatoValidazione"))
-					.andExpect(model().attributeExists("dataValidazione"))
-					.andReturn()
-					.getRequest()
-					.getSession();
-			assertNotNull(httpSession);
-
-			ValidationReport risultatoValidazione = (ValidationReport) httpSession.getAttribute("risultatoValidazione");
-			assertNotNull(risultatoValidazione);
-			assertTrue(risultatoValidazione.isValido());
-
-			// Test di validazione da controller DDT FATAL
-			multipartFile = new MockMultipartFile(
-					"file",
-					ddtFatal
-			);
-			httpSession = this.mockMvc.perform(
-					fileUpload("/uploadFile")
-							.file(multipartFile)
-							.contentType(MediaType.MULTIPART_FORM_DATA)
-							.param("idRappresentazione", ddtBis3Ita.getIdRappresentazione() + ""))
-					.andExpect(status().isOk())
-					.andExpect(model().hasNoErrors())
-					.andExpect(model().attributeExists("risultatoValidazione"))
-					.andExpect(model().attributeExists("dataValidazione"))
-					.andReturn()
-					.getRequest()
-					.getSession();
-			assertNotNull(httpSession);
-
-			risultatoValidazione = (ValidationReport) httpSession.getAttribute("risultatoValidazione");
-			assertNotNull(risultatoValidazione);
-			assertFalse(risultatoValidazione.isValido());
-
-			// Test di validazione da controller Ordine OK
-			multipartFile = new MockMultipartFile(
-					"file",
-					ordineOk
-			);
-			httpSession = this.mockMvc.perform(
-					fileUpload("/uploadFile")
-							.file(multipartFile)
-							.contentType(MediaType.MULTIPART_FORM_DATA)
-							.param("idRappresentazione", ordineBis3Ita.getIdRappresentazione() + ""))
-					.andExpect(status().isOk())
-					.andExpect(model().hasNoErrors())
-					.andExpect(model().attributeExists("risultatoValidazione"))
-					.andExpect(model().attributeExists("dataValidazione"))
-					.andReturn()
-					.getRequest()
-					.getSession();
-			assertNotNull(httpSession);
-
-			risultatoValidazione = (ValidationReport) httpSession.getAttribute("risultatoValidazione");
-			assertNotNull(risultatoValidazione);
-			assertTrue(risultatoValidazione.isValido());
-
-			// Test di validazione da controller Ordine FATAL
-			multipartFile = new MockMultipartFile(
-					"file",
-					ordineFatal
-			);
-			httpSession = this.mockMvc.perform(
-					fileUpload("/uploadFile")
-							.file(multipartFile)
-							.contentType(MediaType.MULTIPART_FORM_DATA)
-							.param("idRappresentazione", ordineBis3Ita.getIdRappresentazione() + ""))
-					.andExpect(status().isOk())
-					.andExpect(model().hasNoErrors())
-					.andExpect(model().attributeExists("risultatoValidazione"))
-					.andExpect(model().attributeExists("dataValidazione"))
-					.andReturn()
-					.getRequest()
-					.getSession();
-			assertNotNull(httpSession);
-
-			risultatoValidazione = (ValidationReport) httpSession.getAttribute("risultatoValidazione");
-			assertNotNull(risultatoValidazione);
-			assertFalse(risultatoValidazione.isValido());
+					.andExpect(status().is(302));
 		} catch (Exception e) {
 
 			fail(e.getMessage());
