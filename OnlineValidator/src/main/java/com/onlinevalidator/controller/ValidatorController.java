@@ -57,15 +57,24 @@ public class ValidatorController {
         boolean captchaVerificato = false;
         
         if (bindingResult.hasErrors()) {
-            bindingResult.rejectValue("file", "Per proseguire, caricare il file");
             paginaRisultato.setViewName("redirect:/");
             return paginaRisultato;
         }
+        
+        if(validationForm.getFile() == null || validationForm.getFile().isEmpty()){
+            bindingResult.rejectValue("file", "Per proseguire, caricare il file");
+            paginaRisultato.setViewName("redirect:/");
+            return paginaRisultato;
+        }else {
+            System.out.println("File null");
+        }
+        
 
         try {
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
             captchaVerificato = verifyRecaptchaService.verify(gRecaptchaResponse);
             if(!captchaVerificato){
+                System.out.println("Captcha non verificato");
                 bindingResult.rejectValue("captcha", "Per proseguire, è necessario completare il captcha");
                 paginaRisultato.setViewName("redirect:/");
                 return paginaRisultato;
@@ -76,11 +85,6 @@ public class ValidatorController {
         }
 
         try {
-            
-            if (!captchaVerificato) {
-                paginaRisultato.setViewName("redirect:/");
-                return paginaRisultato;
-            }
 
             // Eseguo la validazione
             logger.info("Ricevuta richiesta di validazione per tipo documento {}", validationForm.getFormatoDocumento());
