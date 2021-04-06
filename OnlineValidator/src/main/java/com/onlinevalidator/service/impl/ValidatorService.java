@@ -58,6 +58,8 @@ public class ValidatorService implements ValidatorServiceInterface {
     private static final boolean OWASP_FEATURES_TO_DISALLOW_XXE_ENT_VALUE = false;
     private static final boolean OWASP_FEATURES_TO_DISALLOW_DOCTYPE_VALUE = true;
     private static final String LOGGING_KEY_VALUE = "{}={}";
+    public static final boolean NAMESPACE_AWARE = true;
+    public static final boolean IGNORING_ELEMENT_CONTENT_WHITESPACE = true;
 
     // Mappa che contiene i validatori XSD gestiti in cache (chiave: Validatore.id; valore: Schema)
     private Map<Integer, Schema> cacheXsd;
@@ -69,13 +71,10 @@ public class ValidatorService implements ValidatorServiceInterface {
     private Map<String, String> xsltParameters;
 
     private URL urlFileXmlCatalog;
-
     private List<OvTipoDocumento> listaTipoDocumento;
 
     @Autowired
     private OvCatalogJpaRepository catalogJpaRepository;
-    public static final boolean NAMESPACE_AWARE = true;
-    public static final boolean IGNORING_ELEMENT_CONTENT_WHITESPACE = true;
 
     @PostConstruct
     public void init() {
@@ -103,6 +102,8 @@ public class ValidatorService implements ValidatorServiceInterface {
 
         // Recupera ed inizializza una tantum i parametri XSLT da utilizzare per i cataloghi
         initXsltParameters();
+
+        this.listaTipoDocumento = tipoDocumentoRepository.findAll();
     }
 
     @Autowired
@@ -119,16 +120,7 @@ public class ValidatorService implements ValidatorServiceInterface {
     
     @Override
     public List<OvTipoDocumento> filtraTuttiITipiDocumento() {
-        listaTipoDocumento = tipoDocumentoRepository.findAll();
         return listaTipoDocumento;
-    }
-
-    @Override
-    public List<OvRappresentazione> filtraRappresentazione() {
-        if(listaTipoDocumento == null){
-            listaTipoDocumento = tipoDocumentoRepository.findAll();
-        }
-        return listaTipoDocumento.get(0).getRappresentazione();
     }
 
     @Override

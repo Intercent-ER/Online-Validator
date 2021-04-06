@@ -12,7 +12,7 @@ import com.onlinevalidator.exception.rendering.XmlRenderingException;
 import com.onlinevalidator.generatedsources.xsd.rendering.*;
 import com.onlinevalidator.pojo.TipoRenderingEnum;
 import com.onlinevalidator.service.RenderingServiceInterface;
-import com.onlinevalidator.util.CostantiWeb;
+import com.onlinevalidator.util.ApplicationConstant;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -178,7 +178,7 @@ public class RenderingService implements RenderingServiceInterface {
 		RapportoValidazione rapportoValidazione = new RapportoValidazione();
 		rapportoValidazione.setVersione(VERSIONE_DEFAULT);
 		rapportoValidazione.setDataValidazione(
-				new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(validationReport.getDataDiGenerazione())
+				new SimpleDateFormat(ApplicationConstant.PATTERN_SIMPLE_DATE_FORMAT).format(validationReport.getDataDiGenerazione())
 		);
 
 		if (!StringUtils.isEmpty(validationReport.getDescrizioneErroreXsd())) {
@@ -264,7 +264,7 @@ public class RenderingService implements RenderingServiceInterface {
 		// Aggiungo la data di generazione del PDF
 		pdfDocument.add(
 				new Paragraph(
-						"Report di validazione generato in data " + new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(validationReport.getDataDiGenerazione()),
+						"Report di validazione generato in data " + new SimpleDateFormat(ApplicationConstant.PATTERN_SIMPLE_DATE_FORMAT).format(validationReport.getDataDiGenerazione()),
 						new Font(pdfMainFont, 12f, Font.NORMAL, BaseColor.BLACK)
 				)
 		);

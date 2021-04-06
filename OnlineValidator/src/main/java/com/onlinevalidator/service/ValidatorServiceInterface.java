@@ -26,8 +26,6 @@ public interface ValidatorServiceInterface extends ApplicationLogger {
 	 */
 	List<OvTipoDocumento> filtraTuttiITipiDocumento();
 
-	List<OvRappresentazione> filtraRappresentazione();
-
 	/**
 	 * Recupera un tipo documento partendo dal suo id.
 	 *
@@ -57,5 +55,4 @@ public interface ValidatorServiceInterface extends ApplicationLogger {
 	 * @author Manuel Gozzi
 	 */
 	ValidationReport effettuaValidazione(byte[] documento, OvRappresentazione rappresentazione);
-
 }

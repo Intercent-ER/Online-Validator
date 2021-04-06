@@ -5,11 +5,13 @@ import com.onlinevalidator.dto.UploadFileForm;
 import com.onlinevalidator.dto.ValidationReport;
 import com.onlinevalidator.exception.VerificaReCaptchaException;
 import com.onlinevalidator.model.OvRappresentazione;
+import com.onlinevalidator.model.enumerator.ChiaveConfigurazioneEnum;
 import com.onlinevalidator.pojo.TipoRenderingEnum;
+import com.onlinevalidator.service.ConfigurazioneServiceInterface;
 import com.onlinevalidator.service.RenderingServiceInterface;
 import com.onlinevalidator.service.VerifyRecaptchaInterface;
 import com.onlinevalidator.service.impl.ValidatorService;
-import com.onlinevalidator.util.CostantiWeb;
+import com.onlinevalidator.util.ApplicationConstant;
 import com.onlinevalidator.util.FileUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,168 +29,163 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 @Controller
 public class ValidatorController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ValidatorController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ValidatorController.class);
 
-    @Autowired
-    private ValidatorService validatorService;
+	@Autowired
+	private ValidatorService validatorService;
 
-    @Autowired
-    private RenderingServiceInterface renderingService;
+	@Autowired
+	private RenderingServiceInterface renderingService;
 
-    @Autowired
-    private VerifyRecaptchaInterface verifyRecaptchaService;
+	@Autowired
+	private VerifyRecaptchaInterface verifyRecaptchaService;
 
-    @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-    public @ResponseBody
-    ModelAndView uploadFile(@Valid @ModelAttribute("uploadFileForm") UploadFileForm uploadFileForm, BindingResult bindingResult,
-                            HttpServletRequest request,
-                            HttpSession session) {
+	@Autowired
+	private ConfigurazioneServiceInterface configurazioneService;
 
-        ModelAndView paginaRisultato = new ModelAndView("result");
-        boolean captchaVerificato = false;
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+	public @ResponseBody
+	ModelAndView uploadFile(@Valid @ModelAttribute(ApplicationConstant.INDEX_JSP_UPLOAD_FILE_FORM) UploadFileForm uploadFileForm, BindingResult bindingResult,
+							HttpServletRequest request,
+							HttpSession session) {
 
-        if (bindingResult.hasErrors()) {
-            paginaRisultato.setViewName("redirect:/");
-            return paginaRisultato;
-        }
+		ModelAndView paginaRisultato = new ModelAndView("result");
+		boolean validazioneCaptchaSuperata = true;
+		try {
 
-        if (uploadFileForm.getFileDocumento() == null || uploadFileForm.getFileDocumento().isEmpty()) {
-            bindingResult.rejectValue("file", "Per proseguire, caricare il file");
-            paginaRisultato.setViewName("redirect:/");
-            return paginaRisultato;
-        } else {
-            System.out.println("File null");
-        }
+			// Validazione ReCaptcha
+			evaluateRecaptcha(bindingResult, request);
+		} catch (Exception e) {
 
+			logger.error("{}", e.getMessage());
+			validazioneCaptchaSuperata = false;
+		}
 
-        try {
-            if(file == null || file.isEmpty()){
-                paginaRisultato.setViewName("redirect:/");
-                session.setAttribute(CostantiWeb.FILE_UPLOADED, Boolean.FALSE.toString());
-            }else{
-                session.setAttribute(CostantiWeb.FILE_UPLOADED, Boolean.TRUE.toString());
-            }
-        } catch (Exception e) {
+		if (bindingResult.hasErrors() || !validazioneCaptchaSuperata) {
 
-            logger.warn("Errore durante la verifica del file: {}", e.getMessage(), e);
-            paginaRisultato.setViewName("redirect:/");
-            session.setAttribute(CostantiWeb.FILE_UPLOADED, Boolean.FALSE.toString());
-            return paginaRisultato;
-        }
+			logger.info("La validazione della form contiene degli errori");
+			paginaRisultato.setViewName("index");
+			paginaRisultato.addObject(
+					ApplicationConstant.INDEX_JSP_ELENCO_TIPI_DOCUMENTO,
+					validatorService.filtraTuttiITipiDocumento()
+			);
+			paginaRisultato.addObject(
+					ApplicationConstant.INDEX_JSP_RECAPTCHA_SITE_KEY,
+					configurazioneService.readValue(ChiaveConfigurazioneEnum.G_RECAPTCHA_SITE_KEY)
+			);
+			return paginaRisultato;
+		}
 
-        try {
+		try {
 
-            String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-            boolean captchaVerificato = verifyRecaptchaService.verify(gRecaptchaResponse);
-            if (!captchaVerificato) {
-                throw new VerificaReCaptchaException("Verifica captcha fallita");
-            }
+			// Eseguo la validazione
+			logger.info("Ricevuta richiesta di validazione per rappresentazione documento: \"{}\"", uploadFileForm.getIdRappresentazioneDocumento());
+			String documentoString = new String(uploadFileForm.getFileDocumento().getBytes());
+			OvRappresentazione ovRappresentazione = validatorService.getOvRappresentazioneById(uploadFileForm.getIdRappresentazioneDocumento());
+			ValidationReport risultatoValidazione = Objects.requireNonNull(
+					validatorService.effettuaValidazione(
+							documentoString.getBytes(StandardCharsets.UTF_8),
+							ovRappresentazione
+					),
+					"Nessun risultato di validazione consultabile"
+			);
 
-            session.setAttribute(CostantiWeb.CAPTCHA_COMPLETED, Boolean.TRUE.toString());
+			// Aggiunta dei risultati
+			logger.info(
+					"Risultato di validazione: {}",
+					!risultatoValidazione.contieneErrori()
+			);
+			paginaRisultato.addObject(
+					ApplicationConstant.RESULT_JSP_DATA_VALIDAZIONE,
+					new SimpleDateFormat(ApplicationConstant.PATTERN_SIMPLE_DATE_FORMAT).format(risultatoValidazione.getDataDiGenerazione())
+			);
+			paginaRisultato.addObject(
+					ApplicationConstant.RESULT_JSP_RISULTATO_VALIDAZIONE,
+					risultatoValidazione
+			);
 
-//        } catch (VerificaReCaptchaException e) {
-//
-//            logger.warn("Errore durante la verifica del ReCaptcha: {}", e.getMessage(), e);
-//            paginaRisultato.setViewName("redirect:/");
-//            session.setAttribute(CostantiWeb.CAPTCHA_COMPLETED, Boolean.FALSE.toString());
-//            return paginaRisultato;
-        } catch (Exception e) {
+			// Aggiunta attributi sessione
+			session.setAttribute(
+					ApplicationConstant.RESULT_JSP_RISULTATO_VALIDAZIONE,
+					risultatoValidazione
+			);
 
-            logger.warn("Errore durante la verifica del ReCaptcha: {}", e.getMessage(), e);
-            paginaRisultato.setViewName("redirect:/");
-            session.setAttribute(CostantiWeb.CAPTCHA_COMPLETED, Boolean.FALSE.toString());
-            return paginaRisultato;
-        }
+		} catch (Exception e) {
 
-        try {
+			// Logging dell'errore e gestione del messaggio
+			logger.error("Si è verificato un errore durante la validazione: {}", e.getMessage(), e);
+			paginaRisultato.addObject("errorMessage", e.getMessage());
+		}
 
-            // Eseguo la validazione
-            logger.info("Ricevuta richiesta di validazione per tipo documento {}", uploadFileForm.getIdRappresentazioneDocumento());
-            String documentoString = new String(uploadFileForm.getFileDocumento().getBytes());
-            OvRappresentazione ovRappresentazione = validatorService.getOvRappresentazioneById(uploadFileForm.getIdRappresentazioneDocumento());
-            ValidationReport risultatoValidazione = validatorService.effettuaValidazione(
-                    documentoString.getBytes(StandardCharsets.UTF_8),
-                    ovRappresentazione
-            );
-            if (risultatoValidazione == null) {
-                throw new NullPointerException("Nessun risultato di validazione consultabile");
-            }
+		return paginaRisultato;
+	}
 
-            // Logging
-            logger.info(
-                    "Risultato di validazione: {}",
-                    !risultatoValidazione.contieneErrori()
-            );
+	@RequestMapping(value = "/esportaRisultato", method = RequestMethod.GET)
+	public void esportaRisultato(@RequestParam(ApplicationConstant.RESULT_JSP_TIPO_RENDERING) TipoRenderingEnum tipoRendering, HttpServletResponse response, HttpSession session) {
+		try {
 
-            // Aggiunta dei risultati
-            paginaRisultato.addObject(
-                    CostantiWeb.RESULT_CONTROLLER_DATA_VALIDAZIONE,
-                    new SimpleDateFormat(CostantiWeb.PATTERN_SIMPLE_DATE_FORMAT).format(risultatoValidazione.getDataDiGenerazione())
-            );
-            paginaRisultato.addObject(
-                    CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,
-                    risultatoValidazione
-            );
+			ValidationReport report = (ValidationReport) session.getAttribute(
+					ApplicationConstant.RESULT_JSP_RISULTATO_VALIDAZIONE
+			);
 
-            // Aggiunta attributi sessione
-            session.setAttribute(
-                    CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE,
-                    risultatoValidazione
-            );
+			// Eseguo il rendering
+			Render render = renderingService.render(report, tipoRendering);
 
-        } catch (Exception e) {
+			// Salvo l'output
+			FileUtil.outputFile(
+					response,
+					new ByteArrayInputStream(
+							render.getFile()
+					),
+					render.getFileName()
+			);
+		} catch (Exception e) {
 
-            // Logging dell'errore e gestione del messaggio
-            logger.error("Si è verificato un errore durante la validazione: {}", e.getMessage(), e);
-            paginaRisultato.addObject("errorMessage", e.getMessage());
-        }
+			// Logging dell'errore
+			logger.error("Si è verificato un errore durante l'esportazione: {}", e.getMessage(), e);
 
-        return paginaRisultato;
-    }
+			try {
 
-    @RequestMapping(value = "/esportaRisultato", method = RequestMethod.GET)
-    public void esportaRisultato(@RequestParam("tipoRendering") TipoRenderingEnum tipoRendering, HttpServletResponse response, HttpSession session) {
-        try {
+				// Scrivo a video il problema
+				response.getWriter().write(
+						String.format(
+								"Si è verificato un errore: %s%s",
+								System.getProperty("line.separator"),
+								e.getMessage()
+						)
+				);
+			} catch (IOException ie) {
 
-            ValidationReport report = (ValidationReport) session.getAttribute(
-                    CostantiWeb.RESULT_CONTROLLER_RISULTATO_VALIDAZIONE
-            );
+				logger.error("Si è verificato un problema durante il rendering dell'errore generico: {}", ie.getMessage(), ie);
+			}
+		}
+	}
 
-            // Eseguo il rendering
-            Render render = renderingService.render(report, tipoRendering);
+	/**
+	 * Applica i controlli sul ReCaptcha.
+	 *
+	 * @param bindingResult è l'oggetto responsabile di contenere i risultati di validazione della form Spring
+	 * @param request       è la richiesta HTTP
+	 * @throws VerificaReCaptchaException nel caso in cui la validazione non vada a buon fine
+	 */
+	private void evaluateRecaptcha(BindingResult bindingResult, HttpServletRequest request)
+			throws VerificaReCaptchaException {
 
-            // Salvo l'output
-            FileUtil.outputFile(
-                    response,
-                    new ByteArrayInputStream(
-                            render.getFile()
-                    ),
-                    render.getFileName()
-            );
-        } catch (Exception e) {
+		// Recupero il valore del ReCaptcha dalla request
+		String gRecaptchaResponse = request.getParameter(ApplicationConstant.G_RECAPTCHA_RESPONSE_HTTP_HEADER_KEY);
 
-            // Logging dell'errore
-            logger.error("Si è verificato un errore durante l'esportazione: {}", e.getMessage(), e);
+		// Verifico il ReCaptcha
+		boolean captchaVerificato = verifyRecaptchaService.verify(gRecaptchaResponse);
 
-            try {
-
-                // Scrivo a video il problema
-                response.getWriter().write(
-                        String.format(
-                                "Si è verificato un errore: %s%s",
-                                System.getProperty("line.separator"),
-                                e.getMessage()
-                        )
-                );
-            } catch (IOException ie) {
-
-                logger.error("Si è verificato un problema durante il rendering dell'errore generico: {}", ie.getMessage(), ie);
-            }
-        }
-    }
-
+		// Se la verifica fallisce, fallisce la validazione
+		if (!captchaVerificato) {
+			bindingResult.rejectValue("captcha", "", "Si prega di completare il captcha prima di procedere.");
+			throw new VerificaReCaptchaException("Verifica captcha fallita");
+		}
+	}
 }

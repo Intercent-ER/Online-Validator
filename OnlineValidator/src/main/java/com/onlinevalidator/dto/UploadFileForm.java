@@ -33,7 +33,7 @@ public class UploadFileForm {
         this.fileDocumento = fileDocumento;
     }
 
-    public int getIdDocumento() {
+    public Integer getIdDocumento() {
         return idDocumento;
     }
 
@@ -41,7 +41,7 @@ public class UploadFileForm {
         this.idDocumento = idDocumento;
     }
 
-    public int getIdRappresentazioneDocumento() {
+    public Integer getIdRappresentazioneDocumento() {
         return idRappresentazioneDocumento;
     }
 

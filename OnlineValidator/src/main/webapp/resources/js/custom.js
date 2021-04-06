@@ -14,13 +14,12 @@ function getSingleOptionTagHtml(rappresentazioneViewer) {
         if (needsToBeSelected) {
             return "<option type=\"int\" value=\""
                 + rappresentazioneViewer.idRappresentazione
-                + "\" selected path=\"formatoDocumento\">"
-                + rappresentazioneViewer.dsDescrizione
+                + "\" selected>" + rappresentazioneViewer.dsDescrizione
                 + "</option>";
         }
     }
 
-    return "<option type=\"int\" value=\" path=\"formatoDocumento\"" 
+    return "<option type=\"int\" value=\""
         + rappresentazioneViewer.idRappresentazione
         + "\">"
         + rappresentazioneViewer.dsDescrizione
@@ -28,10 +27,21 @@ function getSingleOptionTagHtml(rappresentazioneViewer) {
 }
 
 /**
+ * Resetta il contenuto della lista delle option dei customization identifier selezionabili.
+ */
+function resetCustomizationIdList() {
+    $("#lista-customizationid").children().remove().end();
+}
+
+/**
  * Aggiorna dinamicamente il contenuto del tag "select" responsabile di contenere l'elenco delle
  * rappresentazioni del documento selezionato dall'utente.
  */
 function updateOptions(idTipoDocumento) {
+
+    // Reset della selezione precedente
+    resetCustomizationIdList();
+
     if (idTipoDocumento !== -1 && idTipoDocumento !== null) {
 
         // Esecuzione chiamata Ajax
@@ -47,26 +57,24 @@ function updateOptions(idTipoDocumento) {
             success: function (data) {
                 if (data !== null && data !== '') {
 
-                    // Dichiaro la stringa che rappresenta il contenuto HTML da rimpiazzare
-                    let stringHtmlToBeReplaced = "<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\">";
+                    // Seleziono il "select" relativo alla lista di rappresentazioni selezionabili
+                    let selectCustomizationId = $('#lista-customizationid');
 
-                    // Effettuo il parsing in oggetto Javascript del Json ricevuto
+                    // Effettuo il parsing in oggetto Javascript del Json ricevuto e lo itero
                     let json = JSON.parse(data);
 
-                    // Itero il Json
                     for (let index = 0; index < json.length; index++) {
+
+                        /*
+                         * La variabile "singleInstance" contiene un oggetto di tipo
+                         * com.onlinevalidator.dto.RappresentazioneViewer.
+                         */
                         let singleInstance = json[index];
-                        stringHtmlToBeReplaced += getSingleOptionTagHtml(singleInstance);
+                        selectCustomizationId.append(getSingleOptionTagHtml(singleInstance));
                     }
 
-                    // Chiudo il tag "select"
-                    stringHtmlToBeReplaced += "</select>";
-
-                    // Abilito la selezione sul customization id
-                    let listaCustomizationId = $("#lista-customizationid");
-                    listaCustomizationId.replaceWith(stringHtmlToBeReplaced);
-                    listaCustomizationId.prop('disabled', false);
-
+                    // Abilito il pulsante di invio form
+                    selectCustomizationId.prop('disabled', false);
                     $("#button-submit-id").prop('disabled', false);
                 }
             },
@@ -79,7 +87,6 @@ function updateOptions(idTipoDocumento) {
          * Se l'utente ha ricliccato su "Seleziona il tipo documento", disabilito e svuoto il contenuto del
          * tag "select" preposto.
          */
-        $("#lista-customizationid").replaceWith("<select id=\"lista-customizationid\" class=\"entity-select\" type=\"select\" name=\"idRappresentazione\" disabled></select>");
         $("#button-submit-id").prop('disabled', true);
     }
 }
@@ -93,8 +100,8 @@ function esportaPdf() {
 }
 
 function esporta(tipoRendering) {
-    document.getElementById('tipoRenderingId').value = tipoRendering;
-    document.getElementById('renderingFormId').submit();
+    $('#tipoRenderingId').val(tipoRendering);
+    $('#renderingFormId').submit();
 }
 
 function selectId(valueToSelect, selectId) {
@@ -124,8 +131,8 @@ function prefillFormAndReadCache() {
  */
 function cacheAndSubmit() {
 
-    let tipoDocumento = document.getElementById('lista-documenti').value;
-    let rappresentazioneDocumento = document.getElementById('lista-customizationid').value;
+    let tipoDocumento = $('#lista-documenti').val();
+    let rappresentazioneDocumento = $('#lista-customizationid').val();
 
     if (tipoDocumento === null || rappresentazioneDocumento === null) {
         return false;

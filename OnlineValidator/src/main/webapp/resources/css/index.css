@@ -149,14 +149,10 @@ form input[type=file] {
 
 .g-recaptcha-container{
     width: 100%;
-    margin-top: 20px;
+    margin-top: 12%;
 }
 
 .fieldValidationAlert{
-    color: red;
-}
-
-.recColor {
     color: red;
 }
 
