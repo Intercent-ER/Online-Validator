@@ -6,7 +6,7 @@
             <a class="col-md-4 col-sm-6 d-flex justify-content-start" href="https://peppol.agid.gov.it/it/" target="_blank">
                 <div class="d-flex flex-column align-items-center footer-peppol-logo-wrapper">
                     <img src="<c:url value="/resources/images/peppol-logo-blue.svg"/>" alt="Peppol logo">
-                    <span class="span-peppol-logo">Peppol Authority Italia</span>
+                    <span class="footer-span-peppol-logo">Peppol Authority Italia</span>
                 </div>
             </a>
 

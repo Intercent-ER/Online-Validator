@@ -3,6 +3,7 @@ package com.onlinevalidator.controller;
 import com.onlinevalidator.dto.Render;
 import com.onlinevalidator.dto.UploadFileForm;
 import com.onlinevalidator.dto.ValidationReport;
+import com.onlinevalidator.exception.VerificaReCaptchaException;
 import com.onlinevalidator.model.OvRappresentazione;
 import com.onlinevalidator.pojo.TipoRenderingEnum;
 import com.onlinevalidator.service.RenderingServiceInterface;
@@ -49,7 +50,7 @@ public class ValidatorController {
 
         ModelAndView paginaRisultato = new ModelAndView("result");
         boolean captchaVerificato = false;
-        
+
         if (bindingResult.hasErrors()) {
             paginaRisultato.setViewName("redirect:/");
             return paginaRisultato;
@@ -62,19 +63,44 @@ public class ValidatorController {
         } else {
             System.out.println("File null");
         }
-        
+
 
         try {
-            String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-            captchaVerificato = verifyRecaptchaService.verify(gRecaptchaResponse);
-            if(!captchaVerificato){
-                System.out.println("Captcha non verificato");
-                bindingResult.rejectValue("captcha", "Per proseguire, � necessario completare il captcha");
+            if(file == null || file.isEmpty()){
                 paginaRisultato.setViewName("redirect:/");
-                return paginaRisultato;
+                session.setAttribute(CostantiWeb.FILE_UPLOADED, Boolean.FALSE.toString());
+            }else{
+                session.setAttribute(CostantiWeb.FILE_UPLOADED, Boolean.TRUE.toString());
             }
         } catch (Exception e) {
+
+            logger.warn("Errore durante la verifica del file: {}", e.getMessage(), e);
             paginaRisultato.setViewName("redirect:/");
+            session.setAttribute(CostantiWeb.FILE_UPLOADED, Boolean.FALSE.toString());
+            return paginaRisultato;
+        }
+
+        try {
+
+            String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+            boolean captchaVerificato = verifyRecaptchaService.verify(gRecaptchaResponse);
+            if (!captchaVerificato) {
+                throw new VerificaReCaptchaException("Verifica captcha fallita");
+            }
+
+            session.setAttribute(CostantiWeb.CAPTCHA_COMPLETED, Boolean.TRUE.toString());
+
+//        } catch (VerificaReCaptchaException e) {
+//
+//            logger.warn("Errore durante la verifica del ReCaptcha: {}", e.getMessage(), e);
+//            paginaRisultato.setViewName("redirect:/");
+//            session.setAttribute(CostantiWeb.CAPTCHA_COMPLETED, Boolean.FALSE.toString());
+//            return paginaRisultato;
+        } catch (Exception e) {
+
+            logger.warn("Errore durante la verifica del ReCaptcha: {}", e.getMessage(), e);
+            paginaRisultato.setViewName("redirect:/");
+            session.setAttribute(CostantiWeb.CAPTCHA_COMPLETED, Boolean.FALSE.toString());
             return paginaRisultato;
         }
 

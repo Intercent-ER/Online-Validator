@@ -27,7 +27,23 @@ header > div {
 }
 
 .header-column-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    grid-template-rows: auto;
     height: 100%;
+}
+
+.header-column-container > a{
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+
+}
+
+.header-column-container > div{
+    grid-column: 2 / 5;
+    grid-row: 1 / 2;
+
 }
 
 .header-column-container span{
@@ -39,9 +55,9 @@ header > div {
 }
 
 .peppol-logo-style {
-    width: 150px;
-    height: auto;
+    max-width: 150px;
     max-height: 60px;
+    min-height: 1px;
 }
 
 .title {
@@ -69,7 +85,7 @@ header > div {
 }
 
 .file-container {
-    height: 70px;
+    min-height: 70px;
 }
 
 form input[type=file] {
@@ -136,6 +152,10 @@ form input[type=file] {
     margin-top: 20px;
 }
 
+.fieldValidationAlert{
+    color: red;
+}
+
 .recColor {
     color: red;
 }
@@ -182,9 +202,9 @@ footer {
 }
 
 .div-logo-container img {
-    width: 200px;
-    height: auto;
+    max-width: 200px;
     max-height: 60px;
+    min-height: 1px;
 }
 
 .div-logo-container img:hover, .div-logo-container span:hover{
@@ -192,10 +212,11 @@ footer {
 }
 
 .footer-peppol-logo-wrapper{
+    width: 100%;
     cursor: pointer;
 }
 
-.span-peppol-logo {
+.footer-span-peppol-logo {
     color: white;
 }
 
@@ -246,13 +267,43 @@ li > a:hover {
 
 }
 
+@media screen and (max-width: 992px) {
+    .header-column-container{
+        grid-template-columns: 9% 9% 9% 9% 9% 9% 9% 9% 9% 9% 9%;
+    }
+
+    .title{
+        font-size: 3.25vw;
+    }
+
+    .header-column-container > a{
+        grid-column: 1 / 3;
+    }
+
+    .header-column-container > div{
+        grid-column: 3 / 10;
+    }
+
+
+
+}
+
 @media screen and (max-width: 768px) {
+
+    .header-column-container > div{
+        grid-column: 1/ 12;
+    }
+
     .header-peppol-logo {
         display: none !important;
     }
 
     .title-container {
         margin-left: 16.666667%;
+    }
+
+    .title{
+        font-size: 4.5vw;
     }
 
     #main-container {

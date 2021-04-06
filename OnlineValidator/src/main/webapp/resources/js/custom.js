@@ -117,8 +117,6 @@ function prefillFormAndReadCache() {
         selectId(tipoDocumento, 'lista-documenti');
         updateOptions(tipoDocumento);
     }
-
-    document.getElementById('carica-documento').value = window.sessionStorage.getItem('file_selezionato');
 }
 
 /**
@@ -128,7 +126,6 @@ function cacheAndSubmit() {
 
     let tipoDocumento = document.getElementById('lista-documenti').value;
     let rappresentazioneDocumento = document.getElementById('lista-customizationid').value;
-    let fileSelezionato = document.getElementById('carica-documento').value;
 
     if (tipoDocumento === null || rappresentazioneDocumento === null) {
         return false;
@@ -136,7 +133,6 @@ function cacheAndSubmit() {
 
     window.sessionStorage.setItem('tipo_documento', tipoDocumento);
     window.sessionStorage.setItem('rappresentazione', rappresentazioneDocumento);
-    window.sessionStorage.setItem('file_selezionato', fileSelezionato);
 
     $('#upload-file-form-id').submit();
 }
