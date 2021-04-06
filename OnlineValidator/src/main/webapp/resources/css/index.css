@@ -136,7 +136,7 @@ form input[type=file] {
     margin-top: 20px;
 }
 
-.captchaNotCompletedAlert{
+.recColor {
     color: red;
 }
 
