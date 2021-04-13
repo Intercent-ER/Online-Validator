@@ -6,8 +6,10 @@
 	<artifactId>OnlineValidator</artifactId>
 	<packaging>war</packaging>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>OnlineValidator Maven Webapp</name>
-	<url>http://www.onlinevalidator.com</url>
+	<name>Validazione documenti Peppol</name>
+	<description>Piattaforma italiana di validazione dei documenti Peppol</description>
+	<url>https://test-onlinevalidator.regione.emilia-romagna.it/onlinevalidator</url>
+
 	<properties>
 		<spring.version>3.2.9.RELEASE</spring.version>
 		<servlet.version>1.2</servlet.version>
