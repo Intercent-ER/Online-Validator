@@ -78,7 +78,7 @@ public class ValidatorControllerTest extends AbstractControllerTest {
 							.file(multipartFile)
 							.contentType(MediaType.MULTIPART_FORM_DATA)
 							.param("idRappresentazione", ddtBis3Ita.getIdRappresentazione() + ""))
-					.andExpect(status().is(302));
+					.andExpect(status().isOk());
 		} catch (Exception e) {
 
 			fail(e.getMessage());

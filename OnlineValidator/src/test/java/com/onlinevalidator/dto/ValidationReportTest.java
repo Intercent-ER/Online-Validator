@@ -88,4 +88,16 @@ public class ValidationReportTest {
 
 		assertSame(lista1, lista2);
 	}
+
+	@Test
+	public void getFormatoDocumentoValidato() {
+
+		try {
+
+			assertNull(new ValidationReport().getFormatoDocumentoValidato());
+		} catch (Exception e) {
+
+			fail(e.getMessage());
+		}
+	}
 }
