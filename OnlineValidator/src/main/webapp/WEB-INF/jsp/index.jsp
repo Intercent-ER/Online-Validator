@@ -13,12 +13,6 @@
 
         window.onpageshow = function () {
             prefillFormAndReadCache();
-
-            let tipoDocumentoValue = $('#lista-documenti').val();
-            let selectableOptionsLength = $('#lista-customizationid option').length;
-            if ((tipoDocumentoValue + '') !== '-1' && selectableOptionsLength === 0) {
-                updateOptions(tipoDocumentoValue);
-            }
         };
 
         $(document).ready(function () {
