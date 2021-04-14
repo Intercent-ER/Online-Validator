@@ -50,7 +50,7 @@
                 <form:label id="carica-documento-label" class="subtitle" path="fileDocumento"
                             for="carica-documento">Documento</form:label>
                 <form:input id="carica-documento" type="file" name="fileDocumento" path="fileDocumento" accept=".xml"/>
-                <form:errors id="carica-documento-errors" class="fieldValidationAlert m-2" path="fileDocumento"/>
+                <form:errors id="carica-documento-errors" class="fieldValidationAlert mt-2 ml-2" path="fileDocumento"/>
             </div>
 
             <div class="d-flex flex-column container file-type-container">
@@ -65,7 +65,7 @@
                                      value="${val.idTipoDocumento}">${val.name.readableValue}</form:option>
                     </c:forEach>
                 </form:select>
-                <form:errors id="lista-documenti-errors" class="fieldValidationAlert m-2" path="idDocumento"/>
+                <form:errors id="lista-documenti-errors" class="fieldValidationAlert mt-2 ml-2" path="idDocumento"/>
             </div>
 
             <div class="d-flex flex-column container file-type-container">
@@ -77,12 +77,12 @@
                     <!-- Riempita con l'ausilio di Ajax -->
                 </form:select>
                 <form:errors id="lista-customizationid-errors" path="idRappresentazioneDocumento"
-                             cssClass="fieldValidationAlert m-2"/>
+                             cssClass="fieldValidationAlert mt-2 ml-2"/>
             </div>
 
             <div class="g-recaptcha-container d-flex flex-column align-items-center">
                 <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }"></div>
-                <form:errors path="captcha" cssClass="fieldValidationAlert m-2"/>
+                <form:errors path="captcha" cssClass="fieldValidationAlert mt-2 ml-2"/>
             </div>
 
             <div class="d-flex container file-submit-container">
