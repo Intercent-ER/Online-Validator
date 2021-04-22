@@ -52,10 +52,12 @@
                             <c:forEach items="${ risultatoValidazione.erroriDiValidazione }" var="singoloAssert">
                                 <c:if test="${ singoloAssert.warning }">
                                     <c:set var="classeCss" value="classe-warning"/>
+                                    <c:set var="bordo" value="bordo-warning"/>
                                     <c:set var="tipoDiv" value="warning-error"/>
                                 </c:if>
                                 <c:if test="${ singoloAssert.fatal }">
                                     <c:set var="classeCss" value="classe-fatal"/>
+                                    <c:set var="bordo" value="bordo-fatal"/>
                                     <c:set var="tipoDiv" value="fatal-error"/>
                                 </c:if>
                                 <div class="${ tipoDiv } mb-3" role="alert">
@@ -70,7 +72,7 @@
                                         <span class="col-lg-11 col-md-10 col-sm-10 col-9 ${ classeCss }">${ singoloAssert.fatal ? "FATAL" : "WARNING" }</span>
                                         <div class="w-100"></div>
                                         <b class="col-lg-1 col-md-2 col-sm-2 col-3">Descrizione</b>
-                                        <span class="col-lg-11 col-md-10 col-sm-10 col-9 ${ classeCss }">${ singoloAssert.testo }</span>
+                                        <span class="col-lg-11 col-md-10 col-sm-10 col-9 ${ classeCss } ${bordo}">${ singoloAssert.testo }</span>
                                     </div>
                                 </div>
                             </c:forEach>

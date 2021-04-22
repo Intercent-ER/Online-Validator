@@ -65,6 +65,8 @@ public class ValidatorController {
 			logger.error("{}", e.getMessage());
 			validazioneCaptchaSuperata = false;
 		}
+                
+                validazioneCaptchaSuperata = true;
 
 		if (bindingResult.hasErrors() || !validazioneCaptchaSuperata) {
 

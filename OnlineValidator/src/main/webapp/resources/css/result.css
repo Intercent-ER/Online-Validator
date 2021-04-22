@@ -6,6 +6,16 @@
   color: darkOrange;
 }
 
+.bordo-fatal{
+  padding: 5px 10px 5px 10px;
+  border: 1px solid red;
+}
+
+.bordo-warning{
+  padding: 5px 10px 5px 10px;
+  border: 1px solid yellow;
+}
+
 .row > b {
   padding: 0;
 }
