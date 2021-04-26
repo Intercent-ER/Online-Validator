@@ -51,6 +51,9 @@
                             for="carica-documento">Documento</form:label>
                 <form:input id="carica-documento" type="file" name="fileDocumento" path="fileDocumento" accept=".xml" aria-invalid="true" aria-describedby="carica-documento-errors"/>
                 <form:errors id="carica-documento-errors" class="fieldValidationAlert alert alert-danger mt-2 ml-2" role="alert" path="fileDocumento"/>
+                <c:if test="${fileSizeError}">
+                    <span class="fieldValidationAlert alert alert-danger mt-2 ml-2" role="alert">Dimensione massima del file superata, il limiet è  5mb</span>
+                </c:if>
             </div>
 
             <div class="d-flex flex-column container file-type-container">
