@@ -156,6 +156,10 @@ form input[type=file] {
     color: red;
 }
 
+.alert-danger{
+    background-position: 20px 50%;
+}
+
 .submit-data {
     margin: 0;
     width: 100%;

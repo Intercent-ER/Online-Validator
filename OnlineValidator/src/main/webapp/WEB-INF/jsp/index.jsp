@@ -49,15 +49,15 @@
             <div class="d-flex flex-column container file-container">
                 <form:label id="carica-documento-label" class="subtitle" path="fileDocumento"
                             for="carica-documento">Documento</form:label>
-                <form:input id="carica-documento" type="file" name="fileDocumento" path="fileDocumento" accept=".xml"/>
-                <form:errors id="carica-documento-errors" class="fieldValidationAlert mt-2 ml-2" path="fileDocumento"/>
+                <form:input id="carica-documento" type="file" name="fileDocumento" path="fileDocumento" accept=".xml" aria-invalid="true" aria-describedby="carica-documento-errors"/>
+                <form:errors id="carica-documento-errors" class="fieldValidationAlert alert alert-danger mt-2 ml-2" role="alert" path="fileDocumento"/>
             </div>
 
             <div class="d-flex flex-column container file-type-container">
                 <form:label id="lista-documenti-label" class="subtitle" path="idDocumento"
                             for="lista-documenti">Tipo di documento</form:label>
                 <form:select id="lista-documenti" class="entity-select" path="idDocumento" type="select"
-                             name="idDocumento">
+                             name="idDocumento" aria-invalid="true" aria-describedby="lista-documento-errors">
                     <option type="int" value="-1" id="default-selection" selected>Seleziona il tipo di documento
                     </option>
                     <c:forEach items="${tipoDocumento}" var="val">
@@ -65,7 +65,7 @@
                                      value="${val.idTipoDocumento}">${val.name.readableValue}</form:option>
                     </c:forEach>
                 </form:select>
-                <form:errors id="lista-documenti-errors" class="fieldValidationAlert mt-2 ml-2" path="idDocumento"/>
+                <form:errors id="lista-documenti-errors" class="fieldValidationAlert alert alert-danger mt-2 ml-2" role="alert" path="idDocumento"/>
             </div>
 
             <div class="d-flex flex-column container file-type-container">
@@ -73,20 +73,20 @@
                             for="lista-customizationid">Formato del documento</form:label>
                 <form:select id="lista-customizationid" class="entity-select" type="select"
                              name="idRappresentazioneDocumento" path="idRappresentazioneDocumento"
-                             disabled="true">
+                             disabled="true" aria-invalid="true" aria-describedby="lista-customizationid-errors">
                     <!-- Riempita con l'ausilio di Ajax -->
                 </form:select>
                 <form:errors id="lista-customizationid-errors" path="idRappresentazioneDocumento"
-                             cssClass="fieldValidationAlert mt-2 ml-2"/>
+                             cssClass="fieldValidationAlert alert alert-danger mt-2 ml-2" role="alert"/>
             </div>
 
             <div class="g-recaptcha-container d-flex flex-column align-items-center">
-                <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }"></div>
-                <form:errors path="captcha" cssClass="fieldValidationAlert mt-2 ml-2"/>
+                <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }" aria-invalid="true" aria-describedby="captcha-errors"></div>
+                <form:errors id="captcha-errors" path="captcha" cssClass="fieldValidationAlert alert alert-danger mt-2 ml-2" role="alert"/>
             </div>
 
             <div class="d-flex container file-submit-container">
-                <button onclick="cacheAndSubmit()" class="submit-data" id="button-submit-id" disabled>Valida
+                <button onclick="cacheAndSubmit()" class="submit-data" id="button-submit-id" title="Valida" disabled>Valida
                 </button>
             </div>
         </form:form>
