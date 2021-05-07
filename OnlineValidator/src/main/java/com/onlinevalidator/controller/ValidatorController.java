@@ -67,10 +67,7 @@ public class ValidatorController {
 			validazioneCaptchaSuperata = false;
 		}
 
-		//Aggiunto per i test, per saltare il controllo del captcha, nell'if originale ci andrebbe (bindingResult.hasErrors() || !validazioneCaptchaSuperata)
-		validazioneCaptchaSuperata = true;
-
-		if (!validazioneCaptchaSuperata) {
+		if (bindingResult.hasErrors() || !validazioneCaptchaSuperata) {
 
 			logger.info("La validazione della form contiene degli errori");
 			paginaRisultato.setViewName("index");
