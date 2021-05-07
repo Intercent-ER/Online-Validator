@@ -49,10 +49,16 @@
             <div class="d-flex flex-column container file-container">
                 <form:label id="carica-documento-label" class="subtitle" path="fileDocumento"
                             for="carica-documento">Documento</form:label>
-                <form:input id="carica-documento" type="file" name="fileDocumento" path="fileDocumento" accept=".xml" aria-invalid="true" aria-describedby="carica-documento-errors"/>
-                <form:errors id="carica-documento-errors" class="text-danger alert alert-danger mt-2 ml-2" role="alert" path="fileDocumento"/>
+                <form:input id="carica-documento" type="file" name="fileDocumento" path="fileDocumento" accept=".xml"
+                            aria-invalid="true" aria-describedby="carica-documento-errors"/>
+                <form:errors id="carica-documento-errors" class="text-danger alert alert-danger mt-2 ml-2" role="alert"
+                             path="fileDocumento"/>
                 <c:if test="${fileSizeError}">
-                    <span class="text-danger alert alert-danger mt-2 ml-2" role="alert">Dimensione massima del file superata, il limiet è  5mb</span>
+                    <span class="text-danger alert alert-danger mt-2 ml-2" role="alert">Dimensione massima del file superata, il limite è 5MB.</span>
+                </c:if>
+                <c:if test="${ genericError }">
+                    <span class="text-danger alert alert-danger mt-2 ml-2"
+                          role="alert">Si è verificato un errore.</span>
                 </c:if>
             </div>
 

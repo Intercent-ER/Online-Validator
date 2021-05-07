@@ -16,6 +16,8 @@ public interface ApplicationConstant {
 	 */
 	String INDEX_JSP_AJAX_ID_TIPO_DOCUMENTO = "idTipoDocumento";
 	String INDEX_JSP_ELENCO_TIPI_DOCUMENTO = "tipoDocumento";
+	String INDEX_JSP_ERRORE_MULTIPART_DIMENSIONE_SUPERATA = "fileSizeError";
+	String INDEX_JSP_ERRORE_GENERICO = "genericError";
 	String INDEX_JSP_RECAPTCHA_SITE_KEY = "gRecaptchaSiteKey";
 	String INDEX_JSP_UPLOAD_FILE_FORM = "uploadFileForm";
 	String RESULT_JSP_TIPO_RENDERING = "tipoRendering";

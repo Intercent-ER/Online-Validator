@@ -27,6 +27,7 @@ public class NomeTipoDocumentoEnumTest {
 
 		assertEquals("Ordine", NomeTipoDocumentoEnum.ORDINE.getReadableValue());
 		assertEquals("Documento di trasporto", NomeTipoDocumentoEnum.DOCUMENTO_DI_TRASPORTO.getReadableValue());
+		assertEquals("Fattura", NomeTipoDocumentoEnum.FATTURA.getReadableValue());
 
 	}
 

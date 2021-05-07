@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,10 +66,10 @@ public class ValidatorController {
 			logger.error("{}", e.getMessage());
 			validazioneCaptchaSuperata = false;
 		}
-                
-                //Aggiunto per i test, per saltare il controllo del captcha, nell'if originale ci andrebbe (bindingResult.hasErrors() || !validazioneCaptchaSuperata)
-                validazioneCaptchaSuperata = true;
-                
+
+		//Aggiunto per i test, per saltare il controllo del captcha, nell'if originale ci andrebbe (bindingResult.hasErrors() || !validazioneCaptchaSuperata)
+		validazioneCaptchaSuperata = true;
+
 		if (!validazioneCaptchaSuperata) {
 
 			logger.info("La validazione della form contiene degli errori");
@@ -167,6 +168,50 @@ public class ValidatorController {
 				logger.error("Si è verificato un problema durante il rendering dell'errore generico: {}", ie.getMessage(), ie);
 			}
 		}
+	}
+
+	@ExceptionHandler(value = MultipartException.class)
+	public ModelAndView handleFileUploadException(MultipartException mpex, HttpServletRequest request) {
+
+		logger.debug(
+				"Dimensione massima consentita superata durante il caricamento del file: {}",
+				mpex.getMessage(),
+				mpex
+		);
+		return restituisciErroreSuIndexPage(ApplicationConstant.INDEX_JSP_ERRORE_MULTIPART_DIMENSIONE_SUPERATA);
+	}
+
+	@ExceptionHandler(value = Exception.class)
+	public ModelAndView handleGenericException(Exception e) {
+
+		logger.debug(
+				"Si è verificato un errore durante il caricamento del file: {}",
+				e.getMessage(),
+				e
+		);
+		return restituisciErroreSuIndexPage(ApplicationConstant.INDEX_JSP_ERRORE_GENERICO);
+	}
+
+	/**
+	 * Restituisce l'errore sulla pagina di index.
+	 *
+	 * @param jspObjectKey è il nome della variabile che deve essere inserita nel model
+	 * @return l'oggetto {@link ModelAndView} corrispondente
+	 */
+	private ModelAndView restituisciErroreSuIndexPage(String jspObjectKey) {
+
+		ModelAndView modelAndVew = new ModelAndView("index");
+		modelAndVew.addObject(jspObjectKey, true);
+		modelAndVew.addObject(ApplicationConstant.INDEX_JSP_UPLOAD_FILE_FORM, new UploadFileForm());
+		modelAndVew.addObject(
+				ApplicationConstant.INDEX_JSP_ELENCO_TIPI_DOCUMENTO,
+				validatorService.filtraTuttiITipiDocumento()
+		);
+		modelAndVew.addObject(
+				ApplicationConstant.INDEX_JSP_RECAPTCHA_SITE_KEY,
+				configurazioneService.readValue(ChiaveConfigurazioneEnum.G_RECAPTCHA_SITE_KEY)
+		);
+		return modelAndVew;
 	}
 
 	/**
