@@ -31,7 +31,7 @@
 <main id="main-container" class="container row pt-5">
 
     <div class="w-100 d-flex justify-content-center">
-        <h1>Area di validazione</h1>
+        <h2>Area di validazione</h2>
     </div>
 
     <div id="dialog-alert" style="display: none" title="Attenzione">
@@ -50,9 +50,9 @@
                 <form:label id="carica-documento-label" class="subtitle" path="fileDocumento"
                             for="carica-documento">Documento</form:label>
                 <form:input id="carica-documento" type="file" name="fileDocumento" path="fileDocumento" accept=".xml" aria-invalid="true" aria-describedby="carica-documento-errors"/>
-                <form:errors id="carica-documento-errors" class="fieldValidationAlert alert alert-danger mt-2 ml-2" role="alert" path="fileDocumento"/>
+                <form:errors id="carica-documento-errors" class="text-danger alert alert-danger mt-2 ml-2" role="alert" path="fileDocumento"/>
                 <c:if test="${fileSizeError}">
-                    <span class="fieldValidationAlert alert alert-danger mt-2 ml-2" role="alert">Dimensione massima del file superata, il limiet è  5mb</span>
+                    <span class="text-danger alert alert-danger mt-2 ml-2" role="alert">Dimensione massima del file superata, il limiet è  5mb</span>
                 </c:if>
             </div>
 
@@ -68,7 +68,7 @@
                                      value="${val.idTipoDocumento}">${val.name.readableValue}</form:option>
                     </c:forEach>
                 </form:select>
-                <form:errors id="lista-documenti-errors" class="fieldValidationAlert alert alert-danger mt-2 ml-2" role="alert" path="idDocumento"/>
+                <form:errors id="lista-documenti-errors" class="text-danger alert alert-danger mt-2 ml-2" role="alert" path="idDocumento"/>
             </div>
 
             <div class="d-flex flex-column container file-type-container">
@@ -80,16 +80,16 @@
                     <!-- Riempita con l'ausilio di Ajax -->
                 </form:select>
                 <form:errors id="lista-customizationid-errors" path="idRappresentazioneDocumento"
-                             cssClass="fieldValidationAlert alert alert-danger mt-2 ml-2" role="alert"/>
+                             cssClass="text-danger alert alert-danger mt-2 ml-2" role="alert"/>
             </div>
 
             <div class="g-recaptcha-container d-flex flex-column align-items-center">
                 <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }" aria-invalid="true" aria-describedby="captcha-errors"></div>
-                <form:errors id="captcha-errors" path="captcha" cssClass="fieldValidationAlert alert alert-danger mt-2 ml-2" role="alert"/>
+                <form:errors id="captcha-errors" path="captcha" cssClass="text-danger alert alert-danger mt-2 ml-2" role="alert"/>
             </div>
 
             <div class="d-flex container file-submit-container">
-                <button onclick="cacheAndSubmit()" class="submit-data" id="button-submit-id" title="Valida" disabled>Valida
+                <button onclick="cacheAndSubmit()" class="btn submit-data" id="button-submit-id" title="Valida" disabled>Valida
                 </button>
             </div>
         </form:form>
@@ -98,16 +98,16 @@
 
     <section class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-sm-12 d-flex flex-column">
         <div class="description-container d-flex flex-column rounded mt-5">
-            <b>A cosa serve la piattaforma?</b>
+            <b class="text-secondary">A cosa serve la piattaforma?</b>
             <span>
                         La piattaforma consente di effettuare la validazione di documenti Peppol (quali ad esempio Ordine, Documento di Trasporto, Fattura, Nota di Credito), al fine di effettuare autonomamente delle prove di verifica della qualit&agrave; dei singoli file xml.
                         Per ulteriori dettagli sui documenti che si possono validare e sugli schematron utilizzati &egrave; possibile consultare le specifiche tecniche al seguente <a
-                    href="https://peppol-docs.agid.gov.it/" target="_blank">link</a>.
+                    class="text-secondary" href="https://peppol-docs.agid.gov.it/" target="_blank">link</a>.
                     </span>
         </div>
         <div class="w-100"></div>
         <div class="description-container d-flex flex-column rounded mt-3">
-            <b>Che dati vengono salvati?</b>
+            <b class="text-secondary">Che dati vengono salvati?</b>
             <span>La piattaforma non salva nessun dato contenuto all'interno dei documenti processati.</span>
         </div>
     </section>

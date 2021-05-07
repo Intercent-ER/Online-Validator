@@ -1,4 +1,5 @@
 <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>--%>
+<script>window.__PUBLIC_PATH__ = '<c:url value="/resources/fonts"/>'</script>
 <script src="<c:url value="/resources/js/jquery.min.js"/>"></script>
 <script src="<c:url value="/resources/js/bootstrap/bootstrap-italia.min.js"/>"></script>
 <script src="<c:url value="/resources/js/custom.js"/>"></script>

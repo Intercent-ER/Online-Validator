@@ -5,7 +5,7 @@
            href="https://peppol.agid.gov.it/it"  target="_blank">
             <img class="peppol-logo-style"
                  src="<c:url value="/resources/images/peppol-logo-blue.svg"/>" alt="Peppol logo">
-            <span>Peppol Authority Italia</span>
+            <span class="text-primary">Peppol Authority Italia</span>
         </a>
         
         <div class="d-flex justify-content-center">
