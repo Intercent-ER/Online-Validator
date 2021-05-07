@@ -31,10 +31,10 @@
         <main id="main-container" class="container row">
 
             <section class="d-flex flex-column">
-                <h2 class="mt-1 mb-0">Rapporto validazione <small>(versione
+                <h2 class="mt-3 mb-0">Rapporto validazione <small>(versione
                         validatore ${ risultatoValidazione.versioneValidatore })</small></h2>
 
-                <span class="report-date">Report di validazione generato in data <b>${ dataValidazione }</b></span>
+                <span class="mt-2 report-date">Report di validazione generato in data <b>${ dataValidazione }</b></span>
                 <span class="tipo-documento">Tipo documento selezionato: <b>${ risultatoValidazione.tipoDocumentoValidato }</b>; Formato: <b>${ risultatoValidazione.formatoDocumentoValidato }</b></span>
             </section>
 
@@ -59,7 +59,7 @@
                                     <c:set var="tipoDiv" value="fatal-error"/>
                                 </c:if>
 
-                                <table class="${ tipoDiv } mb-3" role="alert">
+                                <table id="tabella-assert-${count}" class="${ tipoDiv } mb-3" role="alert">
                                     <tr class="row">
                                         <td class="col-lg-1 col-md-2 col-sm-2 col-3">Test</td>
                                         <td class="col-lg-11 col-md-10 col-sm-10 col-9">${ singoloAssert.test }</td>
