@@ -41,10 +41,11 @@
         <c:choose>
             <c:when test="${ not empty risultatoValidazione and not empty risultatoValidazione.erroriDiValidazione }">
                 <c:choose>
-                    <c:when test="${ not risultatoValidazione.valido }"><h4 class="text-danger">Risultato: il file
-                        non &egrave; valido</h4></c:when>
-                    <c:otherwise><h4 class="text-success">Risultato: il file &egrave;
-                        valido</h4></c:otherwise>
+                    <c:when test="${ not risultatoValidazione.valido }"><h3 class="text-danger" role="alert">Risultato:
+                        il file
+                        non &egrave; valido</h3></c:when>
+                    <c:otherwise><h3 class="text-success" role="alert">Risultato: il file &egrave;
+                        valido</h3></c:otherwise>
                 </c:choose>
                 <%@ include file="common/result_button.jsp" %>
                 <div class="container pr-0 pl-0">
@@ -59,8 +60,7 @@
                             <c:set var="tipoDiv" value="fatal-error"/>
                         </c:if>
 
-                        <table id="tabella-assert-${ currentIteration.index }" class="${ tipoDiv } mb-3"
-                               role="alert">
+                        <table id="tabella-assert-${ currentIteration.index }" class="${ tipoDiv } mb-3">
                             <tr class="row">
                                 <th scope="row" class="col-lg-1 col-md-2 col-sm-2 col-3">Test</th>
                                 <td class="col-lg-11 col-md-10 col-sm-10 col-9">${ singoloAssert.test }</td>
@@ -82,13 +82,13 @@
                 </div>
             </c:when>
             <c:when test="${ not empty risultatoValidazione and not empty risultatoValidazione.descrizioneErroreXsd }">
-                <h3 class="text-danger">Risultato: il file non &egrave; valido</h3>
+                <h3 class="text-danger" role="alert">Risultato: il file non &egrave; valido</h3>
                 <p>Si &egrave; verificato un errore in sede di validazione xsd.</p>
                 <blockquote class="text-danger">${ risultatoValidazione.descrizioneErroreXsd }</blockquote>
                 <%@ include file="common/result_button.jsp" %>
             </c:when>
             <c:otherwise>
-                <h3 class="text-success">Risultato: il file &egrave; valido</h3>
+                <h3 class="text-success" role="alert">Risultato: il file &egrave; valido</h3>
                 <%@ include file="common/result_button.jsp" %>
             </c:otherwise>
         </c:choose>
