@@ -109,7 +109,7 @@ public class ValidationReport {
 
     public void setDocumentoValidato(byte[] documentoValidato) {
 
-        this.documentoValidato = new String(documentoValidato, StandardCharsets.UTF_8);
+        this.documentoValidato = new String(documentoValidato, StandardCharsets.UTF_8).trim();
     }
 
     public String getDocumentoValidato() {

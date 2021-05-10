@@ -49,11 +49,27 @@
             <div class="d-flex flex-column container file-container">
                 <form:label id="carica-documento-label" class="subtitle" path="fileDocumento"
                             for="carica-documento">Documento</form:label>
-                <form:input id="carica-documento" type="file" name="fileDocumento" path="fileDocumento" accept=".xml"
-                            aria-invalid="true" aria-describedby="carica-documento-errors"/>
-                <form:errors id="carica-documento-errors" class="text-danger alert alert-danger mt-2 ml-2" role="alert"
-                             path="fileDocumento"/>
-                <c:if test="${fileSizeError}">
+
+                <c:set var="caricaDocumento_errors">
+                    <form:errors id="carica-documento-errors" class="text-danger alert alert-danger mt-2 ml-2"
+                                 role="alert"
+                                 path="fileDocumento"/>
+                </c:set>
+
+                <c:choose>
+                    <c:when test="${ not empty caricaDocumento_errors}">
+                        <c:set var="ariaInvalid_caricaDocumento">true</c:set>
+                    </c:when>
+                    <c:otherwise>
+                        <c:set var="ariaInvalid_caricaDocumento">false</c:set>
+                    </c:otherwise>
+                </c:choose>
+
+                <form:input id="carica-documento" type="file" name="fileDocumento" path="fileDocumento"
+                            accept=".xml" aria-invalid="${ ariaInvalid_caricaDocumento }"/>
+                    ${ caricaDocumento_errors }
+
+                <c:if test="${ fileSizeError }">
                     <span class="text-danger alert alert-danger mt-2 ml-2" role="alert">Dimensione massima del file superata, il limite è 5MB.</span>
                 </c:if>
                 <c:if test="${ genericError }">
@@ -63,10 +79,27 @@
             </div>
 
             <div class="d-flex flex-column container file-type-container">
+
+                <c:set var="listaDocumenti_errors">
+                    <form:errors id="lista-documenti-errors" class="text-danger alert alert-danger mt-2 ml-2"
+                                 role="alert"
+                                 path="idDocumento"/>
+                </c:set>
+
+                <c:choose>
+                    <c:when test="${ not empty listaDocumenti_errors}">
+                        <c:set var="ariaInvalid_listaDocumenti">true</c:set>
+                    </c:when>
+                    <c:otherwise>
+                        <c:set var="ariaInvalid_listaDocumenti">false</c:set>
+                    </c:otherwise>
+                </c:choose>
+
                 <form:label id="lista-documenti-label" class="subtitle" path="idDocumento"
                             for="lista-documenti">Tipo di documento</form:label>
                 <form:select id="lista-documenti" class="entity-select" path="idDocumento" type="select"
-                             name="idDocumento" aria-invalid="true" aria-describedby="lista-documento-errors">
+                             name="idDocumento" aria-invalid="${ ariaInvalid_listaDocumenti }"
+                             aria-describedby="lista-documento-errors">
                     <option type="int" value="-1" id="default-selection" selected>Seleziona il tipo di documento
                     </option>
                     <c:forEach items="${tipoDocumento}" var="val">
@@ -74,28 +107,46 @@
                                      value="${val.idTipoDocumento}">${val.name.readableValue}</form:option>
                     </c:forEach>
                 </form:select>
-                <form:errors id="lista-documenti-errors" class="text-danger alert alert-danger mt-2 ml-2" role="alert" path="idDocumento"/>
+                    ${ listaDocumenti_errors }
             </div>
 
             <div class="d-flex flex-column container file-type-container">
+
+                <c:set var="listaCustomizationId_errors">
+                    <form:errors id="lista-customizationid-errors" class="text-danger alert alert-danger mt-2 ml-2"
+                                 role="alert"
+                                 path="idRappresentazioneDocumento"/>
+                </c:set>
+
+                <c:choose>
+                    <c:when test="${ not empty listaDocumenti_errors}">
+                        <c:set var="ariaInvalid_listaCustomizationId">true</c:set>
+                    </c:when>
+                    <c:otherwise>
+                        <c:set var="ariaInvalid_listaCustomizationId">false</c:set>
+                    </c:otherwise>
+                </c:choose>
+
                 <form:label id="lista-customizationid-label" class="subtitle" path="idRappresentazioneDocumento"
                             for="lista-customizationid">Formato del documento</form:label>
                 <form:select id="lista-customizationid" class="entity-select" type="select"
                              name="idRappresentazioneDocumento" path="idRappresentazioneDocumento"
-                             disabled="true" aria-invalid="true" aria-describedby="lista-customizationid-errors">
+                             disabled="true" aria-invalid="${ ariaInvalid_listaCustomizationId }">
                     <!-- Riempita con l'ausilio di Ajax -->
                 </form:select>
-                <form:errors id="lista-customizationid-errors" path="idRappresentazioneDocumento"
-                             cssClass="text-danger alert alert-danger mt-2 ml-2" role="alert"/>
+                    ${ listaCustomizationId_errors }
             </div>
 
             <div class="g-recaptcha-container d-flex flex-column align-items-center">
-                <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }" aria-invalid="true" aria-describedby="captcha-errors"></div>
-                <form:errors id="captcha-errors" path="captcha" cssClass="text-danger alert alert-danger mt-2 ml-2" role="alert"/>
+                <div class="g-recaptcha" data-sitekey="${ gRecaptchaSiteKey }" aria-invalid="true"
+                     aria-describedby="captcha-errors"></div>
+                <form:errors id="captcha-errors" path="captcha" cssClass="text-danger alert alert-danger mt-2 ml-2"
+                             role="alert"/>
             </div>
 
             <div class="d-flex container file-submit-container">
-                <button onclick="cacheAndSubmit()" class="btn submit-data" id="button-submit-id" title="Valida" disabled>Valida
+                <button onclick="cacheAndSubmit()" class="btn submit-data" id="button-submit-id" title="Valida"
+                        disabled>Valida
                 </button>
             </div>
         </form:form>

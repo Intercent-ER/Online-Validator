@@ -49,7 +49,8 @@
                             </c:choose>
                             <%@ include file="common/result_button.jsp" %>
                         <div class="container pr-0 pl-0">
-                            <c:forEach items="${ risultatoValidazione.erroriDiValidazione }" var="singoloAssert">
+                            <c:forEach items="${ risultatoValidazione.erroriDiValidazione }" var="singoloAssert"
+                                       varStatus="currentIteration">
                                 <c:if test="${ singoloAssert.warning }">
                                     <c:set var="classeCss" value="text-warning"/>
                                     <c:set var="tipoDiv" value="warning-error"/>
@@ -59,7 +60,8 @@
                                     <c:set var="tipoDiv" value="fatal-error"/>
                                 </c:if>
 
-                                <table id="tabella-assert-${count}" class="${ tipoDiv } mb-3" role="alert">
+                                <table id="tabella-assert-${ currentIteration.index }" class="${ tipoDiv } mb-3"
+                                       role="alert">
                                     <tr class="row">
                                         <td class="col-lg-1 col-md-2 col-sm-2 col-3">Test</td>
                                         <td class="col-lg-11 col-md-10 col-sm-10 col-9">${ singoloAssert.test }</td>
@@ -95,11 +97,9 @@
 
             <section class="w-100 d-flex flex-column">
                 <h4>Documento validato</h4>
-                <textarea readonly>
-                    ${ risultatoValidazione.documentoValidato }
-                </textarea>
+                <textarea readonly>${ risultatoValidazione.documentoValidato }</textarea>
             </section>
 
         </main>
 
-        <%@ include file="common/footer.jsp" %>
+<%@ include file="common/footer.jsp" %>
