@@ -63,19 +63,19 @@
                                 <table id="tabella-assert-${ currentIteration.index }" class="${ tipoDiv } mb-3"
                                        role="alert">
                                     <tr class="row">
-                                        <td class="col-lg-1 col-md-2 col-sm-2 col-3">Test</td>
+                                        <th scope="row" class="col-lg-1 col-md-2 col-sm-2 col-3">Test</th>
                                         <td class="col-lg-11 col-md-10 col-sm-10 col-9">${ singoloAssert.test }</td>
                                     </tr>
                                     <tr class="row">
-                                        <td class="col-lg-1 col-md-2 col-sm-2 col-3">Posizione</td>
+                                        <th scope="row" class="col-lg-1 col-md-2 col-sm-2 col-3">Posizione</th>
                                         <td class="col-lg-11 col-md-10 col-sm-10 col-9">${ singoloAssert.location }</td>
                                     </tr>
                                     <tr class="row">
-                                        <td class="col-lg-1 col-md-2 col-sm-2 col-3">Livello</td>
+                                        <th scope="row" class="col-lg-1 col-md-2 col-sm-2 col-3">Livello</th>
                                         <td class="col-lg-11 col-md-10 col-sm-10 col-9 ${ classeCss }">${ singoloAssert.fatal ? "FATAL" : "WARNING" }</td>
                                     </tr>
                                     <tr class="row">
-                                        <td class="col-lg-1 col-md-2 col-sm-2 col-3">Descrizione</td>
+                                        <th scope="row" class="col-lg-1 col-md-2 col-sm-2 col-3">Descrizione</th>
                                         <td class="col-lg-11 col-md-10 col-sm-10 col-9 ${ classeCss }">${ singoloAssert.testo }</td>
                                     </tr>
                                 </table>
