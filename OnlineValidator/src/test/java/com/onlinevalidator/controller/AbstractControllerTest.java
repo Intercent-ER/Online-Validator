@@ -27,5 +27,10 @@ public abstract class AbstractControllerTest {
 		assertNotNull("Controller non inizializzato correttamente", getController());
 	}
 
+	/**
+	 * Metodo astratto che restituisce un controller.
+	 *
+	 * @return il controller oggetto di test
+	 */
 	protected abstract Object getController();
 }
