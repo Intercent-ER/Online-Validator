@@ -2,6 +2,8 @@ package com.onlinevalidator.model.enumerator;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -13,13 +15,10 @@ public class NomeTipoDocumentoEnumTest {
 	@Test
 	public void testToString() {
 
-		NomeTipoDocumentoEnum testCase = NomeTipoDocumentoEnum.ORDINE;
-
-		String name = testCase.name();
-		String toString = testCase.toString();
-
-		assertEquals(name, toString);
-
+		Arrays.stream(NomeTipoDocumentoEnum.values())
+				.forEach(
+						nomeTipoDocumentoEnum -> assertEquals(nomeTipoDocumentoEnum.name(), nomeTipoDocumentoEnum.toString())
+				);
 	}
 
 	@Test
@@ -28,7 +27,8 @@ public class NomeTipoDocumentoEnumTest {
 		assertEquals("Ordine", NomeTipoDocumentoEnum.ORDINE.getReadableValue());
 		assertEquals("Documento di trasporto", NomeTipoDocumentoEnum.DOCUMENTO_DI_TRASPORTO.getReadableValue());
 		assertEquals("Fattura", NomeTipoDocumentoEnum.FATTURA.getReadableValue());
-
+		assertEquals("Ordine Preconcordato", NomeTipoDocumentoEnum.ORDINE_PRECONCORDATO.getReadableValue());
+		assertEquals("Risposta all'Ordine", NomeTipoDocumentoEnum.RISPOSTA_ALL_ORDINE.getReadableValue());
 	}
 
 	@Test
@@ -37,7 +37,6 @@ public class NomeTipoDocumentoEnumTest {
 		NomeTipoDocumentoEnum[] values = NomeTipoDocumentoEnum.values();
 
 		assertNotNull(values);
-		assertEquals(3, values.length);
-
+		assertEquals(5, values.length);
 	}
 }
