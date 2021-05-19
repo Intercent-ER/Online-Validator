@@ -3,9 +3,11 @@
 
         <div class="row div-logo-container">
 
-            <a class="col-md-4 col-sm-6 d-flex justify-content-start" href="https://peppol.agid.gov.it/it/" target="_blank">
+            <a class="col-md-4 col-sm-6 d-flex justify-content-start" href="https://peppol.agid.gov.it/it/"
+               target="_blank">
                 <div class="d-flex flex-column align-items-center footer-peppol-logo-wrapper">
-                    <img src="<c:url value="/resources/images/peppol-logo-blue.svg"/>" alt="Peppol logo">
+                    <img src="<c:url value="/resources/images/peppol-logo-white.png"/>"
+                         style="width:200px; height: auto" alt="Peppol logo">
                     <span class="footer-span-peppol-logo">Peppol Authority Italia</span>
                 </div>
             </a>
@@ -13,7 +15,8 @@
             <a class="col-md-4 col-sm-6 d-flex justify-content-center align-items-center"
                href="https://www.agid.gov.it" target="_blank">
                 <img
-                        src="<c:url value="/resources/images/agid-logo-white.svg"/>" alt="Agenzia per l'Italia Digitale">
+                        src="<c:url value="/resources/images/agid-logo-white.svg"/>"
+                        alt="Agenzia per l'Italia Digitale">
             </a>
             <a class="col-md-4 col-sm-6 d-flex justify-content-end align-items-center"
                href="https://intercenter.regione.emilia-romagna.it/" target="_blank">
