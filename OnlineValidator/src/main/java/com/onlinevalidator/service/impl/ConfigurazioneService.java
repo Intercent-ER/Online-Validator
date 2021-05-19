@@ -20,13 +20,17 @@ public class ConfigurazioneService implements ConfigurazioneServiceInterface {
 
 	private Map<ChiaveConfigurazioneEnum, String> cache;
 
-	@Autowired
-	private OvConfigurazioneJpaRepository configurazioneJpaRepository;
+	private final OvConfigurazioneJpaRepository configurazioneJpaRepository;
 
 	@PostConstruct
 	public void init() {
 		logInfo("Inizializzazione cache configurazione");
 		this.cache = new HashMap<>();
+	}
+
+	@Autowired
+	public ConfigurazioneService(OvConfigurazioneJpaRepository ovConfigurazioneJpaRepository) {
+		this.configurazioneJpaRepository = ovConfigurazioneJpaRepository;
 	}
 
 	@Override
@@ -60,6 +64,9 @@ public class ConfigurazioneService implements ConfigurazioneServiceInterface {
 
 		// Leggo dalla cache
 		logInfo("Lettura configurazione {} da cache", chiaveConfigurazioneEnum.name());
+		if (cache == null) {
+			init();
+		}
 		String value = cache.get(chiaveConfigurazioneEnum);
 
 		// Se non ho trovato corrispondenze in cache, leggo sul database
