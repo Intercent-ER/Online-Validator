@@ -229,7 +229,7 @@ public class ValidatorController {
 
 		// Se la verifica fallisce, fallisce la validazione
 		if (!captchaVerificato) {
-			bindingResult.rejectValue("captcha", "", "Si prega di completare il captcha prima di procedere.");
+			bindingResult.rejectValue("captcha", "", "Si prega di completare il captcha e di selezionare nuovamente il file prima di procedere.");
 			throw new VerificaReCaptchaException("Verifica captcha fallita");
 		}
 	}

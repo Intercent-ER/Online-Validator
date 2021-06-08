@@ -19,6 +19,11 @@
 		<rollingPolicy
 				class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${catalina.base}/logs/online-validator.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>20MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>365</maxHistory>
 		</rollingPolicy>
 	</appender>
 
