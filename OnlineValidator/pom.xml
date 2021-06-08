@@ -5,7 +5,7 @@
 	<groupId>it.agid.gov</groupId>
 	<artifactId>OnlineValidator</artifactId>
 	<packaging>war</packaging>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>Validazione documenti Peppol</name>
 	<description>Piattaforma italiana di validazione dei documenti Peppol</description>
 	<url>https://peppol-validator.agid.gov.it</url>
