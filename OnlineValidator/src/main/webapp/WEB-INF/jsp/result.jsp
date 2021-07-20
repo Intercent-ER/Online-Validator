@@ -62,20 +62,20 @@
 
                         <table id="tabella-assert-${ currentIteration.index }" class="${ tipoDiv } mb-3">
                             <tr class="row">
-                                <th scope="row" class="col-lg-1 col-md-2 col-sm-2 col-3">Test</th>
-                                <td class="col-lg-11 col-md-10 col-sm-10 col-9">${ singoloAssert.test }</td>
+                                <th scope="row">Test</th>
+                                <td>${ singoloAssert.test }</td>
                             </tr>
                             <tr class="row">
-                                <th scope="row" class="col-lg-1 col-md-2 col-sm-2 col-3">Posizione</th>
-                                <td class="col-lg-11 col-md-10 col-sm-10 col-9">${ singoloAssert.location }</td>
+                                <th scope="row">Posizione</th>
+                                <td>${ singoloAssert.location }</td>
                             </tr>
                             <tr class="row">
-                                <th scope="row" class="col-lg-1 col-md-2 col-sm-2 col-3">Livello</th>
-                                <td class="col-lg-11 col-md-10 col-sm-10 col-9 ${ classeCss }">${ singoloAssert.fatal ? "FATAL" : "WARNING" }</td>
+                                <th scope="row">Livello</th>
+                                <td class="${ classeCss }">${ singoloAssert.fatal ? "FATAL" : "WARNING" }</td>
                             </tr>
                             <tr class="row">
-                                <th scope="row" class="col-lg-1 col-md-2 col-sm-2 col-3">Descrizione</th>
-                                <td class="col-lg-11 col-md-10 col-sm-10 col-9 ${ classeCss }">${ singoloAssert.testo }</td>
+                                <th scope="row">Descrizione</th>
+                                <td class="${ classeCss }">${ singoloAssert.testo }</td>
                             </tr>
                         </table>
                     </c:forEach>
