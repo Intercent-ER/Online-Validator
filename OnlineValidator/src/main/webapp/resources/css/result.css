@@ -35,11 +35,16 @@ table, tbody{
     width: 100%;
 }
 
+tbody tr{
+    width: 100%;
+    margin: 0 !important;
+}
+
 tbody th{
     width: 12.5%;
 }
 
-tbody tr{
+tbody td{
     width: 87.5%;
 }
 
@@ -55,7 +60,7 @@ textarea{
         width: 15%;
     }
 
-    tbody tr{
+    tbody td{
         width: 85%;
     }
 }
@@ -65,7 +70,7 @@ textarea{
         width: 20%;
     }
 
-    tbody tr{
+    tbody td{
         width: 80%;
     }
 }
@@ -75,7 +80,7 @@ textarea{
         width: 17.5%;
     }
 
-    tbody tr{
+    tbody td{
         width: 82.5%;
     }
 }
@@ -85,7 +90,7 @@ textarea{
         width: 17.5%;
     }
 
-    tbody tr{
+    tbody td{
         width: 82.5%;
     }
 }
@@ -95,7 +100,7 @@ textarea{
         width: 22.5%;
     }
 
-    tbody tr{
+    tbody td{
         width: 77.5%;
     }
 }
