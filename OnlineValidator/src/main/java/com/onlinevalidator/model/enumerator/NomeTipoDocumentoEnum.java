@@ -6,7 +6,8 @@ package com.onlinevalidator.model.enumerator;
 public enum NomeTipoDocumentoEnum {
 
 	ORDINE("Ordine"), DOCUMENTO_DI_TRASPORTO("Documento di trasporto"), FATTURA("Fattura"),
-	ORDINE_PRECONCORDATO("Ordine Preconcordato"), RISPOSTA_ALL_ORDINE("Risposta all'Ordine");
+	ORDINE_PRECONCORDATO("Ordine Preconcordato"), RISPOSTA_ALL_ORDINE("Risposta all'Ordine"),
+	NOTA_DI_CREDITO("Nota di Credito");
 
 	private final String readableValue;
 
