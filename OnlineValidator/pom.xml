@@ -17,7 +17,7 @@
 		<io.version>2.4</io.version>
 		<java.version>1.8</java.version>
 		<hibernate.version>4.3.5.Final</hibernate.version>
-		<hibernate.validator>4.3.1.Final</hibernate.validator>
+		<hibernate.validator>6.0.23.Final</hibernate.validator>
 		<slf4j.version>1.7.25</slf4j.version>
 		<log4j.version>2.8.2</log4j.version>
 		<logback.version>1.1.2</logback.version>
